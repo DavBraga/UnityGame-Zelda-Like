@@ -11,14 +11,12 @@ public class PlayerController : MonoBehaviour
     public DeadState deadState{get; private set;}
     public OnAirState onAirState{ get; private set;}
     public AttackState attackState{get; private set;}
-
+    public DefendState defendState{get; private set;}
     public Vector2 inputMovmentVector{ get; private set;}
     public Rigidbody myRigidbody{ get; private set;}
     public  Animator animator{ get; private set;}
 
     private bool grounded= true;
-
-    float attackCooldown= 0;
     
 
     [SerializeField] Collider thisCollider;
@@ -44,9 +42,12 @@ public class PlayerController : MonoBehaviour
 
     [Header("Attack")]
     [SerializeField] GameObject attackCollider;
+    [SerializeField] GameObject shieldCollider;
     [SerializeField] float[] attackGracePeriod;
     [SerializeField] float[] attackDuration;
     [SerializeField] float[] attackImpulse;
+    [SerializeField] float knockbackPower;
+    [SerializeField] float shieldKnocBack;
     [SerializeField] float inputCooldown=.001f;
     bool canttrigger= true;
 
@@ -54,11 +55,9 @@ public class PlayerController : MonoBehaviour
 
     [Header("Debug")]
     [SerializeField] string currentStateName;
-
     public int attackstage =0;
     
-    [SerializeField] GameObject[] show;
-    
+
     private void Start()
     {
         InitializeStateMachine();
@@ -69,7 +68,8 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         currentStateName = stateMachine.GetCurrentStateName();
-        if (ReadAttackInput()) Chop();
+        if (ReadLeftMouseInput()) Chop();
+        if(ReadRightMouseInput()) stateMachine.ChangeState(defendState);
         inputMovmentVector = ReadMovmentInput();
         CalculateVelocityRate();  
         stateMachine.Update();
@@ -94,6 +94,7 @@ public class PlayerController : MonoBehaviour
         walkingState = new WalkingState(this);
         onAirState = new OnAirState(this, airMovmentSpeedModifier);
         attackState = new AttackState(this, attackCollider);
+        defendState = new DefendState(this, shieldCollider);
         deadState = new DeadState(this);
         stateMachine.ChangeState(idleState);
     }
@@ -180,7 +181,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public bool ReadJumpInput()
+    public bool ReadSpaceBarInput()
     {
         if(Input.GetKeyUp(KeyCode.Space))
         {
@@ -189,7 +190,7 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
-    public bool ReadAttackInput()
+    public bool ReadLeftMouseInput()
     {
         if(Input.GetMouseButton(0)&& canttrigger)
         {
@@ -198,10 +199,16 @@ public class PlayerController : MonoBehaviour
         }
         return false;
     }
+
+    public bool ReadRightMouseInput()
+    {
+        if(Input.GetMouseButtonDown(1)) return true;
+        return false;
+    }
     
    public IEnumerable attackCD()
    {
-    yield return new WaitForSeconds(attackCooldown);
+    yield return new WaitForSeconds(inputCooldown);
     canttrigger = true;
    }
     private  Vector2 ReadMovmentInput()
@@ -228,29 +235,21 @@ public class PlayerController : MonoBehaviour
     public void PlayAttackAnimation(int attackStage=0)
     {
             Debug.Log("anim triggered at stage: " + attackstage);
-            if(show.Length<1) return;
-            if(attackStage==0 ||attackStage==4)
+            if(attackStage==0 ||attackStage>3)
             {
                 animator.SetTrigger("tAttack1");
-                show[2].SetActive(false);
-                show[1].SetActive(false);
-                show[0].SetActive(true);
             }
                 
             else if(attackStage==1)
             {
                 animator.SetTrigger("tAttack2");
-                show[2].SetActive(false);
-                show[0].SetActive(false);
-                show[1].SetActive(true);
+
             }
 
             else if(attackStage==2)
             {
                 animator.SetTrigger("tAttack3");
-                show[0].SetActive(false);
-                show[1].SetActive(false);
-                show[2].SetActive(true);
+
             }
             else if(attackStage==3) animator.SetTrigger("tAttack4");
 
@@ -259,6 +258,22 @@ public class PlayerController : MonoBehaviour
     public void PlayAttackImpulse(int attackStage)
     {
         myRigidbody.AddForce(transform.forward*attackImpulse[attackStage] ,ForceMode.Impulse);
+    }
+
+    public void TryTriggerHandAttack(Collider other, bool leftHand = false)
+    {
+        if(other.gameObject.layer != LayerMask.NameToLayer("Attackable")) return;
+        if(other.gameObject.TryGetComponent<Rigidbody>(out Rigidbody otherRB))
+        {
+            var positionDiff = other.gameObject.transform.position - transform.position;
+            positionDiff.Normalize();
+            if(!leftHand)
+                otherRB.AddForce(positionDiff*knockbackPower,ForceMode.Impulse);
+            else
+                otherRB.AddForce(positionDiff*shieldKnocBack,ForceMode.Impulse);
+
+        }
+
     }
 
     public float[] GetAttackDuration()

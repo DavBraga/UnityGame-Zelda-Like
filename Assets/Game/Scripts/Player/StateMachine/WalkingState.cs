@@ -24,7 +24,7 @@ public class WalkingState : State
         {
             player.stateMachine.ChangeState(player.idleState);
         }  
-        if(player.ReadJumpInput()) player.Jump();
+        if(player.ReadSpaceBarInput()) player.Jump();
         base.OnStateUpdate();
     }
     public override void OnStateFixedUpdate()

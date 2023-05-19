@@ -23,12 +23,9 @@ public class AttackState : State
     public override void OnStateEnter()
     {
         base.OnStateEnter();
-       attackCollider.SetActive(true);
        EvolveAttackStages();
        SetVariables();
        player.animator.SetBool("bIsAttacking", true);
-       
-       //player.PlayAttackAnimation(attackStage);
        
     }
     public override void OnStateExit()
@@ -50,21 +47,17 @@ public class AttackState : State
         if(stageRemainingDuration>attackChainWindow) return;
         if(attackStage>1)
         {
-            // player.attackstage = attackStage =0;
-            // Debug.Log("Went stage:"+ attackStage);
-            // SetVariables();
             player.stateMachine.BackToLastState();
             return;
         }
-        if(player.ReadAttackInput())
+        if(player.ReadLeftMouseInput())
         {
             stageRemainingDuration =500f;
             
             
             EvolveAttackStages();
             player.PlayAttackAnimation(attackStage);
-            // if(attackStage==2)
-            // player.myRigidbody.AddForce(player.transform.forward *10,ForceMode.Impulse);
+
             SetVariables();
         }
 
@@ -75,9 +68,7 @@ public class AttackState : State
         float attackDuration = player.GetAttackDuration()[attackStage];
         attackChainWindow = player.getAttackChainWindow()[attackStage];
         stageRemainingDuration = attackDuration + attackChainWindow;
-        
-        //attackInterval= player.GetAttackChainDelay()[attackStage];
-        //attackCooldown = stageDuration*attackInterval;
+
     }
 
     public void EvolveAttackStages()
@@ -93,8 +84,12 @@ public class AttackState : State
         base.OnStateFixedUpdate();
         player.RotateBodyToFace(1);
 
+        if(stageRemainingDuration<attackChainWindow)
+            attackCollider.SetActive(false);
+
         if(applyImpulse)
         {
+            attackCollider.SetActive(true);
             player.PlayAttackImpulse(attackStage);
             applyImpulse = false;
         }
