@@ -6,10 +6,12 @@ public class AttackState : State
 {
     PlayerController player;
     GameObject attackCollider;
-    int attackStage = 0; 
+    int attackStage = -1; 
 
     float attackChainWindow;
     float stageRemainingDuration;
+
+    bool applyImpulse = false;
 
     float maxDuration;
     public AttackState(PlayerController playerController, GameObject attackCollider) : base("Attack")
@@ -22,8 +24,10 @@ public class AttackState : State
     {
         base.OnStateEnter();
        attackCollider.SetActive(true);
+       EvolveAttackStages();
        SetVariables();
        player.animator.SetBool("bIsAttacking", true);
+       
        //player.PlayAttackAnimation(attackStage);
        
     }
@@ -31,7 +35,7 @@ public class AttackState : State
     {
         base.OnStateExit();
        attackCollider.SetActive(false);
-       player.attackstage = attackStage = 0;
+       player.attackstage = attackStage = -1;
        player.animator.SetBool("bIsAttacking", false);
     }
     public override void OnStateUpdate()
@@ -59,8 +63,8 @@ public class AttackState : State
             
             EvolveAttackStages();
             player.PlayAttackAnimation(attackStage);
-            if(attackStage==2)
-            player.myRigidbody.AddForce(player.transform.forward *10,ForceMode.Impulse);
+            // if(attackStage==2)
+            // player.myRigidbody.AddForce(player.transform.forward *10,ForceMode.Impulse);
             SetVariables();
         }
 
@@ -80,13 +84,22 @@ public class AttackState : State
     {
         attackStage ++;
         player.attackstage = attackStage;
+        applyImpulse = true;
         Debug.Log("Went stage:"+ attackStage);
 
     }   
     public override void OnStateFixedUpdate()
     {
         base.OnStateFixedUpdate();
+        player.RotateBodyToFace(1);
+
+        if(applyImpulse)
+        {
+            player.PlayAttackImpulse(attackStage);
+            applyImpulse = false;
+        }
     }
+            
     public override void OnStateLateUpdate()
     {
         base.OnStateLateUpdate();

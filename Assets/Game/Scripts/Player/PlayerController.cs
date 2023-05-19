@@ -46,6 +46,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject attackCollider;
     [SerializeField] float[] attackGracePeriod;
     [SerializeField] float[] attackDuration;
+    [SerializeField] float[] attackImpulse;
     [SerializeField] float inputCooldown=.001f;
     bool canttrigger= true;
 
@@ -255,6 +256,11 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    public void PlayAttackImpulse(int attackStage)
+    {
+        myRigidbody.AddForce(transform.forward*attackImpulse[attackStage] ,ForceMode.Impulse);
+    }
+
     public float[] GetAttackDuration()
     {
         return attackDuration;
@@ -290,7 +296,7 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 origin = transform.position;
         Vector3 direction = Vector3.down;
-        float maxDistance = .2f;
+        float maxDistance = float.PositiveInfinity;
          LayerMask groundLayer = GameManager.Instance.GetGroundLayer();
         if(Physics.Raycast(origin, direction,out var slopeHitInfo,maxDistance,groundLayer))
         {
