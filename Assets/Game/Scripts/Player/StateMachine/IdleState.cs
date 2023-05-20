@@ -31,6 +31,7 @@ public class IdleState : State
         }
         if(player.ReadSpaceBarInput()) player.Jump();
         
+        
     }
     public override void OnStateFixedUpdate()
     {

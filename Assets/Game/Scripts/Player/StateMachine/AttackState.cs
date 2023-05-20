@@ -41,13 +41,13 @@ public class AttackState : State
         stageRemainingDuration -=Time.deltaTime;
 
         if(stageRemainingDuration<0){
-             player.stateMachine.BackToLastState();
+             player.stateMachine.ChangeState(player.idleState);
             return;
         }  
         if(stageRemainingDuration>attackChainWindow) return;
         if(attackStage>1)
         {
-            player.stateMachine.BackToLastState();
+            player.stateMachine.ChangeState(player.idleState);
             return;
         }
         if(player.ReadLeftMouseInput())

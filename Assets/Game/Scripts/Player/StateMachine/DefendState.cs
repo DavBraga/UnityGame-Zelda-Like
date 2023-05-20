@@ -27,7 +27,7 @@ public class DefendState : State
     public override void OnStateUpdate()
     {
         if(Input.GetMouseButtonUp(1))
-            player.stateMachine.BackToLastState();
+            player.stateMachine.ChangeState(player.idleState);
         base.OnStateUpdate(); 
         
     }
