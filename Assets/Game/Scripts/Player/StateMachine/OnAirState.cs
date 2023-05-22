@@ -28,7 +28,11 @@ public class OnAirState : State
         player.PlayerMovment(movmentIntensity);
         player.RotateBodyToFace();
         if(player.isGrounded())
+        {
             player.stateMachine.ChangeState(player.idleState);
+            player.forceNormalGravity = false;
+        }
+            
         
     }
     public override void OnStateFixedUpdate()

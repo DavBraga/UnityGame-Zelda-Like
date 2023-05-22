@@ -35,10 +35,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField]float slopeAngle=0;
     [SerializeField]float  MaxSlopeAngle= 45;
     private Vector3 slopeNormal;
+
+    Vector3 gravity;
     
     [Header("Jump and MidAir")]
     [SerializeField] float jumpPower=10f;
     [SerializeField] float airMovmentSpeedModifier =0.25f;
+
+    public bool forceNormalGravity = false;
 
     [Header("Attack")]
     [SerializeField] GameObject attackCollider;
@@ -55,6 +59,8 @@ public class PlayerController : MonoBehaviour
 
     [Header("Debug")]
     [SerializeField] string currentStateName;
+
+    [SerializeField] float currentVelocity;
     public int attackstage =0;
     
 
@@ -73,6 +79,7 @@ public class PlayerController : MonoBehaviour
         inputMovmentVector = ReadMovmentInput();
         CalculateVelocityRate();  
         stateMachine.Update();
+        //currentVelocity = myRigidbody.velocity.magnitude;
         
     }
     private void FixedUpdate()
@@ -101,7 +108,8 @@ public class PlayerController : MonoBehaviour
 
        private void ApplyGravity()
     {
-        Vector3 gravity = DetectOnSlope() ? slopeNormal * Physics.gravity.y : Physics.gravity;
+        if(forceNormalGravity) gravity = Physics.gravity;
+        else gravity = DetectOnSlope() ? slopeNormal * Physics.gravity.y : Physics.gravity;
         Debug.DrawRay(transform.position, gravity.normalized * 2, Color.blue, .1f);
         myRigidbody.AddForce(gravity, ForceMode.Acceleration);
     }
@@ -149,7 +157,8 @@ public class PlayerController : MonoBehaviour
         if(!grounded)  return;
         Debug.Log("jumped");
         animator.SetTrigger("tJump");
-        myRigidbody.AddForce(Vector3.up*jumpPower, ForceMode.Impulse);
+        myRigidbody.AddForce(Vector3.up *jumpPower, ForceMode.Impulse);
+        
     }
 
     public bool Chop()
@@ -309,9 +318,13 @@ public class PlayerController : MonoBehaviour
 
     public bool DetectOnSlope()
     {
-        Vector3 origin = transform.position;
+        //todo swap ray direction to forward from the 
+        //feet to calculate the angle and predict 
+        //slopes so less resistance to start stairs.
+        Bounds bounds = thisCollider.bounds;
+        Vector3 origin = transform.position + new Vector3(0,bounds.size.y,0);
         Vector3 direction = Vector3.down;
-        float maxDistance = float.PositiveInfinity;
+        float maxDistance = bounds.size.y+.1f;
          LayerMask groundLayer = GameManager.Instance.GetGroundLayer();
         if(Physics.Raycast(origin, direction,out var slopeHitInfo,maxDistance,groundLayer))
         {
@@ -319,7 +332,7 @@ public class PlayerController : MonoBehaviour
             slopeNormal = slopeHitInfo.normal;
             return slopeAngle<MaxSlopeAngle&& slopeAngle !=0;
         }
-        
+
         return false;
 
     }
