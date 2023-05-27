@@ -1,25 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MeleeCreatureController : MonoBehaviour
 {
+    [Header("Detection")]
+    public float sightRange= 5f;
     [Header("Roaming")]
     public float searchInterval =3f;
     public float searchRadius = 5f;
 
     [Header("Alert")]
-    public float ceaseFollowInterval =2f;
+    public float ceaseFollowThreshold =2f;
+    public float followDistance = 10f;
+    public float followInterval = 2f;
 
     [Header("Attack")]
     public float distanceToAttack =1f;
     public float attackRadius = 1.5f;
-    public float damageDelay = 0;
+    public float damageDelay = .3f;
     public float attackDuration =2f;
-    public float attackDamage = 1f;
+    public int attackDamage = 1;
+    
 
     [Header ("Hurt")]
     public float hurtDuration = 1f;
+
+    public NavMeshAgent myNavAgent{get; private set;}
+
+    [Header ("Debug")]
+    [SerializeField] string debugCurrentState;
     
     //STATE MACHINE
     public MeleeCreatureHelper helper{get; private set;}
@@ -32,6 +43,7 @@ public class MeleeCreatureController : MonoBehaviour
     private void Awake() {
         stateMachine = new StateMachine();
         helper = new MeleeCreatureHelper(this);
+        myNavAgent = GetComponent<NavMeshAgent>();
         InstantiateStates();
         stateMachine.ChangeState(roamingState);
     }
@@ -44,6 +56,8 @@ public class MeleeCreatureController : MonoBehaviour
     void Update()
     {
         stateMachine.Update();
+        // for debug only.
+        debugCurrentState = stateMachine.currentState.stateName;
     }
     private void FixedUpdate() 
     {
@@ -61,4 +75,32 @@ public class MeleeCreatureController : MonoBehaviour
         enemyHurtState = new EnemyHurtState(this);
         enemyDeadState = new EnemyDeadState(this);
     }
+
+    public void Attack()
+    {
+        Debug.Log("Attackd Player - TODO");
+        //TODO
+        helper.CachePositions();
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position,1f,helper.GetTargetDirection(),attackRadius*5,LayerMask.GetMask("Actors"));
+        Debug.Log(hits.Length>0);
+        Debug.DrawRay(transform.position, helper.GetTargetDirection(),Color.green, 3f);
+        if(hits.Length>0)
+        {
+            Debug.Log(hits.Length);
+            foreach (RaycastHit hit in hits)
+            {
+                if(hit.collider.gameObject.CompareTag("Player"))
+                {
+                    GameObject hitObj =hit.collider.gameObject;
+                    Debug.Log("Got player");
+                    if(hitObj.TryGetComponent<Health>(out Health health))
+                    {
+                        health.TakeDamage(gameObject, attackDamage);
+                    }
+                }    
+            }
+        }
+
+    }
+
 }

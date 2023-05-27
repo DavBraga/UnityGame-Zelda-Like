@@ -28,11 +28,12 @@ public class RoamingState : State
     {
         base.OnStateUpdate();
         searchCooldown -= Time.deltaTime;
-
+        //wait for cooldown
         if(searchCooldown>0) return;
         searchCooldown = controller.searchInterval;
-        if(!controller.helper.IstargetInRange()) return;
-
+        // do nothing if not in range
+        if(!controller.helper.IstargetInRange(controller.searchRadius)) return;
+        //if can see go alert state
         if(controller.helper.IsTargetOnSight())
         {
             controller.stateMachine.ChangeState(controller.alertState);

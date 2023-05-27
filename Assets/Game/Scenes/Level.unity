@@ -3093,7 +3093,7 @@ GameObject:
   - component: {fileID: 134424491}
   m_Layer: 0
   m_Name: ShieldCollider
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26798,7 +26798,7 @@ GameObject:
   - component: {fileID: 1229505622}
   - component: {fileID: 1229505626}
   - component: {fileID: 1229505628}
-  - component: {fileID: 1229505627}
+  - component: {fileID: 1229505629}
   m_Layer: 20
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -26877,7 +26877,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1229505621}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 16.515144, y: 1.03, z: 1.6241446}
+  m_LocalPosition: {x: 22, y: 1.03, z: 1.6241446}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -26896,23 +26896,10 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1229505627
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1229505621}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6d0f8ada4e7cf44bb52c29de2eef385, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 4522188848879502648}
 --- !u!195 &1229505628
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -26920,14 +26907,14 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1229505621}
-  m_Enabled: 0
+  m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 1
+  m_StoppingDistance: 2
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -26935,6 +26922,31 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1229505629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1229505621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05e9ba05e03cbd3478218d2361399f88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sightRange: 20
+  searchInterval: 1
+  searchRadius: 7
+  ceaseFollowThreshold: 2
+  followDistance: 10
+  followInterval: 2
+  distanceToAttack: 1
+  attackRadius: 1.5
+  damageDelay: 1.5
+  attackDuration: 2
+  attackDamage: 1
+  hurtDuration: 1
+  debugCurrentState: 
 --- !u!1001 &1230550033
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27978,6 +27990,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7982955947820261958, guid: a5db83dcac61e2e4ca78fa9aa4afa543,
+        type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 4522188848879502648}
     - target: {fileID: 7982955947820261959, guid: a5db83dcac61e2e4ca78fa9aa4afa543,
         type: 3}
       propertyPath: m_Name
@@ -50576,7 +50593,7 @@ GameObject:
   - component: {fileID: 1774418770456113484}
   m_Layer: 0
   m_Name: SwordCollider
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -53126,7 +53143,8 @@ GameObject:
   - component: {fileID: 3122643220319252308}
   - component: {fileID: 5722576612675859502}
   - component: {fileID: 5722576612675859497}
-  m_Layer: 0
+  - component: {fileID: 5722576612675859503}
+  m_Layer: 10
   m_Name: TrueHero
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -54598,6 +54616,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &5722576612675859503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4522188848879502648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d165c311931bc349b9049b723e760ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 3
+  destructionParticles: {fileID: 0}
+  damageParticles: {fileID: 0}
+  FXLifetime: 1.5
 --- !u!1 &5722576613091365652
 GameObject:
   m_ObjectHideFlags: 0

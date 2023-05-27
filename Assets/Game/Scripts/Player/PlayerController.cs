@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    // state machine
     public StateMachine stateMachine{ get; private set;}
     public IdleState idleState{ get; private set;}
     public WalkingState walkingState{ get; private set;}
@@ -18,6 +19,8 @@ public class PlayerController : MonoBehaviour
 
     private bool grounded= true;
     
+    //GENERAL
+    Health health;
 
     [SerializeField] Collider thisCollider;
 
@@ -62,14 +65,19 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] float currentVelocity;
     public int attackstage =0;
-    
 
-    private void Start()
-    {
+    private void Awake() {
         InitializeStateMachine();
         myRigidbody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         thisCollider = GetComponent<Collider>();
+        health = GetComponent<Health>();
+        if(health) health.onTakeDamage += onTakeDamage;
+        
+    }
+    private void Start()
+    {
+       
     }
     private void Update()
     {
@@ -84,7 +92,7 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        ApplyGravity();
+        SufferGravity();
         stateMachine.FixedUpdate();
         LimitMovmentSpeed();
         if(!SnapStop) return;
@@ -105,42 +113,7 @@ public class PlayerController : MonoBehaviour
         deadState = new DeadState(this);
         stateMachine.ChangeState(idleState);
     }
-
-       private void ApplyGravity()
-    {
-        if(forceNormalGravity) gravity = Physics.gravity;
-        else gravity = DetectOnSlope() ? slopeNormal * Physics.gravity.y : Physics.gravity;
-        Debug.DrawRay(transform.position, gravity.normalized * 2, Color.blue, .1f);
-        myRigidbody.AddForce(gravity, ForceMode.Acceleration);
-    }
- 
-    private void CalculateVelocityRate()
-    {
-        fVelocityRate = 0;
-        if (!inputMovmentVector.isZero())
-        {
-            fVelocityRate = myRigidbody.velocity.magnitude/maxSpeed;
-        }
-        animator.SetFloat("fVelocity", fVelocityRate);
-    }
-
-    private void StopFaster(float stopPower=1f)
-    {
-        if(!isGrounded()) return;
-        if(Mathf.Abs(myRigidbody.velocity.magnitude)<.5f) return;
-        myRigidbody.AddForce(-myRigidbody.velocity.normalized * stopPower);
-    }
-
-    private void LimitMovmentSpeed()
-    {
-        Vector3 horizontalVelocity = new Vector3(myRigidbody.velocity.x, 0f, myRigidbody.velocity.z);
-        if (horizontalVelocity.magnitude > maxSpeed)
-        {
-            horizontalVelocity = horizontalVelocity.normalized * maxSpeed;
-            myRigidbody.velocity = new Vector3(horizontalVelocity.x, myRigidbody.velocity.y, horizontalVelocity.z);
-        }
-    }
-    
+    // VERB METHODS
     public void PlayerMovment(float intensity =1)
     {
         Vector3 movmentVector = InputToV3();
@@ -176,6 +149,47 @@ public class PlayerController : MonoBehaviour
     {
         if(stateMachine.currentState!= deadState)
             stateMachine.ChangeState(deadState);
+    }
+    private void SufferGravity()
+    {
+        if(forceNormalGravity) gravity = Physics.gravity;
+        else gravity = DetectOnSlope() ? slopeNormal * Physics.gravity.y : Physics.gravity;
+        Debug.DrawRay(transform.position, gravity.normalized * 2, Color.blue, .1f);
+        myRigidbody.AddForce(gravity, ForceMode.Acceleration);
+    }
+
+    //REACTION METHODS
+
+    public void onTakeDamage(GameObject attacker, int damage)
+    {
+        Debug.Log("Simple damage feedback:Took "+damage+". Caused by: "+attacker.gameObject.name);
+    }
+
+    //SUPPORT METHODS
+
+    private void CalculateVelocityRate()
+    {
+        fVelocityRate = 0;
+        if (!inputMovmentVector.isZero())
+        {
+            fVelocityRate = myRigidbody.velocity.magnitude/maxSpeed;
+        }
+        animator.SetFloat("fVelocity", fVelocityRate);
+    } 
+    private void StopFaster(float stopPower=1f)
+    {
+        if(!isGrounded()) return;
+        if(Mathf.Abs(myRigidbody.velocity.magnitude)<.5f) return;
+        myRigidbody.AddForce(-myRigidbody.velocity.normalized * stopPower);
+    }
+    private void LimitMovmentSpeed()
+    {
+        Vector3 horizontalVelocity = new Vector3(myRigidbody.velocity.x, 0f, myRigidbody.velocity.z);
+        if (horizontalVelocity.magnitude > maxSpeed)
+        {
+            horizontalVelocity = horizontalVelocity.normalized * maxSpeed;
+            myRigidbody.velocity = new Vector3(horizontalVelocity.x, myRigidbody.velocity.y, horizontalVelocity.z);
+        }
     }
     
     public void  RotateBodyToFace(float smoothness = .15f){
