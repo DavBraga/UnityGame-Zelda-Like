@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
     public OnAirState onAirState{ get; private set;}
     public AttackState attackState{get; private set;}
     public DefendState defendState{get; private set;}
+
+    public HurtState hurtState{get; private set;}
     public Vector2 inputMovmentVector{ get; private set;}
     public Rigidbody myRigidbody{ get; private set;}
     public  Animator animator{ get; private set;}
@@ -20,7 +22,7 @@ public class PlayerController : MonoBehaviour
     private bool grounded= true;
     
     //GENERAL
-    Health health;
+    public Health health{get; private set;}
 
     [SerializeField] Collider thisCollider;
 
@@ -45,7 +47,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float jumpPower=10f;
     [SerializeField] float airMovmentSpeedModifier =0.25f;
 
+
     public bool forceNormalGravity = false;
+    
+    [Header("Hurt")]
+
+    public float hurtDuration = 1f;
 
     [Header("Attack")]
     [SerializeField] GameObject attackCollider;
@@ -53,6 +60,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float[] attackGracePeriod;
     [SerializeField] float[] attackDuration;
     [SerializeField] float[] attackImpulse;
+    [SerializeField] int attackPower = 1;
     [SerializeField] float knockbackPower;
     [SerializeField] float shieldKnocBack;
     [SerializeField] float inputCooldown=.001f;
@@ -82,10 +90,13 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         currentStateName = stateMachine.GetCurrentStateName();
-        if (ReadLeftMouseInput()) Chop();
-        if(ReadRightMouseInput()) stateMachine.ChangeState(defendState);
-        inputMovmentVector = ReadMovmentInput();
-        CalculateVelocityRate();  
+       if(stateMachine.currentState!=deadState&&stateMachine.currentState!=hurtState )
+       {         
+            if (ReadLeftMouseInput()) Chop();
+            if(ReadRightMouseInput()) stateMachine.ChangeState(defendState);
+            inputMovmentVector = ReadMovmentInput();
+            CalculateVelocityRate();  
+        }
         stateMachine.Update();
         //currentVelocity = myRigidbody.velocity.magnitude;
         
@@ -110,6 +121,7 @@ public class PlayerController : MonoBehaviour
         onAirState = new OnAirState(this, airMovmentSpeedModifier);
         attackState = new AttackState(this, attackCollider);
         defendState = new DefendState(this, shieldCollider);
+        hurtState = new HurtState(this);
         deadState = new DeadState(this);
         stateMachine.ChangeState(idleState);
     }
@@ -140,9 +152,14 @@ public class PlayerController : MonoBehaviour
         if(stateMachine.currentState!=attackState)
         {
             stateMachine.ChangeState(attackState);
-        }
-        
+        } 
         return true;   
+    }
+
+    public int GetCurrentHealth()
+    {
+        Debug.Log("Current health:"+ health.GetCurrentHealth());
+        return health.GetCurrentHealth();
     }
 
     public void Die()
@@ -163,6 +180,7 @@ public class PlayerController : MonoBehaviour
     public void onTakeDamage(GameObject attacker, int damage)
     {
         Debug.Log("Simple damage feedback:Took "+damage+". Caused by: "+attacker.gameObject.name);
+        stateMachine.ChangeState(hurtState);
     }
 
     //SUPPORT METHODS
@@ -291,7 +309,13 @@ public class PlayerController : MonoBehaviour
             var positionDiff = other.gameObject.transform.position - transform.position;
             positionDiff.Normalize();
             if(!leftHand)
-                otherRB.AddForce(positionDiff*knockbackPower,ForceMode.Impulse);
+            {
+                 otherRB.AddForce(positionDiff*knockbackPower,ForceMode.Impulse);
+                if( other.gameObject.TryGetComponent<Health>(out Health healthCom))
+                {
+                    healthCom.TakeDamage(this.gameObject,attackPower);
+                }
+            }
             else
                 otherRB.AddForce(positionDiff*shieldKnocBack,ForceMode.Impulse);
 
@@ -350,12 +374,6 @@ public class PlayerController : MonoBehaviour
         return false;
 
     }
-
-
-
-
-
-
     // For test purpose Only
     // private void OnDrawGizmos() {
 

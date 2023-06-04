@@ -45,4 +45,9 @@ public class MeleeCreatureHelper
         myPos = creatureController.transform.position;
         targetPos = GameManager.Instance.GetPlayer().transform.position;
     }
+    public void LookAtMyTarget()
+    {
+        creatureController.transform.LookAt(GameManager.Instance.GetPlayer().transform);
+
+    }
 }

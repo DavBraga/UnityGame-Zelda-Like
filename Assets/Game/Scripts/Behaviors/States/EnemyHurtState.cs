@@ -14,18 +14,29 @@ public class EnemyHurtState : State
     public override void OnStateEnter()
     {
         base.OnStateEnter();
+        Debug.Log(" enemey hurt state");
+        controller.health.SetIgnoreDamage(true);
+        controller.myNavAgent.isStopped = true;
+        hurtDuration = controller.hurtDuration;
     }
 
     public override void OnStateExit()
     {
         base.OnStateExit();
+        
+        controller.health.SetIgnoreDamage(false);
     }
 
     public override void OnStateUpdate()
     {
         base.OnStateUpdate();
         hurtDuration -= Time.deltaTime;
-        if(hurtDuration<=0)controller.stateMachine.ChangeState(controller.roamingState);
+        if(hurtDuration<=0)
+            {
+                if(controller.health.GetCurrentHealth()<=0)controller.Die();
+                else controller.stateMachine.ChangeState(controller.roamingState);
+                
+            }
     }
 
     public override void OnStateLateUpdate()

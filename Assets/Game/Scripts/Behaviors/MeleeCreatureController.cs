@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 
 public class MeleeCreatureController : MonoBehaviour
 {
+    public UnityAction hurtCallBack;
+    public Health health{get; private set;}
     [Header("Detection")]
     public float sightRange= 5f;
     [Header("Roaming")]
@@ -46,6 +49,9 @@ public class MeleeCreatureController : MonoBehaviour
         myNavAgent = GetComponent<NavMeshAgent>();
         InstantiateStates();
         stateMachine.ChangeState(roamingState);
+
+       health = GetComponent<Health>();
+       health.onTakeDamage += onTakeDamage;
     }
     // Start is called before the first frame update
     void Start()
@@ -78,21 +84,17 @@ public class MeleeCreatureController : MonoBehaviour
 
     public void Attack()
     {
-        Debug.Log("Attackd Player - TODO");
-        //TODO
         helper.CachePositions();
+        helper.LookAtMyTarget();
         RaycastHit[] hits = Physics.SphereCastAll(transform.position,1f,helper.GetTargetDirection(),attackRadius*5,LayerMask.GetMask("Actors"));
-        Debug.Log(hits.Length>0);
         Debug.DrawRay(transform.position, helper.GetTargetDirection(),Color.green, 3f);
         if(hits.Length>0)
         {
-            Debug.Log(hits.Length);
             foreach (RaycastHit hit in hits)
             {
                 if(hit.collider.gameObject.CompareTag("Player"))
                 {
                     GameObject hitObj =hit.collider.gameObject;
-                    Debug.Log("Got player");
                     if(hitObj.TryGetComponent<Health>(out Health health))
                     {
                         health.TakeDamage(gameObject, attackDamage);
@@ -102,5 +104,16 @@ public class MeleeCreatureController : MonoBehaviour
         }
 
     }
+    public void onTakeDamage(GameObject attacker, int damage)
+    {
+        Debug.Log("Simple damage feedback:Took "+damage+". Caused by: "+attacker.gameObject.name);
+        if(stateMachine.currentState!= enemyHurtState)
+            stateMachine.ChangeState(enemyHurtState);
+    }
 
+    public void Die()
+    {
+        stateMachine.ChangeState(enemyDeadState);
+        myNavAgent.isStopped=true;
+    }
 }

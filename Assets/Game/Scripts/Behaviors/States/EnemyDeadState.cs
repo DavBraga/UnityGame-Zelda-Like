@@ -13,11 +13,16 @@ public class EnemyDeadState : State
     public override void OnStateEnter()
     {
         base.OnStateEnter();
+        Debug.Log("Dead state");
+        controller.health.SetIgnoreDamage(true);
     }
 
     public override void OnStateExit()
     {
         base.OnStateExit();
+         Debug.Log("Leaves Dead state");
+         
+        controller.health.SetIgnoreDamage(false);
     }
 
     public override void OnStateUpdate()

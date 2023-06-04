@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeadState : State
+public class HurtState: State
 {
     PlayerController player;
-    public DeadState(PlayerController playerController) : base("Idle")
+    float hurtDuration;
+    public HurtState(PlayerController playerController) : base("HurtState")
     {
         player = playerController;
     }
@@ -13,19 +14,26 @@ public class DeadState : State
     public override void OnStateEnter()
     {
         base.OnStateEnter();
-        player.health.SetIgnoreDamage(true);
-        player.animator.SetBool("bDead", true);
+        player.animator.SetTrigger("tHurt");
+        hurtDuration = player.hurtDuration;
     }
     public override void OnStateExit()
     {
         base.OnStateExit();
-        player.animator.SetBool("bDead", false);
-        player.health.SetIgnoreDamage(false);
     }
     public override void OnStateUpdate()
     {
         base.OnStateUpdate(); 
-
+        if((hurtDuration -=Time.deltaTime)<0)
+        {
+            if(player.GetCurrentHealth()<=0)
+                {
+                    Debug.Log("dies");
+                    player.Die();
+                }
+            else
+                player.stateMachine.ChangeState(player.idleState);
+        }
         
     }
     public override void OnStateFixedUpdate()

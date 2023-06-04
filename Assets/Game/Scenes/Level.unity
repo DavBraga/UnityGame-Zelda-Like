@@ -3272,7 +3272,7 @@ GameObject:
   - component: {fileID: 134424494}
   - component: {fileID: 134424493}
   - component: {fileID: 134424492}
-  - component: {fileID: 134424491}
+  - component: {fileID: 134424496}
   m_Layer: 0
   m_Name: ShieldCollider
   m_TagString: Player
@@ -3280,20 +3280,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &134424491
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 134424490}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e4c3f4c2763d214b9f3cafe8ab5670f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  leftHand: 1
-  controller: {fileID: 3122643220319252308}
 --- !u!65 &134424492
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3380,6 +3366,20 @@ Transform:
   m_Father: {fileID: 7443944983344889592}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &134424496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 134424490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e4c3f4c2763d214b9f3cafe8ab5670f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftHand: 0
+  controller: {fileID: 3122643220319252308}
 --- !u!1001 &142207873
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54832,6 +54832,7 @@ MonoBehaviour:
   jumpPower: 10
   airMovmentSpeedModifier: 0.9
   forceNormalGravity: 0
+  hurtDuration: 0.12
   attackCollider: {fileID: 1774418770456113480}
   shieldCollider: {fileID: 134424490}
   attackGracePeriod:
@@ -57555,6 +57556,7 @@ MonoBehaviour:
   destructionParticles: {fileID: 0}
   damageParticles: {fileID: 0}
   FXLifetime: 1.5
+  ignoreDamage: 0
 --- !u!1 &5722576613091365652
 GameObject:
   m_ObjectHideFlags: 0

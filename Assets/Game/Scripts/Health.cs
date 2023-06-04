@@ -10,6 +10,8 @@ public class Health : MonoBehaviour
     [SerializeField] GameObject destructionParticles;
     [SerializeField]protected GameObject damageParticles;
     [SerializeField]protected float FXLifetime =1.5f;
+
+   [SerializeField] bool ignoreDamage = false;
     protected int currentHealth;
     // Start is called before the first frame update
     void Start()
@@ -20,6 +22,7 @@ public class Health : MonoBehaviour
 
     virtual public bool  TakeDamage(GameObject attacker, int damage)
     {
+        if(ignoreDamage) return false;
         //vfx
         if(damageParticles) Destroy(Instantiate(damageParticles, transform.position,  damageParticles.transform.rotation),FXLifetime);
 
@@ -32,8 +35,18 @@ public class Health : MonoBehaviour
         OnDeath();
         return true;
     }
+
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
+    }
     public void OnDeath()
     {
         Debug.Log("I died // TODO");
+    }
+
+    public void SetIgnoreDamage(bool ignoreDamage)
+    {
+        this.ignoreDamage = ignoreDamage;
     }
 }
