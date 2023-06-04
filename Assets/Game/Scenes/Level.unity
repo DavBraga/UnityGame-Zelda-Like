@@ -28293,6 +28293,7 @@ GameObject:
   - component: {fileID: 1229505626}
   - component: {fileID: 1229505628}
   - component: {fileID: 1229505629}
+  - component: {fileID: 1229505630}
   m_Layer: 20
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -28458,8 +28459,25 @@ MonoBehaviour:
   damageDelay: 1.5
   attackDuration: 2
   attackDamage: 1
-  hurtDuration: 1
+  hurtDuration: 0.3
   debugCurrentState: 
+--- !u!114 &1229505630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1229505621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d165c311931bc349b9049b723e760ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 3
+  destructionParticles: {fileID: 0}
+  damageParticles: {fileID: 0}
+  FXLifetime: 1.5
+  ignoreDamage: 0
 --- !u!1001 &1230550033
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54847,6 +54865,7 @@ MonoBehaviour:
   - 3
   - 5
   - 15
+  attackPower: 1
   knockbackPower: 5
   shieldKnocBack: 3
   inputCooldown: 0.001
