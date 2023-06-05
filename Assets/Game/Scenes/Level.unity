@@ -4461,6 +4461,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SlimeMonster
       objectReference: {fileID: 0}
+    - target: {fileID: 1919012471076396, guid: 21685b2672cb23f48bf2c48ecf1de55c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4023215848608658, guid: 21685b2672cb23f48bf2c48ecf1de55c, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -7452,6 +7456,53 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 167631110}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &350165584
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 350165586}
+  - component: {fileID: 350165585}
+  m_Layer: 0
+  m_Name: InteractionsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &350165585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350165584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f53ec5125bbbbf48862d78e38c8bd09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distanceCheckInterval: 0.3
+  interactionEvent: {fileID: 11400000, guid: 8b2e5aec73a611c479aa349be473d10a, type: 2}
+  interactionRadius: 5
+--- !u!4 &350165586
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350165584}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 11.341115, y: -5.6173267, z: -11.717148}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &350571129
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47958,8 +48009,9 @@ GameObject:
   - component: {fileID: 1983756799}
   - component: {fileID: 1983756798}
   - component: {fileID: 1983756797}
+  - component: {fileID: 1983756801}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Chest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48051,6 +48103,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1983756801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1983756796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27299d0fd2b825044aac389e30f9214b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interaction: {fileID: 11400000, guid: 8b2e5aec73a611c479aa349be473d10a, type: 2}
 --- !u!1001 &1983786204
 PrefabInstance:
   m_ObjectHideFlags: 0

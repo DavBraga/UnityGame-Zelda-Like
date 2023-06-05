@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Chest : MonoBehaviour, IInteractable
 {
-    public InteractionSystem interactionSystem;
-    public float interactionRadius = 3;
+    [SerializeField] InteractionEvent interaction;
 
     float distance;
 
@@ -13,7 +12,9 @@ public class Chest : MonoBehaviour, IInteractable
 
     public void SetFlag(bool flag= true)
     {
+        if(inRange) return;
         inRange = flag;
+        Debug.Log("Chest is flagged");
     }
 
     public Vector3 GetPosition()
@@ -23,12 +24,19 @@ public class Chest : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        Debug.Log("interacts...");
-        interactionSystem.interactables.Remove(this);
+        Debug.Log("Chest Interaction");
     }
 
     private void Awake() {
         //refatorar
-        interactionSystem.interactables.Add(this);
+        interaction?.RegisterListerner(this);
+    }
+    private void OnEnable() 
+    {
+         interaction?.RegisterListerner(this);
+    }
+    private void OnDisable() {
+
+        interaction?.UnregisterListerner(this);
     }
 }
