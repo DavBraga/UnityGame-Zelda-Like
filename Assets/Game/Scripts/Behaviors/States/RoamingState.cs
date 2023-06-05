@@ -16,6 +16,7 @@ public class RoamingState : State
     public override void OnStateEnter()
     {
         base.OnStateEnter();
+        controller.myNavAgent.isStopped = false;
         searchCooldown = controller.searchInterval;
     }
 

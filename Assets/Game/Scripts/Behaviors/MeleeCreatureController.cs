@@ -8,6 +8,9 @@ public class MeleeCreatureController : MonoBehaviour
 {
     public UnityAction hurtCallBack;
     public Health health{get; private set;}
+    public Animator myAnimator {get; private set;}
+    public Rigidbody myRigidBody{get; private set;}
+    Collider mycollider;
     [Header("Detection")]
     public float sightRange= 5f;
     [Header("Roaming")]
@@ -43,12 +46,17 @@ public class MeleeCreatureController : MonoBehaviour
     public EnemyAttackState enemyAttackState{get; private set;}
     public EnemyHurtState enemyHurtState{get; private set;}
     public EnemyDeadState enemyDeadState{get; private set;}
+
+
     private void Awake() {
         stateMachine = new StateMachine();
         helper = new MeleeCreatureHelper(this);
         myNavAgent = GetComponent<NavMeshAgent>();
+        myRigidBody = GetComponent<Rigidbody>();
+        mycollider = GetComponent<Collider>();
         InstantiateStates();
         stateMachine.ChangeState(roamingState);
+        myAnimator = GetComponent<Animator>();
 
        health = GetComponent<Health>();
        health.onTakeDamage += onTakeDamage;
@@ -62,6 +70,7 @@ public class MeleeCreatureController : MonoBehaviour
     void Update()
     {
         stateMachine.Update();
+        myAnimator.SetFloat("fspeed", myAnimator.velocity.magnitude/ myNavAgent.speed);
         // for debug only.
         debugCurrentState = stateMachine.currentState.stateName;
     }
@@ -95,6 +104,7 @@ public class MeleeCreatureController : MonoBehaviour
                 if(hit.collider.gameObject.CompareTag("Player"))
                 {
                     GameObject hitObj =hit.collider.gameObject;
+                    myAnimator.SetTrigger("tAttack");
                     if(hitObj.TryGetComponent<Health>(out Health health))
                     {
                         health.TakeDamage(gameObject, attackDamage);
@@ -108,12 +118,21 @@ public class MeleeCreatureController : MonoBehaviour
     {
         Debug.Log("Simple damage feedback:Took "+damage+". Caused by: "+attacker.gameObject.name);
         if(stateMachine.currentState!= enemyHurtState)
+        {
             stateMachine.ChangeState(enemyHurtState);
+            myAnimator.SetTrigger("tHurt");
+        }
+            
     }
 
     public void Die()
     {
         stateMachine.ChangeState(enemyDeadState);
+        myAnimator?.SetBool("bDead", true);
         myNavAgent.isStopped=true;
+        myRigidBody.velocity = Vector3.zero;
+
+        if(mycollider)
+            mycollider.enabled = false;
     }
 }
