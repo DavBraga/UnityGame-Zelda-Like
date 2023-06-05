@@ -70,7 +70,7 @@ public class MeleeCreatureController : MonoBehaviour
     void Update()
     {
         stateMachine.Update();
-        myAnimator.SetFloat("fspeed", myAnimator.velocity.magnitude/ myNavAgent.speed);
+        myAnimator.SetFloat("fSpeed", myAnimator.velocity.magnitude/ myNavAgent.speed);
         // for debug only.
         debugCurrentState = stateMachine.currentState.stateName;
     }
