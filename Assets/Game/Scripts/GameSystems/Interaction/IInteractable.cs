@@ -8,4 +8,5 @@ public interface IInteractable
     public void SetFlag(bool flag=true);
 
     public Vector3 GetPosition();
+    public float GetCustomRadius();
 }

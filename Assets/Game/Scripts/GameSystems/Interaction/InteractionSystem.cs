@@ -49,6 +49,7 @@ public class InteractionSystem : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.E))
         {
+            CheckListernsInRadius();
             //only if valid distance
             if(interactingOBject.distance<0)
             {
@@ -57,6 +58,7 @@ public class InteractionSystem : MonoBehaviour
             }
             
             interactingOBject.currentObject.Interact();
+            CheckListernsInRadius();
         } 
 
     }
@@ -72,23 +74,34 @@ public class InteractionSystem : MonoBehaviour
 
         float distance=(Vector3.Distance(interactablePosition, playerTransform.position));
         if(distance>interactionRadius) return false;
-
-        interactable.SetFlag();
         TrySetTheInteraction(interactable, distance);
         return true;
     }
 
     public void CheckListernsInRadius()
-    {
-       List<IInteractable> interactablesList = interactionEvent.GetInteractionList();
-       if(interactablesList.Count<1) return;
-       bool gotAny = false; 
-       for(int i = interactablesList.Count-1;i>=0;i--)
-       {   
-            
-            IInteractable interactable=interactablesList[i];
-            gotAny = InInteractionRadius(interactable, interactable.GetPosition(), interactionRadius); 
-       }
+    {   
+        if(interactionEvent.GetInteractionList().Count<1) return;
+        
+        //reset check state
+        interactingOBject.distance = -1;
+        bool gotAny = false; 
+
+        //check each
+        for(int i = interactionEvent.GetInteractionList().Count-1;i>=0;i--)
+        {   
+            IInteractable interactable=interactionEvent.GetInteractionList()[i];
+            float interactionRef;
+            if((interactionRef = interactable.GetCustomRadius())<0)
+                interactionRef = interactionRadius;
+
+            if(InInteractionRadius(interactable, interactable.GetPosition(), interactionRef))
+            {
+                gotAny = true;
+                interactable.SetFlag();
+            }
+            else
+                interactable.SetFlag(false); 
+        }
        //if none found in radius set Invalid distance
        if(!gotAny) interactingOBject.distance = -1;
     }
