@@ -8,11 +8,12 @@ public class InteractiveObject : MonoBehaviour, IInteractable
     
     [SerializeField] InteractionEvent interaction;
     [SerializeField] InteractionWidget interactionPlate;
-    public UnityAction onInteraction;
+    
+    public UnityAction onInteraction, onClose, onLeave;
 
     float customInteractionRadius = -1;
     bool inRange = false;
-    bool canInteract = true;
+    [SerializeField]bool canInteract = true;
     public Vector3 GetPosition()
     {
          return transform.position;
@@ -23,35 +24,37 @@ public class InteractiveObject : MonoBehaviour, IInteractable
 
     public void Interact()
     {
+        if(!canInteract) return;
         onInteraction?.Invoke();
-        SetFlag(false);
+        SetCloseness(false);
         canInteract=false;
         interaction?.UnregisterListerner(this);
+         
     }
 
-    public void SetFlag(bool flag = true)
+    public void SetCloseness(bool isClose = true)
     {
-        if(inRange==flag) return;
+        if(inRange==isClose) return;
 
-        if(flag)
+        if(isClose)
         {
-            interactionPlate.Show();
+            onClose?.Invoke();
         }
-            
-        else interactionPlate.Hide();
+        else
+        {
+            onLeave?.Invoke();
+            interactionPlate.Hide();
+        } 
         
-        inRange = flag;
+        inRange = isClose;
         Debug.Log("object is flagged: "+ inRange);
     }
 
     private void Awake() {
-        //refatorar
-        if(canInteract)
         interaction?.RegisterListerner(this);
     }
     private void OnEnable() 
     {
-        if(canInteract)
         interaction?.RegisterListerner(this);
     }
     private void OnDisable() {
@@ -62,5 +65,22 @@ public class InteractiveObject : MonoBehaviour, IInteractable
     public float GetCustomRadius()
     {
         return customInteractionRadius;
+    }
+
+    public void TurnInteraction(bool turn=true)
+    {
+        canInteract= turn;
+    }
+
+    public void FlagForInteraction(bool interactionFlag)
+    {
+        if(interactionFlag)   
+            interactionPlate.Show();
+        else
+            interactionPlate.Hide();
+    }
+    public bool CanInteract()
+    {
+        return canInteract;
     }
 }

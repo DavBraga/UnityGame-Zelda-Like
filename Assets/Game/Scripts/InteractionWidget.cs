@@ -26,11 +26,12 @@ public class InteractionWidget : MonoBehaviour
     }
     public void Hide()
     {
-        myAnimator.SetTrigger("tClose");
+        
+        myAnimator.SetBool("bOpen", false);
     }
     public void Show()
     {
-        myAnimator.SetTrigger("tOpen");
+        myAnimator.SetBool("bOpen", true);
     }
 
     //called on Animation Event

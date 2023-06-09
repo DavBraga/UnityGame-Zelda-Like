@@ -5,7 +5,11 @@ using UnityEngine;
 public interface IInteractable 
 {
     public void Interact();
-    public void SetFlag(bool flag=true);
+    public void SetCloseness(bool isColse=true);
+
+    public void FlagForInteraction(bool canInteract= true);
+
+    public bool CanInteract();
 
     public Vector3 GetPosition();
     public float GetCustomRadius();
