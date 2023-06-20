@@ -6,6 +6,8 @@ using UnityEngine.Events;
 public class Health : MonoBehaviour
 {
     public UnityAction<GameObject,int> onTakeDamage;
+    public UnityAction onDeath;
+    public UnityEvent onDeathEvent;
     [SerializeField] protected int maxHealth = 3;
     [SerializeField] GameObject destructionParticles;
     [SerializeField]protected GameObject damageParticles;
@@ -43,6 +45,8 @@ public class Health : MonoBehaviour
     public void OnDeath()
     {
         Debug.Log("I died // TODO");
+        onDeath?.Invoke();
+        onDeathEvent?.Invoke();
     }
 
     public void SetIgnoreDamage(bool ignoreDamage)

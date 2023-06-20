@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Walkable
+  - bomb
+  - enemy
   layers:
   - Default
   - TransparentFX
@@ -37,7 +39,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Editor Only
   m_SortingLayers:
   - name: Default
     uniqueID: 0

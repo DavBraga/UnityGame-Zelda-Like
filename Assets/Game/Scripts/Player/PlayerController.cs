@@ -26,6 +26,14 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] Collider thisCollider;
 
+    [Header("Bombs")]
+
+    [SerializeField] bool gotBombSkill= false;
+    [SerializeField] GameObject bombPrefab;
+    [SerializeField] float bombIntervals = 3f;
+    bool canBomb = true;
+
+
     float fVelocityRate;
 
     [Header("Movment")]
@@ -91,7 +99,8 @@ public class PlayerController : MonoBehaviour
     {
         currentStateName = stateMachine.GetCurrentStateName();
        if(stateMachine.currentState!=deadState&&stateMachine.currentState!=hurtState )
-       {         
+       {
+           if(gotBombSkill) PutBomb();
             if (ReadLeftMouseInput()) Chop();
             if(ReadRightMouseInput()) stateMachine.ChangeState(defendState);
             inputMovmentVector = ReadMovmentInput();
@@ -154,6 +163,26 @@ public class PlayerController : MonoBehaviour
             stateMachine.ChangeState(attackState);
         } 
         return true;   
+    }
+
+    public void LearnBombSkill()
+    {
+        gotBombSkill = true;
+    }
+    public void PutBomb()
+    {
+        if(Input.GetKeyDown(KeyCode.Q)&&canBomb)
+        StartCoroutine(PlacingBombRoutine());
+        
+
+    }
+    IEnumerator PlacingBombRoutine()
+    {
+        canBomb =false;
+        Instantiate(bombPrefab,transform.position+2*(transform.forward),Quaternion.identity);
+        yield return new WaitForSeconds(bombIntervals);
+        canBomb = true;
+        
     }
 
     public int GetCurrentHealth()

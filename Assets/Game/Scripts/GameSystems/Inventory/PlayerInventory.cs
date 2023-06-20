@@ -9,6 +9,7 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] ItemTypeSO keys;
     [SerializeField] ItemTypeSO potions;
     [SerializeField] ItemTypeSO bossKeys;
+    [SerializeField] ItemTypeSO bombs;
     [SerializeField]int ownedKeys=0;
     [SerializeField]int ownedPotions=0;
     [SerializeField] int maxOwnedPotions=0;
@@ -35,6 +36,10 @@ public class PlayerInventory : MonoBehaviour
         else if(item.GetItemType()== potions)
         {
             AddPotion();
+        }
+        else if (item.GetItemType()==bombs)
+        {
+            GameManager.Instance.GetPlayer().GetComponent<PlayerController>().LearnBombSkill();
         }
     }
     public bool RemoveItem(ItemSO item)

@@ -394,7 +394,7 @@ GameObject:
   - component: {fileID: 4023215848608658}
   - component: {fileID: 95161444847813696}
   - component: {fileID: 4245268766586159909}
-  - component: {fileID: 5532095147472453180}
+  - component: {fileID: 655167162565102463}
   - component: {fileID: 7424545982249344103}
   - component: {fileID: -8417396128713876503}
   - component: {fileID: 664652405637797938}
@@ -420,7 +420,7 @@ Transform:
   - {fileID: 4409866491529092}
   - {fileID: 4127066169186206}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 66
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &95161444847813696
 Animator:
@@ -463,9 +463,9 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 1
   m_ObstacleAvoidanceType: 4
---- !u!114 &5532095147472453180
+--- !u!114 &655167162565102463
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -474,21 +474,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1919012471076396}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05e9ba05e03cbd3478218d2361399f88, type: 3}
+  m_Script: {fileID: 11500000, guid: 9e4214fc3251ee54f9d4073dbce5a7d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   sightRange: 20
+  attackRadius: 1.5
+  attackDuration: 1
+  damageDelay: 0.3
+  attackDamage: 1
+  rangedAttackRadius: 1.5
+  rangedAttackDuration: 2
+  rangedAttackDamageDelay: 0.3
+  rangedAttackDamage: 1
   searchInterval: 1
   searchRadius: 7
-  ceaseFollowThreshold: 2
-  followDistance: 10
-  followInterval: 2
-  distanceToAttack: 1
-  attackRadius: 1.5
-  damageDelay: 1.5
-  attackDuration: 2
-  attackDamage: 1
   hurtDuration: 0.3
+  ceaseFollowThreshold: 2
+  chaseDuration: 1
   debugCurrentState: 
 --- !u!54 &7424545982249344103
 Rigidbody:
@@ -550,6 +552,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d165c311931bc349b9049b723e760ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onDeathEvent:
+    m_PersistentCalls:
+      m_Calls: []
   maxHealth: 3
   destructionParticles: {fileID: 0}
   damageParticles: {fileID: 0}

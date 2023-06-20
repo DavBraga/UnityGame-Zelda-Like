@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b60721c13fe43284382b68fb840c8733, type: 3}
+  m_Name: Test Ranged
+  m_EditorClassIdentifier: 
+  attackRadius: 1.5
+  attackDuration: 1
+  damageDelay: 0.3
+  attackDamage: 1
+  animationTag: tAttack
+  projectilePrefab: {fileID: 7154594327498075019, guid: 5ef86a3b151f5c44ab1ae53069d30509,
+    type: 3}
+  projectileLifeTime: 1
