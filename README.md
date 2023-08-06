@@ -1,5 +1,3 @@
-Claro, aqui está um exemplo de README para o seu projeto de jogo roguelike inspirado por clássicos como Zelda, Brave Fencer Musashiden e Alundra:
-
 # Dungeon Fall
 
 ## Descrição
