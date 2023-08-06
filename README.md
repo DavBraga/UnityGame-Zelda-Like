@@ -8,6 +8,3 @@ Dungeon fall é um jogo desenvolvido na Unity Engine como parte do curso ofereci
 
 
 
----
-
-Certifique-se de substituir os placeholders (`seu-usuario`, `seu-projeto`, `link-para-o-logo.png`, etc.) pelas informações e links reais do seu projeto. Lembre-se de personalizar o README de acordo com as características únicas do seu jogo. Boa sorte com o seu projeto!
