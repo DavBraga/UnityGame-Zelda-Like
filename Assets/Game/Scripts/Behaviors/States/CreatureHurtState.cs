@@ -19,6 +19,7 @@ public class CreatureHurtState : State
         controller.myHealth.SetIgnoreDamage(true);
         controller.myNavAgent.isStopped = true;
         hurtDuration = controller.hurtDuration;
+        
     }
 
     public void SetUpState(State fallBackState)
@@ -30,6 +31,7 @@ public class CreatureHurtState : State
     {
         base.OnStateExit();
         controller.myHealth.SetIgnoreDamage(false);
+        
     }
 
       public override void OnStateUpdate()
@@ -37,10 +39,8 @@ public class CreatureHurtState : State
         base.OnStateUpdate();
         hurtDuration -= Time.deltaTime;
         if(hurtDuration<=0)
-            {
-                if(controller.myHealth.GetCurrentHealth()<=0)controller.Die();
-                else controller.stateMachine.ChangeState(fallBackState);             
-            }
+            controller.stateMachine.ChangeState(fallBackState);             
+
     }
        public override void OnStateLateUpdate()
     {

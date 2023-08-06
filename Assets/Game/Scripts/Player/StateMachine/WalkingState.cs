@@ -17,14 +17,13 @@ public class WalkingState : State
     }
     public override void OnStateUpdate()
     {
-        if(!player.isGrounded())
+        if(!player.IsGrounded())
             player.stateMachine.ChangeState(player.onAirState);
 
         if(player.inputMovmentVector.isZero())
         {
             player.stateMachine.ChangeState(player.idleState);
         }  
-        if(player.ReadSpaceBarInput()) player.Jump();
         base.OnStateUpdate();
     }
     public override void OnStateFixedUpdate()

@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &175527262867690265
 Transform:
@@ -101,6 +101,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: 02_Kitchen_01_Chopper
+      objectReference: {fileID: 0}
+    - target: {fileID: 1849875836332357052, guid: 9d8aece286baf9b4486527ab3e708bab,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -204,6 +209,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: 02_Kitchen_01_CuttingBoard
+      objectReference: {fileID: 0}
+    - target: {fileID: 7233478144244015967, guid: 5d9439e5aa1c0004ba93416abaa5cce6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8010121019455388133, guid: 5d9439e5aa1c0004ba93416abaa5cce6,
         type: 3}

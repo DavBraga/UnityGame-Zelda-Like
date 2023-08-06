@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IInteractable 
 {
-    public void Interact();
+    public void Interact(GameObject interactor);
     public void SetCloseness(bool isColse=true);
 
     public void FlagForInteraction(bool canInteract= true);

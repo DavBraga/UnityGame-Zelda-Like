@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66fba0017c3012f4ab9b8405800bb0d6, type: 3}
   m_Name: KeyItem
   m_EditorClassIdentifier: 
-  itemType: {fileID: 11400000, guid: 1dc41a0b46da5eb4486492c7bcb52695, type: 2}
   ItemName: Key
-  itemPrefab: {fileID: 8133562968583766958, guid: 4098fbf2d350af64491c3a6235e55204,
+  itemPrefab: {fileID: 8133562968583766958, guid: e69e8ee89f9a1b14da78b438ecd8d566,
     type: 3}
+  pickAble: {fileID: 0}
+  acquireSound: {fileID: 8300000, guid: b0e62ed71b1538648b719821f4f63b4c, type: 3}

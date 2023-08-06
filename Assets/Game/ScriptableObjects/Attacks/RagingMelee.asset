@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96b23d19481ea364797def7fd439fdf6, type: 3}
+  m_Name: RagingMelee
+  m_EditorClassIdentifier: 
+  attackRadius: 5
+  attackRange: 1.5
+  attackDuration: 1.4
+  attackCoolDown: 1
+  warmupTime: 0.1
+  damageDelay: 0.4
+  attackDamage: 2
+  attackPushPower: 70
+  lookAtMyTarget: 1
+  activationFX: {fileID: 0}
+  hitFX: {fileID: 9162766622479337070, guid: 83bda84d53a21a24183f774ff300901e, type: 3}
+  animationTag: tAttack

@@ -6,18 +6,36 @@ using UnityEngine;
 public class InventoryComunication : ScriptableObject 
 {
     PlayerInventory inventory;
-    public void AddItem(ItemSO item)
+    public bool AddItem(ItemSO item)
     {
-        inventory.AddItem(item);
+       return inventory.AddItem(item);
     }
      public bool RemoveItem(ItemSO item)
     {
         return inventory.RemoveItem(item);
     }
 
-    public int GetKeyCount()
+    public bool AddItem(ItemSO item, int count)
     {
-        return inventory.GetKeyCount();
+       return inventory.AddItem(item, count);
+    }
+     public bool RemoveItem(ItemSO item, int count)
+    {
+        return inventory.RemoveItem(item, count);
+    }
+
+    public void IncreaseCarryCapacity(ItemSO item)
+    {
+        inventory.IncreaseItemCapacity(item);
+    }
+
+    public int GetItemCount(ItemSO item)
+    {
+        return inventory.GetItemCount(item);
+    }
+       public int GetMAxItemCount(ItemSO item)
+    {
+        return inventory.GetMaxItemCount(item);
     }
     public void RegisterInventory(PlayerInventory playerInventory)
     {

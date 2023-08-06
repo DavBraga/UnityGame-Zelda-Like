@@ -25,14 +25,19 @@ public class InteractionSystem : MonoBehaviour
     {
         distanceCheckCooldown = distanceCheckInterval;
         interactingOBject.distance = -1;
+        StartCoroutine(WaitForAPlayer());
     }
 
+    IEnumerator WaitForAPlayer()
+    {
+        yield return new WaitUntil(()=>GameManager.IsManagerReady());
+        yield return new WaitUntil(()=>GameManager.Instance.CheckForPlayer());
+        GameManager.Instance.GetPlayer().GetComponent<PlayerController>().onInteractHook+=Interact;
+    }
     // Update is called once per frame
     void Update()
     {
-        Interact();
         if((distanceCheckCooldown-=Time.deltaTime)>0) return;
-        
         distanceCheckCooldown = distanceCheckInterval;
         CheckListernsInRadius();
     }
@@ -58,20 +63,18 @@ public class InteractionSystem : MonoBehaviour
 
     public void Interact()
     {
-        if(Input.GetKeyDown(KeyCode.E))
+        CheckListernsInRadius();
+        //only if valid distance
+        if(interactingOBject.distance<0)
         {
-            CheckListernsInRadius();
-            //only if valid distance
-            if(interactingOBject.distance<0)
-            {
-                Debug.Log("None in range to interact");
-                return;
-            }
-            
-            interactingOBject.currentObject.Interact();
-            interactingOBject.distance = -1;
-            CheckListernsInRadius();
-        } 
+            Debug.Log("None in range to interact");
+            return;
+        }
+        
+        interactingOBject.currentObject.Interact(playerTransform.gameObject);
+        interactingOBject.distance = -1;
+        CheckListernsInRadius();
+
 
     }
     public void CheckListernsInRadius()

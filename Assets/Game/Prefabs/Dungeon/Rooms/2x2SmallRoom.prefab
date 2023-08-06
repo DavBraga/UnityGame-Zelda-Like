@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &5656681228753129624
 Transform:
@@ -54,6 +54,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 5656681228753129624}
     m_Modifications:
     - target: {fileID: 7292350030703223769, guid: fabe553e242a1614d8070ce15afe995a,
@@ -117,6 +118,9 @@ PrefabInstance:
       value: DungeonPillar (4)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fabe553e242a1614d8070ce15afe995a, type: 3}
 --- !u!4 &7222077112796686271 stripped
 Transform:
@@ -129,6 +133,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 5656681228753129624}
     m_Modifications:
     - target: {fileID: 5005830002951638821, guid: f75c04446b150f64e99e870399248862,
@@ -192,6 +197,9 @@ PrefabInstance:
       value: DungeonFloor01 (3)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f75c04446b150f64e99e870399248862, type: 3}
 --- !u!4 &4931402708138523139 stripped
 Transform:
@@ -204,6 +212,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 5656681228753129624}
     m_Modifications:
     - target: {fileID: 516538285986702501, guid: 3ca6b82f81be18f44b05ea00df662448,
@@ -267,6 +276,9 @@ PrefabInstance:
       value: DungeonWall01
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ca6b82f81be18f44b05ea00df662448, type: 3}
 --- !u!4 &330593933798651725 stripped
 Transform:
@@ -279,6 +291,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 5656681228753129624}
     m_Modifications:
     - target: {fileID: 516538285986702501, guid: 3ca6b82f81be18f44b05ea00df662448,
@@ -342,6 +355,9 @@ PrefabInstance:
       value: DungeonWall01 (4)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ca6b82f81be18f44b05ea00df662448, type: 3}
 --- !u!4 &148023174545171842 stripped
 Transform:
@@ -354,6 +370,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 5656681228753129624}
     m_Modifications:
     - target: {fileID: 5005830002951638821, guid: f75c04446b150f64e99e870399248862,
@@ -422,6 +439,9 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f75c04446b150f64e99e870399248862, type: 3}
 --- !u!4 &5339595713114209195 stripped
 Transform:
@@ -434,6 +454,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 5656681228753129624}
     m_Modifications:
     - target: {fileID: 516538285986702501, guid: 3ca6b82f81be18f44b05ea00df662448,
@@ -497,6 +518,9 @@ PrefabInstance:
       value: DungeonWall01 (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ca6b82f81be18f44b05ea00df662448, type: 3}
 --- !u!4 &1692435745910215687 stripped
 Transform:
@@ -509,6 +533,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 5656681228753129624}
     m_Modifications:
     - target: {fileID: 7292350030703223769, guid: fabe553e242a1614d8070ce15afe995a,
@@ -572,6 +597,9 @@ PrefabInstance:
       value: DungeonPillar (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fabe553e242a1614d8070ce15afe995a, type: 3}
 --- !u!4 &8425185959637929555 stripped
 Transform:
@@ -584,6 +612,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 5656681228753129624}
     m_Modifications:
     - target: {fileID: 5005830002951638821, guid: f75c04446b150f64e99e870399248862,
@@ -647,6 +676,9 @@ PrefabInstance:
       value: DungeonFloor01 (2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f75c04446b150f64e99e870399248862, type: 3}
 --- !u!4 &6003065411828704475 stripped
 Transform:
@@ -659,6 +691,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 5656681228753129624}
     m_Modifications:
     - target: {fileID: 516538285986702501, guid: 3ca6b82f81be18f44b05ea00df662448,
@@ -722,6 +755,9 @@ PrefabInstance:
       value: DungeonWall01 (5)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ca6b82f81be18f44b05ea00df662448, type: 3}
 --- !u!4 &2011081994697294338 stripped
 Transform:
@@ -734,6 +770,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 5656681228753129624}
     m_Modifications:
     - target: {fileID: 7292350030703223769, guid: fabe553e242a1614d8070ce15afe995a,
@@ -797,6 +834,9 @@ PrefabInstance:
       value: DungeonPillar (3)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fabe553e242a1614d8070ce15afe995a, type: 3}
 --- !u!4 &8679592790723549081 stripped
 Transform:
@@ -809,6 +849,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 5656681228753129624}
     m_Modifications:
     - target: {fileID: 516538285986702501, guid: 3ca6b82f81be18f44b05ea00df662448,
@@ -877,6 +918,9 @@ PrefabInstance:
       value: DungeonWall01 (7)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ca6b82f81be18f44b05ea00df662448, type: 3}
 --- !u!4 &2457092724435366463 stripped
 Transform:
@@ -889,6 +933,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 5656681228753129624}
     m_Modifications:
     - target: {fileID: 7292350030703223769, guid: fabe553e242a1614d8070ce15afe995a,
@@ -952,6 +997,9 @@ PrefabInstance:
       value: DungeonPillar (2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fabe553e242a1614d8070ce15afe995a, type: 3}
 --- !u!4 &6168491907032489554 stripped
 Transform:
@@ -964,6 +1012,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 5656681228753129624}
     m_Modifications:
     - target: {fileID: 516538285986702501, guid: 3ca6b82f81be18f44b05ea00df662448,
@@ -1027,6 +1076,9 @@ PrefabInstance:
       value: DungeonWall01 (2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ca6b82f81be18f44b05ea00df662448, type: 3}
 --- !u!4 &3700853107144577686 stripped
 Transform:
@@ -1039,6 +1091,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 5656681228753129624}
     m_Modifications:
     - target: {fileID: 516538285986702501, guid: 3ca6b82f81be18f44b05ea00df662448,
@@ -1102,6 +1155,9 @@ PrefabInstance:
       value: DungeonWall01 (3)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ca6b82f81be18f44b05ea00df662448, type: 3}
 --- !u!4 &3656126499096458862 stripped
 Transform:
@@ -1114,6 +1170,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 5656681228753129624}
     m_Modifications:
     - target: {fileID: 5005830002951638821, guid: f75c04446b150f64e99e870399248862,
@@ -1177,6 +1234,9 @@ PrefabInstance:
       value: DungeonFloor01 (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f75c04446b150f64e99e870399248862, type: 3}
 --- !u!4 &1005818237191600329 stripped
 Transform:
@@ -1189,6 +1249,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 5656681228753129624}
     m_Modifications:
     - target: {fileID: 516538285986702501, guid: 3ca6b82f81be18f44b05ea00df662448,
@@ -1257,6 +1318,9 @@ PrefabInstance:
       value: DungeonWall01 (6)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ca6b82f81be18f44b05ea00df662448, type: 3}
 --- !u!4 &7563370362714866384 stripped
 Transform:
@@ -1269,6 +1333,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 5656681228753129624}
     m_Modifications:
     - target: {fileID: 7292350030703223769, guid: fabe553e242a1614d8070ce15afe995a,
@@ -1332,6 +1397,9 @@ PrefabInstance:
       value: DungeonPillar (5)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fabe553e242a1614d8070ce15afe995a, type: 3}
 --- !u!4 &1180552370973290768 stripped
 Transform:
@@ -1344,6 +1412,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 5656681228753129624}
     m_Modifications:
     - target: {fileID: 7292350030703223769, guid: fabe553e242a1614d8070ce15afe995a,
@@ -1407,6 +1476,9 @@ PrefabInstance:
       value: DungeonPillar
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fabe553e242a1614d8070ce15afe995a, type: 3}
 --- !u!4 &2171468910703066992 stripped
 Transform:

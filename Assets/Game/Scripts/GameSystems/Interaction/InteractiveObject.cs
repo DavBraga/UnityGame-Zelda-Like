@@ -9,7 +9,10 @@ public class InteractiveObject : MonoBehaviour, IInteractable
     [SerializeField] InteractionEvent interaction;
     [SerializeField] InteractionWidget interactionPlate;
     
-    public UnityAction onInteraction, onClose, onLeave;
+    public UnityAction  onClose, onLeave;
+
+    public UnityEvent onInteracted;
+    public UnityAction<GameObject> onInteraction;
 
     float customInteractionRadius = -1;
     bool inRange = false;
@@ -22,13 +25,14 @@ public class InteractiveObject : MonoBehaviour, IInteractable
         //interactionPlate.gameObject.SetActive(false);
     }
 
-    public void Interact()
+    public void Interact(GameObject player)
     {
         if(!canInteract) return;
-        onInteraction?.Invoke();
+        onInteraction?.Invoke(player);
         SetCloseness(false);
         canInteract=false;
         interaction?.UnregisterListerner(this);
+        onInteracted?.Invoke();
          
     }
 

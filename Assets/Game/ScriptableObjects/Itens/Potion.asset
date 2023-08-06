@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66fba0017c3012f4ab9b8405800bb0d6, type: 3}
   m_Name: Potion
   m_EditorClassIdentifier: 
-  itemType: {fileID: 11400000, guid: 7610153bf3a27084b9c5a999f6a0d4bc, type: 2}
   ItemName: Potion
-  itemPrefab: {fileID: 163617556293284183, guid: fa08f6ac41720c7409bee983e35a750f,
+  itemPrefab: {fileID: 163617556293284183, guid: 9351e0eb1bce2e546b245e0ed2a18554,
     type: 3}
+  pickAble: {fileID: 7224537509089881024, guid: 09e47f451d27f3a4288777d6e0599129,
+    type: 3}
+  acquireSound: {fileID: 8300000, guid: 65b042682b165df44afc673c0c17125c, type: 3}

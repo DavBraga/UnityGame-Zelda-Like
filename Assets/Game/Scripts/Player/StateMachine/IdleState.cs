@@ -12,6 +12,7 @@ public class IdleState : State
 
     public override void OnStateEnter()
     {
+        if(player.attacking) player.KeepChooping();
         base.OnStateEnter();
     }
     public override void OnStateExit()
@@ -21,7 +22,7 @@ public class IdleState : State
     public override void OnStateUpdate()
     {
         base.OnStateUpdate(); 
-        if(!player.isGrounded())
+        if(!player.IsGrounded())
         {
             player.stateMachine.ChangeState(player.onAirState);
         }
@@ -29,7 +30,7 @@ public class IdleState : State
         {
             player.stateMachine.ChangeState(player.walkingState);
         }
-        if(player.ReadSpaceBarInput()) player.Jump();
+       // if(player.ReadSpaceBarInput()) player.Jump();
         
         
     }

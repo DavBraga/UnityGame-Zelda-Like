@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66fba0017c3012f4ab9b8405800bb0d6, type: 3}
+  m_Name: PowerUp_AtkPwr 1
+  m_EditorClassIdentifier: 
+  ItemName: Atk++
+  itemPrefab: {fileID: 4076232712863069554, guid: c49760b053118784ea156e53a10b4b38,
+    type: 3}
+  pickAble: {fileID: 0}
+  acquireSound: {fileID: 0}

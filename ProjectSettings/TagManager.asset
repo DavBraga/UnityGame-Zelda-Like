@@ -7,6 +7,8 @@ TagManager:
   - Walkable
   - bomb
   - enemy
+  - FxTemporaire
+  - platform
   layers:
   - Default
   - TransparentFX
@@ -15,16 +17,16 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
+  - Platforms
   - 
   - 
   - Actors
-  - 
-  - 
+  - Projectiles
+  - Pickalbes
   - 
   - 
   - WorldUI
-  - 
+  - GameFX
   - 
   - 
   - 

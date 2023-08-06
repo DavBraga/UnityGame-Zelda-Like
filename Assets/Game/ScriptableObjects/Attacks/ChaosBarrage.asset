@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b60721c13fe43284382b68fb840c8733, type: 3}
+  m_Name: ChaosBarrage
+  m_EditorClassIdentifier: 
+  attackRadius: 1.5
+  attackRange: 1.5
+  attackDuration: 4
+  attackCoolDown: 4
+  warmupTime: 0
+  damageDelay: 0
+  attackDamage: 1
+  attackPushPower: 0
+  lookAtMyTarget: 0
+  activationFX: {fileID: 0}
+  hitFX: {fileID: 0}
+  animationTag: 
+  projectilePrefab: {fileID: 3426216362665825420, guid: ec16edf9013692646a00a555a1c6dc54,
+    type: 3}
+  projectileLifeTime: 1
+  projectileTravelSpeed: 10

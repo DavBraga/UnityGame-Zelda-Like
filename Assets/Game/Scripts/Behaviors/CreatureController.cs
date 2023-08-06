@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,11 +6,15 @@ using UnityEngine.AI;
 
 public class CreatureController : MonoBehaviour
 {
+    public Transform creatureCenter;
     [Header("Detection")]
     public float sightRange=20f;
+    public float meleeRange = 1.5f;
+    public float hearRange = 5f;
 
     [Header("Melee Attack")]
 
+    public bool isattacking= false;
     public Attack_SO baseAttack;
     // public float attackRadius= 1.5f;
     // public float attackDuration= 1f;
@@ -27,56 +32,86 @@ public class CreatureController : MonoBehaviour
 
     [Header("Hurt")]
     public float hurtDuration= .3f;
+    public float staggerImunityDuration=0.15f;
+    bool isStaggerImune = false;
+    float timeOfDamage;
+
+    float staggeerMoment=0f;
+    [SerializeField]bool isUnstoppable = false;
 
     [Header("Chase")]
     public float ceaseFollowThreshold =2f;
     public float chaseDuration=1f;
     public Animator myAnimator{get; private set;}
     public NavMeshAgent myNavAgent{get; private set;}
+
+    [Header("Despawn")]
+    [SerializeField]bool doesItDespawns = true;
+    [SerializeField] GameObject despawnParticlePrefab;
+    [SerializeField] float despawnDelay = 1f;
     
     public Health myHealth{get; private set;}
     public Rigidbody myRigidBody{get; private set;}
 
-     Collider mycollider;
+    protected Collider mycollider;
 
     // states
     protected ChaseState chaseState;
 
     protected CreatureRoamingState creatureRoamingState;
     protected CreatureAttackState creatureAttackState;
+
+    protected CreatureAttackState creatureRangedAttackState;
     protected CreatureHurtState creatureHurtState;
     protected CreatureDeadState creatureDeadState;
-
     public StateMachine stateMachine;
 
      [Header ("Debug")]
     [SerializeField] string debugCurrentState;
-    public virtual void Awake() {
+    public virtual void Awake()
+    {
+        if(creatureCenter==null) creatureCenter = transform;
 
-        if(rangedAttack==null) rangedAttack= baseAttack;
-        if(!projectilesOrigin) projectilesOrigin = transform;
+        //if (rangedAttack == null) rangedAttack = baseAttack;
+        
+        if (!projectilesOrigin) projectilesOrigin = transform;
+        SetUpComponenetsReferences();
 
-        myNavAgent = GetComponent<NavMeshAgent>();
-        myRigidBody = GetComponentInChildren<Rigidbody>();
-        mycollider = GetComponentInChildren<Collider>();
-        myAnimator = GetComponentInChildren<Animator>();
         stateMachine = new StateMachine();
-        // new states
         SetUpStates();
-        myHealth = GetComponent<Health>();
-        myHealth.onTakeDamage += onTakeDamage;
     }
+
+    private void SetUpComponenetsReferences()
+    {
+        myNavAgent = GetComponent<NavMeshAgent>();
+        myRigidBody = GetComponent<Rigidbody>();
+        mycollider = GetComponent<Collider>();
+        myAnimator = GetComponentInChildren<Animator>();
+        myHealth = GetComponent<Health>();
+    }
+
     public virtual void SetUpStates()
     {
         chaseState = new ChaseState(this);
         creatureRoamingState = new CreatureRoamingState(this);
         creatureAttackState = new CreatureAttackState(this);
+        
+        if(rangedAttack)
+        {
+            // set up a ranged attack state
+            creatureRangedAttackState = new CreatureAttackState(this);
+            creatureRangedAttackState.SetUpState(chaseState, rangedAttack);
+            chaseState.SetUpState(creatureAttackState, creatureRoamingState,creatureRangedAttackState);
+        }
+        else
+            chaseState.SetUpState(creatureAttackState, creatureRoamingState);
+
         creatureHurtState = new CreatureHurtState(this);
         creatureDeadState = new CreatureDeadState(this);
-        chaseState.SetUpState(creatureAttackState, creatureRoamingState);
-        creatureAttackState.SetUpState(chaseState);
+        
+        creatureAttackState.SetUpState(chaseState, baseAttack);
         creatureRoamingState.SetUpState(chaseState);
-        creatureHurtState.SetUpState(creatureRoamingState);
+        creatureHurtState.SetUpState(chaseState);
 
         stateMachine.ChangeState(creatureRoamingState);
 
@@ -84,10 +119,13 @@ public class CreatureController : MonoBehaviour
     // Update is called once per frame
     public virtual void Update()
     {
-        stateMachine.Update();
-        myAnimator.SetFloat("fSpeed", myAnimator.velocity.magnitude/ myNavAgent.speed);
-        //for debug only.
-        debugCurrentState = stateMachine.currentState.stateName;
+        if(GameManager.Instance.GameState == GameState.playing)
+        {
+            stateMachine.Update();
+            myAnimator.SetFloat("fSpeed", myNavAgent.velocity.magnitude);
+            //for debug only.
+            debugCurrentState = stateMachine.currentState.stateName;
+        }
     }
     public virtual void FixedUpdate()
     {
@@ -102,32 +140,71 @@ public class CreatureController : MonoBehaviour
         baseAttack.Attack(this);
     }
 
-    public virtual void RangedAttack()
+    public virtual void TakeDamage(GameObject attacker, int damage)
     {
-        //TODO
-        Debug.Log("ranged Attack");
-        rangedAttack.Attack(this);
-    }
+        if(Time.time<timeOfDamage+0.3f) return;
 
-    public virtual void onTakeDamage(GameObject attacker, int damage)
-    {
-        Debug.Log("Simple damage feedback:Took "+damage+". Caused by: "+attacker.gameObject.name);
-        if(stateMachine.currentState!= creatureHurtState)
+        timeOfDamage = Time.time;
+        myHealth.TakeDamage(attacker,damage);
+        if(myHealth.GetCurrentHealth()<1)
         {
-            stateMachine.ChangeState(creatureHurtState);
-            myAnimator.SetTrigger("tHurt");
+            Die();
+            return;
         }
+        if(stateMachine.currentState==creatureRoamingState) 
+        stateMachine.ChangeState(chaseState);
+        isStaggerImune =Time.time<(staggeerMoment+staggerImunityDuration+hurtDuration);
+        if(isUnstoppable||isStaggerImune) return;
+        myAnimator.SetTrigger("tHurt");
+        staggeerMoment = Time.time;
+        
+       // if(stateMachine.currentState!= creatureHurtState)
+       // {
+        
+            stateMachine.ChangeState(creatureHurtState);
+            
+       // }
             
     }
-
     public virtual void Die()
     {
-       // stateMachine.ChangeState(enemyDeadState);
+        stateMachine.ChangeState(creatureDeadState);
         myAnimator?.SetBool("bDead", true);
         myNavAgent.isStopped=true;
-        myRigidBody.velocity = Vector3.zero;
+        myRigidBody.isKinematic = true;
 
         if(mycollider)
             mycollider.enabled = false;
+
+        if(doesItDespawns)
+        StartCoroutine(Despawn(despawnDelay));
+    }
+
+    IEnumerator Despawn(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Instantiate(despawnParticlePrefab, transform.position, Quaternion.identity);
+        Destroy(this.gameObject);
+    }
+
+    public virtual Coroutine StartAttack(Attack_SO attack)
+    {
+        StopMoving();
+        HaltMovment();
+        return attack.Attack(this);     
+    }
+
+    public virtual void StopMoving()
+    {
+        if(myNavAgent)
+        myNavAgent.isStopped = true;
+        if(!myRigidBody.isKinematic)
+        myRigidBody.velocity = Vector3.zero;
+    }
+    public virtual void HaltMovment()
+    {
+        myNavAgent.ResetPath();
+        if(!myRigidBody.isKinematic)
+        myRigidBody.velocity = Vector3.zero;
     }
 }

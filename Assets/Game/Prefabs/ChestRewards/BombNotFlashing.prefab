@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 3051843480734898846}
   - component: {fileID: 8480259522794857652}
   - component: {fileID: 8320118009209689253}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: WickSupport
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -153,7 +153,7 @@ GameObject:
   - component: {fileID: 119857436619802344}
   - component: {fileID: 1845266693936169653}
   - component: {fileID: 4613821878032144035}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -259,8 +259,7 @@ GameObject:
   - component: {fileID: 2309534604489747944}
   - component: {fileID: 7116357687269957826}
   - component: {fileID: 357652203229865363}
-  - component: {fileID: 6852718704884337355}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -333,27 +332,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &6852718704884337355
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6771118602435887615}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 1024
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &4864477777172332280
 PrefabInstance:
   m_ObjectHideFlags: 0

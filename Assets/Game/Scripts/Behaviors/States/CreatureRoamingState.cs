@@ -40,8 +40,15 @@ public class CreatureRoamingState : State
         bool rangeCheckResult = CreatureHelper.IstargetInRange(controller.searchRadius,controller.transform.position, targetPosition);
         // do nothing if not in range
         if(!rangeCheckResult) return;
+
+        // hear if too close and ignore sight check
+         if (CreatureHelper.CanIHearMyTarget(GameManager.Instance.GetPlayer().transform.position,controller.transform,controller.hearRange))
+         {
+            controller.stateMachine.ChangeState(onSightState);
+            return;
+         }
         //if can see go alert state
-        bool SightCheckResult = CreatureHelper.IsTargetOnSight(targetPosition,controller.transform.position,controller.sightRange);
+        bool SightCheckResult = CreatureHelper.IsTargetOnSight(targetPosition,controller.transform,controller.sightRange);
         if(SightCheckResult)
         {
             controller.stateMachine.ChangeState(onSightState);

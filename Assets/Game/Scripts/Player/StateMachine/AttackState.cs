@@ -5,6 +5,8 @@ using UnityEngine;
 public class AttackState : State
 {
     PlayerController player;
+
+    Coroutine routine;
     GameObject attackCollider;
     int attackStage = -1; 
 
@@ -25,7 +27,9 @@ public class AttackState : State
         base.OnStateEnter();
        EvolveAttackStages();
        SetVariables();
+       
        player.animator.SetBool("bIsAttacking", true);
+       
        
     }
     public override void OnStateExit()
@@ -37,20 +41,24 @@ public class AttackState : State
     }
     public override void OnStateUpdate()
     {
+        if(GameManager.Instance.GameState!=GameState.playing) player.stateMachine.ChangeState(player.idleState);
         base.OnStateUpdate();
         stageRemainingDuration -=Time.deltaTime;
+
+        
 
         if(stageRemainingDuration<0){
              player.stateMachine.ChangeState(player.idleState);
             return;
         }  
-        if(stageRemainingDuration>attackChainWindow) return;
+       if(stageRemainingDuration>attackChainWindow) return;
         if(attackStage>1)
         {
-            player.stateMachine.ChangeState(player.idleState);
+            
+           player.stateMachine.ChangeState(player.idleState);
             return;
         }
-        if(player.ReadLeftMouseInput())
+        if(player.ReadAttackInput())
         {
             stageRemainingDuration =500f;
             
@@ -65,8 +73,7 @@ public class AttackState : State
     } 
     public void SetVariables()
     {
-        float attackDuration = player.GetAttackDuration()[attackStage];
-        attackChainWindow = player.getAttackChainWindow()[attackStage];
+        float attackDuration = player.GetAttackPreparationTIme()[attackStage];
         stageRemainingDuration = attackDuration + attackChainWindow;
 
     }
@@ -77,6 +84,7 @@ public class AttackState : State
         player.attackstage = attackStage;
         applyImpulse = true;
         Debug.Log("Went stage:"+ attackStage);
+        player.mySFXManager.PlayAudio();
 
     }   
     public override void OnStateFixedUpdate()
@@ -93,8 +101,7 @@ public class AttackState : State
             player.PlayAttackImpulse(attackStage);
             applyImpulse = false;
         }
-    }
-            
+    }   
     public override void OnStateLateUpdate()
     {
         base.OnStateLateUpdate();

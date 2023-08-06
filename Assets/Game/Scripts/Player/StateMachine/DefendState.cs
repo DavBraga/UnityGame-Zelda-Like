@@ -10,6 +10,7 @@ public class DefendState : State
     {
         player = playerController;
         this.shieldCollider = shieldCollider;
+        shieldCollider.SetActive(false);
     }
 
     public override void OnStateEnter()
@@ -26,7 +27,7 @@ public class DefendState : State
     }
     public override void OnStateUpdate()
     {
-        if(Input.GetMouseButtonUp(1))
+        if(!player.ReadDefenseInput())
             player.stateMachine.ChangeState(player.idleState);
         base.OnStateUpdate(); 
         
@@ -38,5 +39,16 @@ public class DefendState : State
     public override void OnStateLateUpdate()
     {
         base.OnStateLateUpdate();
+    }
+
+    public bool CanInflictDamage(GameObject attacker, int Damage)
+    {
+        Vector3 playerDirection = player.transform.TransformDirection(Vector3.forward);
+        Vector3 attackerDirection = (player.transform.position- attacker.transform.position).normalized;
+        float dot = Vector3.Dot(playerDirection, attackerDirection);
+        Debug.Log(dot);
+        if(dot<-.25f) return false;
+        
+        return true;
     }
 }

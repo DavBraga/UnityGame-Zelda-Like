@@ -5,65 +5,97 @@ using UnityEngine;
 public class CreatureAttackState : State
 {
     CreatureController controller;
-    float attackDuration = 0;
-    IEnumerator attackCoroutine;
 
+    Coroutine attackUndergoing;
+
+    Attack_SO defaultAttack;
+
+    Coroutine attackExecution;
+    Attack_SO usedAttack;
     State fallBackState;
     public CreatureAttackState(CreatureController controller) : base("CreatureAttackState")
     {
         this.controller =controller;
     }
-    public void SetUpState(State fallBackState)
+    public void SetUpState(State fallBackState, Attack_SO defaultAttack)
     {
         this.fallBackState = fallBackState;
+        this.defaultAttack = defaultAttack;
+        usedAttack = defaultAttack;
+    }
+
+    public void SetAttack(Attack_SO attackToUse)
+    {
+        usedAttack = attackToUse;
+    }
+    public void ResetAttack()
+    {
+        usedAttack = defaultAttack;
     }
 
     public override void OnStateEnter()
     {
         base.OnStateEnter();
-        attackDuration = controller.baseAttack.AttackDuration;
-        controller.StartCoroutine(attackCoroutine=StartAttack());
-        
+
+        if (attackUndergoing != null)
+        {      
+            controller.StopCoroutine(attackUndergoing);
+        }
+        attackUndergoing = controller.StartCoroutine(WaitAttackCompletion());
+       
+        // if (attackExecution != null)
+        // {
+            
+        //     controller.StopCoroutine(attackExecution);
+        // }
+        // attackExecution = controller.StartAttack(usedAttack);
     }
+
+    IEnumerator WaitAttackCompletion()
+    {
+        if (attackExecution != null)
+        {      
+            controller.StopCoroutine(attackExecution);
+        }
+        yield return attackExecution = controller.StartAttack(usedAttack);
+        controller.stateMachine.ChangeState(fallBackState);
+    }
+
+    private void ExecuteAttack()
+    {
+        controller.HaltMovment();
+        if (attackExecution != null)
+        {
+            
+            controller.StopCoroutine(attackExecution);
+        }
+        attackExecution = controller.StartAttack(usedAttack);
+    }
+
     public override void OnStateExit()
     {
         base.OnStateExit();
-        controller.StopCoroutine(attackCoroutine);
+        controller.StopCoroutine(attackExecution);
+        controller.StopCoroutine(attackUndergoing);
     }
     public override void OnStateUpdate()
     {
         base.OnStateUpdate();
          //fall back after duration elapsed
-        if((attackDuration-=Time.deltaTime)<0)
-        {
-            controller.StopCoroutine(attackCoroutine);
-            controller.stateMachine.ChangeState(fallBackState);
-            return;
-        } 
+        // if(( isWarmingUp &&(warmup-=Time.deltaTime)<0))
+        // {
+        //     ExecuteAttack();
+        //     isWarmingUp = false;
+        // }
+        
+        // if((attackDuration-=Time.deltaTime)<0)
+        // {
+        //     controller.stateMachine.ChangeState(fallBackState);
+        //     return;
+        // } 
     }
     public override void OnStateLateUpdate()
     {
         base.OnStateLateUpdate();
-    }
-
-    IEnumerator StartAttack()
-    {
-        controller.myAnimator.SetTrigger(controller.baseAttack.animationTag);
-        yield return new WaitForSeconds(controller.baseAttack.DamageDelay);
-
-        // alert if its not in attackrange
-        Vector3 targetPos = GameManager.Instance.GetPlayer().transform.position;
-        
-        bool attackRangeCheck = 
-            CreatureHelper.IstargetInRange(controller.baseAttack.AttackRadius,
-            controller.transform.position,targetPos);
-
-        if(!attackRangeCheck)
-        {
-            controller.stateMachine.ChangeState(fallBackState);
-            controller.RangedAttack();
-        }
-        else
-            controller.Attack();
     }
 }

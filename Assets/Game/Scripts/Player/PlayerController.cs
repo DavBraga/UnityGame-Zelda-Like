@@ -1,48 +1,59 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    PlayerInput input;
     // state machine
     public StateMachine stateMachine{ get; private set;}
     public IdleState idleState{ get; private set;}
     public WalkingState walkingState{ get; private set;}
     public DeadState deadState{get; private set;}
     public OnAirState onAirState{ get; private set;}
-    public AttackState attackState{get; private set;}
+    //public AttackState attackState{get; private set;}
+    public AttackStateRedone attackState{get; private set;}
     public DefendState defendState{get; private set;}
+
+    Pushable pushable;
 
     public HurtState hurtState{get; private set;}
     public Vector2 inputMovmentVector{ get; private set;}
     public Rigidbody myRigidbody{ get; private set;}
     public  Animator animator{ get; private set;}
 
-    private bool grounded= true;
+    //private bool grounded= true;
+
+    bool gotControl= true;
+    public bool attacking = false;
+    bool defending = false;
+
+    public UnityAction onInteractHook; 
     
     //GENERAL
     public Health health{get; private set;}
 
     [SerializeField] Collider thisCollider;
 
-    [Header("Bombs")]
+    BombTool bombTool;
 
-    [SerializeField] bool gotBombSkill= false;
-    [SerializeField] GameObject bombPrefab;
-    [SerializeField] float bombIntervals = 3f;
-    bool canBomb = true;
-
+    UsePotion usePotion;
 
     float fVelocityRate;
 
     [Header("Movment")]
     [SerializeField] float acceleration = 10f;
     [SerializeField] float maxSpeed = 10f;
+
+    Bounds bounds;
     
     [SerializeField] bool SnapStop = false;
     [Tooltip("Needs Snap Stop = true to have any effect.")]
     [SerializeField] float ExtraStopForce=5f;
+
+    [SerializeField] LayerMask collisionsLayer;
 
     [Header("Slope")]
     [SerializeField]float slopeAngle=0;
@@ -62,19 +73,40 @@ public class PlayerController : MonoBehaviour
 
     public float hurtDuration = 1f;
 
+    [Header("DeadState")]
+
+    [SerializeField]GameObject deadCamera;
+
+    public UnityAction onDeath;
+
+
     [Header("Attack")]
+
+    [SerializeField]float exitAttackCooldown =.3f;
+    [HideInInspector]public float exitiAttackTime = 0;
+
     [SerializeField] GameObject attackCollider;
     [SerializeField] GameObject shieldCollider;
-    [SerializeField] float[] attackGracePeriod;
-    [SerializeField] float[] attackDuration;
+    [SerializeField] GameInput swordHitVfx;
+    [SerializeField] GameObject shieldBlockVfx;
+    [SerializeField] float[] attackPreparationTime;
+    public float[] attackDuration;
+    public float[] attackCooldown;
     [SerializeField] float[] attackImpulse;
+
     [SerializeField] int attackPower = 1;
     [SerializeField] float knockbackPower;
     [SerializeField] float shieldKnocBack;
     [SerializeField] float inputCooldown=.001f;
+
+    [Header("Shield Block")]
+    [SerializeField]ShieldBlock shieldBlock;
+    [SerializeField] GameObject attackFX;
+
+    [Header("Audio")]
+    public SFXManager mySFXManager;
+    public boolConditionDelegate damageConditions;
     bool canttrigger= true;
-
-
 
     [Header("Debug")]
     [SerializeField] string currentStateName;
@@ -82,37 +114,64 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float currentVelocity;
     public int attackstage =0;
 
-    private void Awake() {
+    private void Awake()
+    {
         InitializeStateMachine();
+        input = GetComponent<PlayerInput>();
+        input.DeactivateInput();
         myRigidbody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         thisCollider = GetComponent<Collider>();
         health = GetComponent<Health>();
-        if(health) health.onTakeDamage += onTakeDamage;
-        
+        bombTool = GetComponent<BombTool>();
+        usePotion = GetComponent<UsePotion>();
+        shieldBlock = GetComponent<ShieldBlock>();
+        mySFXManager = GetComponent<SFXManager>();
+        pushable = GetComponent<Pushable>();
+        bounds = thisCollider.bounds;
+        SetUpWeaponColliders();
     }
-    private void Start()
+
+    private void SetUpWeaponColliders()
     {
-       
+        attackCollider.GetComponent<WeaponCollision>().onHit += (collider) => { NewAttackTrigger(collider, attackPower, knockbackPower); };
+        shieldCollider.GetComponent<WeaponCollision>().onHit += (collider) => { NewAttackTrigger(collider, 0, shieldKnocBack); };
+        attackCollider.SetActive(false);
+        shieldCollider.SetActive(false);
+    }
+
+    private void Start() {
+        StartCoroutine(SubscribleToGameManager());    
+    }
+
+    IEnumerator SubscribleToGameManager()
+    {
+        yield return new WaitUntil(()=>GameManager.IsManagerReady());
+        GameManager.Instance.SetPlayer(this);
+        GameManager.Instance.onGameGoesCinematics+=HaltEverything;
+        GameManager.Instance.onGAmeGoesPlayMode += ()=>input.ActivateInput();
+
+    }
+
+    public void HaltEverything()
+    {
+        input.CancelInvoke();
+        input.DeactivateInput();
+        input.CancelInvoke();
+        attacking = false;
+        defending = false;
+        inputMovmentVector = Vector2.zero;
     }
     private void Update()
     {
         currentStateName = stateMachine.GetCurrentStateName();
-       if(stateMachine.currentState!=deadState&&stateMachine.currentState!=hurtState )
-       {
-           if(gotBombSkill) PutBomb();
-            if (ReadLeftMouseInput()) Chop();
-            if(ReadRightMouseInput()) stateMachine.ChangeState(defendState);
-            inputMovmentVector = ReadMovmentInput();
-            CalculateVelocityRate();  
-        }
+        CalculateVelocityRate();  
         stateMachine.Update();
-        //currentVelocity = myRigidbody.velocity.magnitude;
-        
     }
     private void FixedUpdate()
     {
         SufferGravity();
+        if(GameManager.Instance.GameState != GameState.playing) return;
         stateMachine.FixedUpdate();
         LimitMovmentSpeed();
         if(!SnapStop) return;
@@ -128,61 +187,70 @@ public class PlayerController : MonoBehaviour
         idleState = new IdleState(this);
         walkingState = new WalkingState(this);
         onAirState = new OnAirState(this, airMovmentSpeedModifier);
-        attackState = new AttackState(this, attackCollider);
+        //attackState = new AttackState(this, attackCollider);
+        attackState = new AttackStateRedone(this, attackCollider);
         defendState = new DefendState(this, shieldCollider);
         hurtState = new HurtState(this);
         deadState = new DeadState(this);
         stateMachine.ChangeState(idleState);
     }
-    // VERB METHODS
+
+
+  
     public void PlayerMovment(float intensity =1)
     {
+        if(!gotControl) return; 
         Vector3 movmentVector = InputToV3();
         movmentVector = movmentVector.normalized;
         movmentVector = GetCameraForward()* movmentVector ;
+        if(!forceNormalGravity)
         movmentVector = Vector3.ProjectOnPlane(movmentVector, slopeNormal);
-        Debug.DrawRay(transform.position,movmentVector*2,Color.red,.01f);
+        float maxDistance= bounds.size.z;//+.1f;
+        Vector3 castOrigin =transform.position- new Vector3(0,0,bounds.size.z*.5f);
+
+        bool isTouchingSomethingAhead ;
+        //bool isTouchingSomethingAhead = Physics.Raycast(transform.position,movmentVector*maxDistance,collisionsLayer);
+        isTouchingSomethingAhead = Physics.SphereCast(castOrigin,bounds.size.z*.4f,movmentVector,out _, maxDistance,GameManager.Instance.GetCollisionLayer())||
+        Physics.SphereCast(castOrigin+ new Vector3(0,bounds.size.y,bounds.size.z*.5f),bounds.size.z*.4f,movmentVector,out _, maxDistance,GameManager.Instance.GetCollisionLayer());
+
+             if(!IsGrounded()&&isTouchingSomethingAhead)
+             {
+                Debug.Log("touching");
+                return;
+             } 
+        Debug.DrawRay(castOrigin,movmentVector*2,Color.red,.01f);
         movmentVector *= GetMovmentSpeed()*intensity;
         myRigidbody?.AddForce(movmentVector,ForceMode.Force);
     }
 
     public void Jump()
     {
-        if(!grounded)  return;
-        Debug.Log("jumped");
+        if(!IsGrounded())  return;
+        if(!gotControl) return; 
         animator.SetTrigger("tJump");
-        myRigidbody.AddForce(Vector3.up *jumpPower, ForceMode.Impulse);
-        
+        Debug.Log("Jumps");
+        myRigidbody.AddForce((Vector3.up *jumpPower)-gravity.normalized, ForceMode.Impulse);
+       // myRigidbody.AddForce(-gravity.normalized *jumpPower, ForceMode.Impulse);
     }
 
-    public bool Chop()
-    {    
+    public bool KeepChooping()
+    {   
+        
+        if(!gotControl|| GameManager.Instance.GameState!= GameState.playing) return false; 
+        //
+        if(Time.time<exitiAttackTime) return false;
+        //if(!inputMovmentVector.isZero()) return false;
 
         if(stateMachine.currentState!=attackState)
-        {
             stateMachine.ChangeState(attackState);
-        } 
+
         return true;   
     }
-
-    public void LearnBombSkill()
+    public void Defend()
     {
-        gotBombSkill = true;
-    }
-    public void PutBomb()
-    {
-        if(Input.GetKeyDown(KeyCode.Q)&&canBomb)
-        StartCoroutine(PlacingBombRoutine());
-        
-
-    }
-    IEnumerator PlacingBombRoutine()
-    {
-        canBomb =false;
-        Instantiate(bombPrefab,transform.position+2*(transform.forward),Quaternion.identity);
-        yield return new WaitForSeconds(bombIntervals);
-        canBomb = true;
-        
+        if(!gotControl) return; 
+        if(stateMachine.currentState!=defendState)
+            stateMachine.ChangeState(defendState);
     }
 
     public int GetCurrentHealth()
@@ -195,6 +263,34 @@ public class PlayerController : MonoBehaviour
     {
         if(stateMachine.currentState!= deadState)
             stateMachine.ChangeState(deadState);
+            HaltEverything();
+            myRigidbody.isKinematic = true;
+            onDeath?.Invoke();
+    }
+
+    public void Ressurect()
+    {
+        if(stateMachine.currentState == deadState)
+        {
+            Debug.Log("ressurected");
+            deadCamera.SetActive(false);
+            myRigidbody.isKinematic = false;
+            StartCoroutine(WaitAndRess());
+        }
+        
+    }
+
+    IEnumerator WaitAndRess()
+    {
+        yield return new WaitForSeconds(2f);
+        stateMachine.ChangeState(idleState);
+        health.SetIgnoreDamage(false);
+        
+        health.Heal(Mathf.RoundToInt(health.GetMaxHealth()/2));
+        stateMachine.ChangeState(idleState);
+        input.ActivateInput();
+        input.CancelInvoke();
+        TryGivePlayerControl();
     }
     private void SufferGravity()
     {
@@ -206,14 +302,29 @@ public class PlayerController : MonoBehaviour
 
     //REACTION METHODS
 
-    public void onTakeDamage(GameObject attacker, int damage)
+    public void TakeDamage(GameObject attacker, int damage)
     {
-        Debug.Log("Simple damage feedback:Took "+damage+". Caused by: "+attacker.gameObject.name);
-        stateMachine.ChangeState(hurtState);
+        if(stateMachine.currentState == deadState) return;
+        if(stateMachine.currentState== defendState&& !shieldBlock.DirectionCanDealDamage(attacker)) return;
+       
+        // check attacksuccess
+        if(stateMachine.currentState!= hurtState)
+        {
+            health.TakeDamage(attacker, damage);
+            if(health.GetCurrentHealth()<1)
+            {
+                stateMachine.ChangeState(deadState);
+                return;
+            }  
+            stateMachine.ChangeState(hurtState);   
+        }
     }
-
+    public void BePushed(GameObject pusher,float pushPower, Vector3 direction)
+    {
+        if(stateMachine.currentState== defendState&&!shieldBlock.DirectionCanDealDamage(pusher)) return;
+        pushable.BePushed(pushPower, direction);
+    }
     //SUPPORT METHODS
-
     private void CalculateVelocityRate()
     {
         fVelocityRate = 0;
@@ -225,7 +336,7 @@ public class PlayerController : MonoBehaviour
     } 
     private void StopFaster(float stopPower=1f)
     {
-        if(!isGrounded()) return;
+        if(!IsGrounded()) return;
         if(Mathf.Abs(myRigidbody.velocity.magnitude)<.5f) return;
         myRigidbody.AddForce(-myRigidbody.velocity.normalized * stopPower);
     }
@@ -250,48 +361,15 @@ public class PlayerController : MonoBehaviour
         myRigidbody.MoveRotation(smoothRotation);
 
     }
-
-    public bool ReadSpaceBarInput()
+    public bool ReadDefenseInput()
     {
-        if(Input.GetKeyUp(KeyCode.Space))
-        {
-            return true;
-        }
-        return false;
+        return defending;
     }
 
-    public bool ReadLeftMouseInput()
+    public bool ReadAttackInput()
     {
-        if(Input.GetMouseButton(0)&& canttrigger)
-        {
-            StartCoroutine("attackCD");
-            return true;
-        }
-        return false;
-    }
-
-    public bool ReadRightMouseInput()
-    {
-        if(Input.GetMouseButtonDown(1)) return true;
-        return false;
-    }
-    
-   public IEnumerable attackCD()
-   {
-    yield return new WaitForSeconds(inputCooldown);
-    canttrigger = true;
-   }
-    private  Vector2 ReadMovmentInput()
-    {
-        bool isUp = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
-        bool isDown = Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow);
-        bool isLeft = Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow);
-        bool isRight = Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow);
-
-        float inputZ = isUp ? 1 : isDown ? -1 : 0;
-        float inputX = isRight ? 1 : isLeft ? -1 : 0;
-        return (new Vector2(inputX,inputZ));
-    }
+        return attacking;
+    } 
     public float GetMovmentSpeed()
     {
         return acceleration;
@@ -304,7 +382,10 @@ public class PlayerController : MonoBehaviour
 
     public void PlayAttackAnimation(int attackStage=0)
     {
-            Debug.Log("anim triggered at stage: " + attackstage);
+        animator.ResetTrigger("tAttack1");
+        animator.ResetTrigger("tAttack2");
+        animator.ResetTrigger("tAttack3");
+            
             if(attackStage==0 ||attackStage>3)
             {
                 animator.SetTrigger("tAttack1");
@@ -330,53 +411,44 @@ public class PlayerController : MonoBehaviour
         myRigidbody.AddForce(transform.forward*attackImpulse[attackStage] ,ForceMode.Impulse);
     }
 
-    public void TryTriggerHandAttack(Collider other, bool leftHand = false)
+    public void NewAttackTrigger(Collider other, int atkpower =1, float pushPower = 5f)
     {
-        if(other.gameObject.layer != LayerMask.NameToLayer("Attackable")) return;
-        if(other.gameObject.TryGetComponent<Rigidbody>(out Rigidbody otherRB))
+        // apply damage
+        //apply push
+
+        if(other.TryGetComponent(out CreatureController creatureController))
+        {
+            creatureController.TakeDamage(this.gameObject,atkpower);
+        }
+        if(other.TryGetComponent(out Pushable pushable))
         {
             var positionDiff = other.gameObject.transform.position - transform.position;
             positionDiff.Normalize();
-            if(!leftHand)
-            {
-                 otherRB.AddForce(positionDiff*knockbackPower,ForceMode.Impulse);
-                if( other.gameObject.TryGetComponent<Health>(out Health healthCom))
-                {
-                    healthCom.TakeDamage(this.gameObject,attackPower);
-                }
-            }
-            else
-                otherRB.AddForce(positionDiff*shieldKnocBack,ForceMode.Impulse);
-
+            pushable.BePushed(pushPower,positionDiff);
         }
 
     }
-
-    public float[] GetAttackDuration()
+    public float[] GetAttackPreparationTIme()
     {
-        return attackDuration;
+        return attackPreparationTime;
     }
-    public float[] getAttackChainWindow()
-    {
-        return attackGracePeriod;
-    }
-
     public Vector3 InputToV3()
     {
         return new Vector3(inputMovmentVector.x,0, inputMovmentVector.y);
     }
 
-    public bool isGrounded()
+    public bool IsGrounded()
     {
         Vector3 direction = Vector3.down;
         Bounds bounds = thisCollider.bounds;
         Vector3 origin = transform.position + new Vector3(0,bounds.size.y,0);
         float radius = bounds.size.x * 0.33f;
-        float maxDistance = bounds.size.y;
-        Vector3 spherePosition = direction* maxDistance + origin;
+        float maxDistance = bounds.size.y+0.1f;
+        //Vector3 spherePosition = direction* maxDistance + origin;
         LayerMask groundLayer = GameManager.Instance.GetGroundLayer();
-        if(Physics.SphereCast (origin,radius,direction,out var hitInfo,maxDistance,groundLayer))
+        if (Physics.SphereCast (origin,radius,direction,out _,maxDistance,groundLayer))
         {
+            animator.SetBool("bOnAir", false);
                 return true;      
         }
         animator.SetBool("bOnAir", true);
@@ -385,14 +457,11 @@ public class PlayerController : MonoBehaviour
 
     public bool DetectOnSlope()
     {
-        //todo swap ray direction to forward from the 
-        //feet to calculate the angle and predict 
-        //slopes so less resistance to start stairs.
         Bounds bounds = thisCollider.bounds;
         Vector3 origin = transform.position + new Vector3(0,bounds.size.y,0);
         Vector3 direction = Vector3.down;
         float maxDistance = bounds.size.y+.1f;
-         LayerMask groundLayer = GameManager.Instance.GetGroundLayer();
+        LayerMask groundLayer = GameManager.Instance.GetGroundLayer();
         if(Physics.Raycast(origin, direction,out var slopeHitInfo,maxDistance,groundLayer))
         {
             slopeAngle = Vector3.Angle(Vector3.up,slopeHitInfo.normal);
@@ -402,6 +471,82 @@ public class PlayerController : MonoBehaviour
 
         return false;
 
+    }
+    public bool TryGivePlayerControl()
+    {
+        // if(stateMachine.currentState== hurtState) return false;
+        // if(stateMachine.currentState == deadState) return false;
+        return gotControl = true;
+    }
+
+    public void RemovePlayerControl()
+    {
+        gotControl = false;
+    }
+    public void SetMovment(InputAction.CallbackContext value)
+    {
+        inputMovmentVector = value.ReadValue<Vector2>();
+    }
+
+    public void SetUpJump(InputAction.CallbackContext value)
+    {
+
+        if(value.performed)
+         Jump(); 
+    }
+    public void SetAttack(InputAction.CallbackContext value)
+    {
+        Debug.Log("reading");
+
+        if(value.started)
+        KeepChooping();
+        attacking = !value.canceled;
+        
+        if(value.canceled) 
+        {
+            Debug.Log("cancelled");
+            return;
+        }
+        
+    }
+    public void SetBlock(InputAction.CallbackContext value)
+    {
+        if(GameManager.Instance.GameState != GameState.playing) return;
+        if(!gotControl) return;
+
+        defending = !value.canceled;
+        Defend();
+    }
+
+    public void SetUseTool(InputAction.CallbackContext value)
+    {
+        if(GameManager.Instance.GameState != GameState.playing) return;
+        if(!gotControl) return;
+        if(value.performed)
+        bombTool.PutBomb(); 
+    }
+
+    public void SetUsePotion(InputAction.CallbackContext value)
+    {
+        if(GameManager.Instance.GameState != GameState.playing) return;
+        if(!gotControl) return;
+        if(value.performed)
+        usePotion.Use(); 
+    }
+    public void SetUseInteraction(InputAction.CallbackContext value)
+    {
+
+        if(value.performed)
+        onInteractHook?.Invoke();
+    }
+    public void SetPauseGame(InputAction.CallbackContext value)
+    {
+        if(value.performed)
+        GameManager.Instance.TogglePause();
+    }
+    public void IncreaseAttackPower(int amount =1)
+    {
+        attackPower+=amount;
     }
     // For test purpose Only
     // private void OnDrawGizmos() {

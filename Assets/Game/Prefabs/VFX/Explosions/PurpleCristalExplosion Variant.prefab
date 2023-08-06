@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &5791007888631860206
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1001518289562917649, guid: ec3235b4e76880942bececa3e7cb246f,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1001518289562917649, guid: ec3235b4e76880942bececa3e7cb246f,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.6542239
+      objectReference: {fileID: 0}
+    - target: {fileID: 2906083011533219496, guid: ec3235b4e76880942bececa3e7cb246f,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2906083011533219496, guid: ec3235b4e76880942bececa3e7cb246f,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 15.989528
+      objectReference: {fileID: 0}
+    - target: {fileID: 2906083011533219496, guid: ec3235b4e76880942bececa3e7cb246f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 10.388654
+      objectReference: {fileID: 0}
+    - target: {fileID: 2906083011533219496, guid: ec3235b4e76880942bececa3e7cb246f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 124.298386
+      objectReference: {fileID: 0}
+    - target: {fileID: 2906083011533219496, guid: ec3235b4e76880942bececa3e7cb246f,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2906083011533219496, guid: ec3235b4e76880942bececa3e7cb246f,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2906083011533219496, guid: ec3235b4e76880942bececa3e7cb246f,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2906083011533219496, guid: ec3235b4e76880942bececa3e7cb246f,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2906083011533219496, guid: ec3235b4e76880942bececa3e7cb246f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2906083011533219496, guid: ec3235b4e76880942bececa3e7cb246f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2906083011533219496, guid: ec3235b4e76880942bececa3e7cb246f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4290098268665992116, guid: ec3235b4e76880942bececa3e7cb246f,
+        type: 3}
+      propertyPath: m_Name
+      value: PurpleCristalExplosion Variant
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ec3235b4e76880942bececa3e7cb246f, type: 3}

@@ -15,28 +15,27 @@ public class OnAirState : State
     public override void OnStateEnter()
     {
         player.animator.SetBool("bOnAir", true);
+        player.forceNormalGravity = true;
         base.OnStateEnter();
     }
     public override void OnStateExit()
     {
         player.animator.SetBool("bOnAir", false);
+        player.animator.ResetTrigger("tJump");
+        player.forceNormalGravity = false;
         base.OnStateExit();
     }
     public override void OnStateUpdate()
     {
         base.OnStateUpdate(); 
-        player.PlayerMovment(movmentIntensity);
-        player.RotateBodyToFace();
-        if(player.isGrounded())
-        {
+       
+        if(player.IsGrounded())
             player.stateMachine.ChangeState(player.idleState);
-            player.forceNormalGravity = false;
-        }
-            
-        
     }
     public override void OnStateFixedUpdate()
     {
+        player.PlayerMovment(movmentIntensity);
+        player.RotateBodyToFace();
         base.OnStateFixedUpdate();
     }
     public override void OnStateLateUpdate()

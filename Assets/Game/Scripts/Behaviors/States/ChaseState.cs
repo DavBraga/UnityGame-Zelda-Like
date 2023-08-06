@@ -7,36 +7,37 @@ public class ChaseState : State
 {
     CreatureController controller;
     float chaseDuration=0;
-    State combatState;
+    State meleeState;
     State fallBackState;
     State rangedState;
+    Vector3 targetPosition;
     public ChaseState(CreatureController controller) : base("ChaseState")
     {
         this.controller =controller;
     }
-
     public void  SetUpState(State combatState, State fallBackState, State rangedState )
     {
-        this.combatState = combatState;
+        this.meleeState = combatState;
         this.fallBackState = fallBackState;
         this.rangedState = rangedState;
     }
-
-       public void  SetUpState(State combatState, State fallBackState)
+    public void  SetUpState(State combatState, State fallBackState)
     {
-        this.combatState = combatState;
+        this.meleeState = combatState;
         this.fallBackState = fallBackState;
         this.rangedState = this.fallBackState;
     }
     public override void OnStateEnter()
     {
         base.OnStateEnter();
-        
-        controller.myNavAgent.isStopped =false;
+        if(controller.myNavAgent.enabled)
+        controller.myNavAgent.isStopped =false; 
         if(GameManager.Instance)
         controller.gameObject.transform.LookAt(GameManager.Instance.GetPlayer().transform);
         
         chaseDuration=controller.ceaseFollowThreshold;
+        targetPosition = GameManager.Instance.GetPlayer().transform.position;
+        controller.myNavAgent.SetDestination(targetPosition);
     }
     public override void OnStateExit()
     {
@@ -45,42 +46,53 @@ public class ChaseState : State
     public override void OnStateUpdate()
     {
         base.OnStateUpdate();
-        Vector3 targetPosition = GameManager.Instance.GetPlayer().transform.position;
+
+        targetPosition = GameManager.Instance.GetPlayer().transform.position;
+       
+        bool rangeCheckResult = RangeCheck(targetPosition);
+        bool SightCheckResult = SightCheck(targetPosition);
+
+        if (rangeCheckResult && SightCheckResult)
+        {
+            controller.stateMachine.ChangeState(meleeState);
+            return;
+        }
         //set destination
+        if(controller.myNavAgent.enabled)
         controller.myNavAgent.SetDestination(targetPosition);
         // cease if too far away
-        if(!CreatureHelper.IstargetInRange(controller.sightRange, controller.transform.position,GameManager.Instance.GetPlayer().transform.position))
+        if (!CreatureHelper.IstargetInRange(controller.sightRange, controller.transform.position, GameManager.Instance.GetPlayer().transform.position))
         {
             //todo
             controller.stateMachine.ChangeState(fallBackState);
             return;
         }
-        
-        if((chaseDuration-=Time.deltaTime)<0)
-        {
-            //if cant see anymore give up
-            bool SightCheckResult = CreatureHelper.IsTargetOnSight(
-                GameManager.Instance.GetPlayer().transform.position,
-                controller.transform.position, 
-                controller.sightRange);
 
-            if(!SightCheckResult)
+        //after a while chasing do something else
+        if ((chaseDuration -= Time.deltaTime) < 0)
+        {
+            if (!SightCheckResult)
             {
                 controller.stateMachine.ChangeState(fallBackState);
                 return;
             }
-                
-            //swap to attack if in attackrange
-            bool rangeCheckResult =  
-                CreatureHelper.IstargetInRange(controller.baseAttack.AttackRadius,
-                controller.transform.position,targetPosition);
-                
-            if(rangeCheckResult)
+            //change state based on range  
+            if (rangeCheckResult)
             {
-                controller.stateMachine.ChangeState(combatState);
+                controller.stateMachine.ChangeState(meleeState);
             }
-            else    controller.stateMachine.ChangeState(rangedState);  
+            else controller.stateMachine.ChangeState(rangedState);
         }
+    }
+    private bool RangeCheck(Vector3 targetPosition)
+    {
+        return CreatureHelper.IstargetInRange(controller.meleeRange,
+            controller.transform.position, targetPosition);
+    }
+    private bool SightCheck(Vector3 targetPosition)
+    {
+       return CreatureHelper.IsTargetOnSight(targetPosition,
+            controller.transform,controller.sightRange);
     }
     public override void OnStateLateUpdate()
     {

@@ -8,11 +8,20 @@ public class RangedAttack_SO : Attack_SO
     [Header ("Projectile")]
     [SerializeField] public GameObject projectilePrefab;
     [SerializeField] float projectileLifeTime=1f;
+    [SerializeField] float projectileTravelSpeed = 10f;
+    bool isDirectProjectile = false;
+    private void Awake() {
+        if(projectilePrefab.TryGetComponent<Projectile>(out Projectile projectile))
+        {
+            isDirectProjectile = true;
+        }
+    }
 
-    public override void Attack(CreatureController controller)
+    public override void AttackEffect(CreatureController controller, Transform controllerTransform)
     {
-        //base.Attack(controller);
-        Debug.Log("Used an ranged attack");
-        Instantiate(projectilePrefab,controller.projectilesOrigin.position,controller.transform.rotation);
+        //todo use pooling instead
+       GameObject projectile = Instantiate(projectilePrefab,controller.projectilesOrigin.position,controller.projectilesOrigin.rotation);
+       if(isDirectProjectile)
+       projectile.GetComponent<Projectile>().SetUpProjectile(AttackDamage, AttackPushPower,projectileTravelSpeed,projectileLifeTime);
     }
 }

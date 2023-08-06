@@ -9,6 +9,14 @@ EditorBuildSettings:
     path: Assets/_Prototype/Tests.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
+    path: Assets/Game/Scenes/MainMenu.unity
+    guid: 3870ed88682f9794b82d8f72332fe6e5
+  - enabled: 1
     path: Assets/Game/Scenes/Level.unity
     guid: 1cfaf7bfa60e2994d8bdd52e4ec31812
-  m_configObjects: {}
+  - enabled: 1
+    path: Assets/Game/Scenes/Ending.unity
+    guid: fa71111dc6b8e454f9901f70044b3c13
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 634bb87af0c1a5449a6810cc739f771a,
+      type: 2}

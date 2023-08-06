@@ -52,7 +52,7 @@ public class InteractiveObjectByEvent : MonoBehaviour, IInteractable
         return gameObject.transform.position;
     }
 
-    public void Interact()
+    public void Interact(GameObject interactor = null)
     {
         if(!canInteract) return;
         onInteraction?.Invoke();
@@ -77,6 +77,5 @@ public class InteractiveObjectByEvent : MonoBehaviour, IInteractable
         } 
         
         inRange = isClose;
-        Debug.Log("object is flagged: "+ inRange);
     }
 }

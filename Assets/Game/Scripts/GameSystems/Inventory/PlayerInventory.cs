@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,16 +6,24 @@ using UnityEngine.Events;
 
 public class PlayerInventory : MonoBehaviour
 {
-    //public UnityAction<>
-    [SerializeField] ItemTypeSO keys;
-    [SerializeField] ItemTypeSO potions;
-    [SerializeField] ItemTypeSO bossKeys;
-    [SerializeField] ItemTypeSO bombs;
-    [SerializeField]int ownedKeys=0;
-    [SerializeField]int ownedPotions=0;
-    [SerializeField] int maxOwnedPotions=0;
+    public UnityAction<ItemSO> onChangeItems;
+    [SerializeField] InventoryItem[] acquirableItems;
     [SerializeField] InventoryComunication inventoryComunicationChannel;
-    bool hasBossKey = false;
+    AudioSource audioSource;
+
+    Dictionary<ItemSO,int> inventoryItens= new();
+    Dictionary<ItemSO,int> inventoryItensMaxValues= new();
+
+    private void Awake() {
+        foreach(InventoryItem itemEntry in acquirableItems)
+        {
+            inventoryItens.Add(itemEntry.item,itemEntry.startingAmount);
+            inventoryItensMaxValues.Add(itemEntry.item,itemEntry.MaxAcquirable);
+        }
+        audioSource = GetComponent<AudioSource>();
+
+    }
+
     private void OnEnable() {
         if(inventoryComunicationChannel)
         inventoryComunicationChannel.RegisterInventory(this);
@@ -23,72 +32,81 @@ public class PlayerInventory : MonoBehaviour
         if(inventoryComunicationChannel)
         inventoryComunicationChannel.UnregisterInventory(this);
     }
-    public void AddItem(ItemSO item)
-    {
-        if(item.GetItemType() == keys)
-        {
-            AddKey();
-        }
-        else if(item.GetItemType()==bossKeys)
-        {
-            hasBossKey = true;
-        }
-        else if(item.GetItemType()== potions)
-        {
-            AddPotion();
-        }
-        else if (item.GetItemType()==bombs)
-        {
-            GameManager.Instance.GetPlayer().GetComponent<PlayerController>().LearnBombSkill();
-        }
-    }
-    public bool RemoveItem(ItemSO item)
-    {
-        if(item.GetItemType() == keys)
-        {
-          return RemoveKey();
-        }
-        else if(item.GetItemType()==bossKeys)
-        {
-            hasBossKey =false;
-        }
-        else if(item.GetItemType()== potions)
-        {
-            RemovePotion();
-        }
-        return true;
-    }
-    private void AddKey()
-    {
-        ownedKeys ++;
-    }
-    private bool RemoveKey()
-    {
-        if(--ownedKeys<0)
-        {
-            ownedKeys = 0;
-            return false;
-        }
-        return true;
-    }
 
-    public int GetKeyCount()
+    public bool AddItem(ItemSO item,int amount=1)
     {
-        return ownedKeys;
-    }
-
-    private void AddPotion()
-    {
-        if(++ownedPotions>maxOwnedPotions) 
-            ownedPotions = maxOwnedPotions;
-    }
-     private bool RemovePotion()
-    {
-        if(--ownedPotions<0)
+        if(!inventoryItens.ContainsKey(item))
         {
-            ownedPotions =0;
+            Debug.Log("Trying to acquire a non acquirable item:"+ item.name);
             return false;
         } 
+        inventoryItens[item]+=amount;
+        if(inventoryItens[item]>inventoryItensMaxValues[item])
+            inventoryItens[item] = inventoryItensMaxValues[item];
+        
+        onChangeItems?.Invoke(item);
+        
+        if(item.GotSound())
+        audioSource.PlayOneShot(item.GetSound());
         return true;
     }
+    public bool RemoveItem(ItemSO item,int amount=1)
+    {
+        if(!inventoryItens.ContainsKey(item))
+        {
+            Debug.LogError("Trying to remove a non acquirable item:"+ item.name);
+            return false;
+        } 
+        inventoryItens[item]-=amount;
+
+        if(inventoryItens[item]<0)
+        {
+            inventoryItens[item] = 0;
+            
+            return false;
+        }
+        onChangeItems?.Invoke(item);
+        return true; 
+    }
+    public int GetItemCount(ItemSO item)
+    {
+        if(!inventoryItens.ContainsKey(item))
+        {
+            Debug.LogError("Trying to get a non acquirable item:"+ item.name);
+            return -1;
+        } 
+        return inventoryItens[item];
+    }
+
+        public int GetMaxItemCount(ItemSO item)
+    {
+        if(!inventoryItens.ContainsKey(item))
+        {
+            Debug.LogError("Trying to get a non acquirable item:"+ item.name);
+            return -1;
+        } 
+        return inventoryItensMaxValues[item];
+    }
+    [Serializable]
+    public struct InventoryItem
+    {
+        public ItemSO item;
+        public int startingAmount;
+        public int MaxAcquirable;
+    }
+
+    public bool IncreaseItemCapacity(ItemSO item,int amount =1)
+    {
+         if(!inventoryItens.ContainsKey(item))
+        {
+            Debug.LogError("Trying to acquire a non acquirable item:"+ item.name);
+            return false;
+        } 
+
+        inventoryItensMaxValues[item] +=amount;
+        onChangeItems?.Invoke(item);
+        return true;
+
+    }
 }
+
