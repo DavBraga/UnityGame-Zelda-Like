@@ -7,6 +7,8 @@
 /[Oo]bj/
 /[Bb]uild/
 /[Bb]uilds/
+/PC Builds/
+/WebGL Builds/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 
@@ -70,3 +72,7 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Ignore Unity baked light data
+/Assets/Game/Scenes/Level/
+/Assets/Game/Scenes/Ending/
