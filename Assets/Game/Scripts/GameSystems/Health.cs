@@ -30,24 +30,19 @@ public class Health : MonoBehaviour
 
     virtual public bool  TakeDamage(GameObject attacker, int damage, damageType damageType = damageType.normal)
     {
-        if(!ignoreDamage&& damageImunity!=damageType)
-        {
-            if (damageParticles) Destroy(Instantiate(damageParticles, transform), FXLifetime);
+        if(ignoreDamage) return false;
+        if(damageType == damageImunity) return false;
 
-            // damage 
-            currentHealth -= damage;
-            PlayOnDamageEvents(attacker, damage);
-            
+        if (damageParticles) Destroy(Instantiate(damageParticles, transform), FXLifetime);
+        // damage 
+        currentHealth -= damage;
+        PlayOnDamageEvents(attacker, damage);
+        // death management
+        if (currentHealth < 1) OnDeath();
+        if(destructionParticles)
+            Instantiate(destructionParticles, transform.position, Quaternion.identity);
 
-            // death management
-            if (currentHealth < 1)
-                OnDeath();
-                if(destructionParticles)
-                Instantiate(destructionParticles, transform.position, Quaternion.identity);
-
-            return true;
-        }
-        return false;
+        return true;
     }
 
     private void PlayOnDamageEvents(GameObject attacker, int damage)

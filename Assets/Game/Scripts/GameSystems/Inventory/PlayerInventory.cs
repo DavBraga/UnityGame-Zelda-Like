@@ -39,7 +39,8 @@ public class PlayerInventory : MonoBehaviour
         {
             Debug.Log("Trying to acquire a non acquirable item:"+ item.name);
             return false;
-        } 
+        }
+        if(inventoryItens[item]>=inventoryItensMaxValues[item]) return false;
         inventoryItens[item]+=amount;
         if(inventoryItens[item]>inventoryItensMaxValues[item])
             inventoryItens[item] = inventoryItensMaxValues[item];

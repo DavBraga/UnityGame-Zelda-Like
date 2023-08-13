@@ -239,4 +239,4 @@ MonoBehaviour:
   drop:
   - dropPrefab: {fileID: 7224537509089881024, guid: 09e47f451d27f3a4288777d6e0599129,
       type: 3}
-    droprate: 0.3
+    droprate: 0.5

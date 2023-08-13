@@ -34,9 +34,11 @@ public class OnAirState : State
     }
     public override void OnStateFixedUpdate()
     {
-        player.PlayerMovment(movmentIntensity);
-        player.RotateBodyToFace();
         base.OnStateFixedUpdate();
+        player.LimitMovmentSpeed(movmentIntensity);
+        player.PlayerMovment();
+        
+        player.RotateBodyToFace(movmentIntensity);
     }
     public override void OnStateLateUpdate()
     {

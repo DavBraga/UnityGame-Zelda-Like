@@ -388,7 +388,7 @@
                 {
                     "name": "",
                     "id": "5b593ff2-6827-465e-ad78-c9910c44b60a",
-                    "path": "<Keyboard>/escape",
+                    "path": "<Keyboard>/backquote",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -421,7 +421,7 @@
                 {
                     "name": "",
                     "id": "293b07ad-81bf-4346-921d-bc06b0039c54",
-                    "path": "<Keyboard>/f1",
+                    "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

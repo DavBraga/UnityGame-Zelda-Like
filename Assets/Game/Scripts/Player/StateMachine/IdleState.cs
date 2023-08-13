@@ -13,6 +13,7 @@ public class IdleState : State
     public override void OnStateEnter()
     {
         if(player.attacking) player.KeepChooping();
+        if(player.defending) player.Defend();
         base.OnStateEnter();
     }
     public override void OnStateExit()

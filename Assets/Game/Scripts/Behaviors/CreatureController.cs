@@ -6,6 +6,7 @@ using UnityEngine.AI;
 
 public class CreatureController : MonoBehaviour
 {
+    Vector3 startingPostion = new();
     public Transform creatureCenter;
     [Header("Detection")]
     public float sightRange=20f;
@@ -41,7 +42,8 @@ public class CreatureController : MonoBehaviour
 
     [Header("Chase")]
     public float ceaseFollowThreshold =2f;
-    public float chaseDuration=1f;
+    public float rangedStateIntervals = 0;
+    public bool rangedOverMelee = false;
     public Animator myAnimator{get; private set;}
     public NavMeshAgent myNavAgent{get; private set;}
 
@@ -49,6 +51,8 @@ public class CreatureController : MonoBehaviour
     [SerializeField]bool doesItDespawns = true;
     [SerializeField] GameObject despawnParticlePrefab;
     [SerializeField] float despawnDelay = 1f;
+
+     Quaternion startingRotation;
     
     public Health myHealth{get; private set;}
     public Rigidbody myRigidBody{get; private set;}
@@ -79,6 +83,43 @@ public class CreatureController : MonoBehaviour
 
         stateMachine = new StateMachine();
         SetUpStates();
+    }
+    IEnumerator WaitForGameManager()
+    {
+        Debug.Log("wait for manager");
+        yield return new WaitUntil(()=> GameManager.IsManagerReady());
+        Debug.Log("Manager ready");
+        yield return new WaitUntil(()=>GameManager.Instance.CheckForPlayer());
+        Debug.Log("found player");
+        GameManager.Instance.GetPlayer().GetComponent<PlayerController>().onDeath+= ReturnHome;
+    }
+
+    private void OnDisable() {
+        if(GameManager.Instance.GetPlayer())
+        GameManager.Instance.GetPlayer().GetComponent<PlayerController>().onDeath-= ReturnHome;
+    }
+    private void Start() {
+        startingPostion = transform.position;
+        startingRotation = transform.rotation;
+        StartCoroutine(WaitForGameManager());
+    }
+
+    private void ReturnHome()
+    {
+        Debug.Log("returning home");
+        stateMachine.ChangeState(creatureRoamingState);
+        StartCoroutine(WaitAndReturn());
+        
+        
+    }
+
+    IEnumerator WaitAndReturn()
+    {
+        yield return new WaitForSeconds(3.5f);
+        myNavAgent.ResetPath();
+        transform.position = startingPostion;
+        transform.rotation = startingRotation;
+
     }
 
     private void SetUpComponenetsReferences()
@@ -168,6 +209,7 @@ public class CreatureController : MonoBehaviour
     }
     public virtual void Die()
     {
+        GameManager.Instance.GetPlayer().GetComponent<PlayerController>().onDeath -= ReturnHome;
         stateMachine.ChangeState(creatureDeadState);
         myAnimator?.SetBool("bDead", true);
         myNavAgent.isStopped=true;
@@ -179,6 +221,7 @@ public class CreatureController : MonoBehaviour
         if(doesItDespawns)
         StartCoroutine(Despawn(despawnDelay));
     }
+
 
     IEnumerator Despawn(float delay)
     {

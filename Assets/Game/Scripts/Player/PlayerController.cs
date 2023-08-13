@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    public UnityAction onMap;
+    public UnityAction onUnpause;
     PlayerInput input;
     // state machine
     public StateMachine stateMachine{ get; private set;}
@@ -28,14 +30,14 @@ public class PlayerController : MonoBehaviour
 
     bool gotControl= true;
     public bool attacking = false;
-    bool defending = false;
+    public bool defending = false;
 
     public UnityAction onInteractHook; 
     
     //GENERAL
     public Health health{get; private set;}
 
-    [SerializeField] Collider thisCollider;
+    public Collider thisCollider;
 
     BombTool bombTool;
 
@@ -53,7 +55,7 @@ public class PlayerController : MonoBehaviour
     [Tooltip("Needs Snap Stop = true to have any effect.")]
     [SerializeField] float ExtraStopForce=5f;
 
-    [SerializeField] LayerMask collisionsLayer;
+    //[SerializeField] LayerMask collisionsLayer;
 
     [Header("Slope")]
     [SerializeField]float slopeAngle=0;
@@ -132,6 +134,14 @@ public class PlayerController : MonoBehaviour
         SetUpWeaponColliders();
     }
 
+    private void OnDestroy() {
+        GameManager.Instance?.RemovePlayer(this);
+    }
+
+    private void OnDisable() {
+         GameManager.Instance?.RemovePlayer(this);
+    }
+
     private void SetUpWeaponColliders()
     {
         attackCollider.GetComponent<WeaponCollision>().onHit += (collider) => { NewAttackTrigger(collider, attackPower, knockbackPower); };
@@ -149,18 +159,29 @@ public class PlayerController : MonoBehaviour
         yield return new WaitUntil(()=>GameManager.IsManagerReady());
         GameManager.Instance.SetPlayer(this);
         GameManager.Instance.onGameGoesCinematics+=HaltEverything;
-        GameManager.Instance.onGAmeGoesPlayMode += ()=>input.ActivateInput();
+        GameManager.Instance.onGAmeGoesPlayMode += UnHaltEverything;
 
     }
 
     public void HaltEverything()
     {
-        input.CancelInvoke();
+        // input.CancelInvoke();
         input.DeactivateInput();
-        input.CancelInvoke();
+        // input.CancelInvoke();
         attacking = false;
         defending = false;
         inputMovmentVector = Vector2.zero;
+    }
+
+    
+    public void UnHaltEverything()
+    {
+        // input.CancelInvoke();
+        attacking = false;
+        defending = false;
+        inputMovmentVector = Vector2.zero;
+        input.ActivateInput();
+       
     }
     private void Update()
     {
@@ -173,7 +194,7 @@ public class PlayerController : MonoBehaviour
         SufferGravity();
         if(GameManager.Instance.GameState != GameState.playing) return;
         stateMachine.FixedUpdate();
-        LimitMovmentSpeed();
+        //LimitMovmentSpeed();
         if(!SnapStop) return;
         if(inputMovmentVector.isZero())StopFaster(ExtraStopForce);
     }
@@ -235,10 +256,10 @@ public class PlayerController : MonoBehaviour
 
     public bool KeepChooping()
     {   
-        
+        Debug.Log("keep chopping");
         if(!gotControl|| GameManager.Instance.GameState!= GameState.playing) return false; 
         //
-        if(Time.time<exitiAttackTime) return false;
+       if(Time.time<exitiAttackTime) return false;
         //if(!inputMovmentVector.isZero()) return false;
 
         if(stateMachine.currentState!=attackState)
@@ -261,20 +282,20 @@ public class PlayerController : MonoBehaviour
 
     public void Die()
     {
+        thisCollider.enabled= false;
         if(stateMachine.currentState!= deadState)
             stateMachine.ChangeState(deadState);
-            HaltEverything();
-            myRigidbody.isKinematic = true;
-            onDeath?.Invoke();
     }
 
     public void Ressurect()
     {
+        thisCollider.enabled = true;
+        myRigidbody.isKinematic = false;
         if(stateMachine.currentState == deadState)
         {
             Debug.Log("ressurected");
             deadCamera.SetActive(false);
-            myRigidbody.isKinematic = false;
+            
             StartCoroutine(WaitAndRess());
         }
         
@@ -284,12 +305,14 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         stateMachine.ChangeState(idleState);
-        health.SetIgnoreDamage(false);
+        //health.SetIgnoreDamage(true);
+        yield return new WaitForSeconds(2f);
+        
         
         health.Heal(Mathf.RoundToInt(health.GetMaxHealth()/2));
-        stateMachine.ChangeState(idleState);
-        input.ActivateInput();
-        input.CancelInvoke();
+       
+        health.SetIgnoreDamage(false);
+        UnHaltEverything();
         TryGivePlayerControl();
     }
     private void SufferGravity()
@@ -302,22 +325,24 @@ public class PlayerController : MonoBehaviour
 
     //REACTION METHODS
 
-    public void TakeDamage(GameObject attacker, int damage)
+    public bool TakeDamage(GameObject attacker, int damage)
     {
-        if(stateMachine.currentState == deadState) return;
-        if(stateMachine.currentState== defendState&& !shieldBlock.DirectionCanDealDamage(attacker)) return;
+        if(stateMachine.currentState == deadState) return false;
+        if(stateMachine.currentState== defendState&& !shieldBlock.DirectionCanDealDamage(attacker)) return false;
        
         // check attacksuccess
         if(stateMachine.currentState!= hurtState)
         {
-            health.TakeDamage(attacker, damage);
+           if(!health.TakeDamage(attacker, damage)) return false;
+
             if(health.GetCurrentHealth()<1)
             {
                 stateMachine.ChangeState(deadState);
-                return;
+                return true;
             }  
             stateMachine.ChangeState(hurtState);   
         }
+        return false;
     }
     public void BePushed(GameObject pusher,float pushPower, Vector3 direction)
     {
@@ -340,12 +365,12 @@ public class PlayerController : MonoBehaviour
         if(Mathf.Abs(myRigidbody.velocity.magnitude)<.5f) return;
         myRigidbody.AddForce(-myRigidbody.velocity.normalized * stopPower);
     }
-    private void LimitMovmentSpeed()
+    public void LimitMovmentSpeed(float factor=1)
     {
         Vector3 horizontalVelocity = new Vector3(myRigidbody.velocity.x, 0f, myRigidbody.velocity.z);
-        if (horizontalVelocity.magnitude > maxSpeed)
+        if (horizontalVelocity.magnitude > (maxSpeed*factor))
         {
-            horizontalVelocity = horizontalVelocity.normalized * maxSpeed;
+            horizontalVelocity = horizontalVelocity.normalized * (maxSpeed*factor);
             myRigidbody.velocity = new Vector3(horizontalVelocity.x, myRigidbody.velocity.y, horizontalVelocity.z);
         }
     }
@@ -474,14 +499,18 @@ public class PlayerController : MonoBehaviour
     }
     public bool TryGivePlayerControl()
     {
+       // UnHaltEverything();
         // if(stateMachine.currentState== hurtState) return false;
         // if(stateMachine.currentState == deadState) return false;
-        return gotControl = true;
+         gotControl = true;
+         return gotControl;
+        
     }
 
     public void RemovePlayerControl()
     {
         gotControl = false;
+        
     }
     public void SetMovment(InputAction.CallbackContext value)
     {
@@ -490,16 +519,23 @@ public class PlayerController : MonoBehaviour
 
     public void SetUpJump(InputAction.CallbackContext value)
     {
-
+        if(GameManager.Instance.GameState != GameState.playing) return;
+        if(!gotControl) return;
         if(value.performed)
          Jump(); 
     }
     public void SetAttack(InputAction.CallbackContext value)
     {
-        Debug.Log("reading");
+        if(GameManager.Instance.GameState != GameState.playing) return;
+        //if(!gotControl) return;
 
-        if(value.started)
-        KeepChooping();
+        // if(value.started)
+        if(value.performed)
+        {
+            KeepChooping();
+            Debug.Log("doing");
+        }
+        
         attacking = !value.canceled;
         
         if(value.canceled) 
@@ -512,7 +548,7 @@ public class PlayerController : MonoBehaviour
     public void SetBlock(InputAction.CallbackContext value)
     {
         if(GameManager.Instance.GameState != GameState.playing) return;
-        if(!gotControl) return;
+       // if(!gotControl) return;
 
         defending = !value.canceled;
         Defend();
@@ -522,6 +558,7 @@ public class PlayerController : MonoBehaviour
     {
         if(GameManager.Instance.GameState != GameState.playing) return;
         if(!gotControl) return;
+        if(defending) return;
         if(value.performed)
         bombTool.PutBomb(); 
     }
@@ -535,14 +572,23 @@ public class PlayerController : MonoBehaviour
     }
     public void SetUseInteraction(InputAction.CallbackContext value)
     {
-
+        if(GameManager.Instance.GameState != GameState.playing) return;
+        if(!gotControl) return;
         if(value.performed)
         onInteractHook?.Invoke();
     }
     public void SetPauseGame(InputAction.CallbackContext value)
     {
+         
         if(value.performed)
-        GameManager.Instance.TogglePause();
+            GameManager.Instance.TogglePause();
+        
+    }
+
+    public void SetMap(InputAction.CallbackContext value)
+    {
+        if(!gotControl) return;
+        onMap?.Invoke();
     }
     public void IncreaseAttackPower(int amount =1)
     {

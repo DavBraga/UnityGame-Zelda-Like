@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour
         if(this.player==player)
         {
             this.player = null;
-            if(player==null)
+           // if(player==null)
             gotPlayer = false;
             return true;
         }
@@ -101,6 +101,7 @@ public class GameManager : MonoBehaviour
     public void PauseGame()
     {
         if(gameState!= GameState.cinematic)
+        
         onGamePauses?.Invoke();
         ChangeGameState(GameState.pause);
         Time.timeScale = 0;
@@ -117,9 +118,14 @@ public class GameManager : MonoBehaviour
     public void TogglePause()
     {  
         if(gameState == GameState.pause)
-        UnPauseGame();
+        {
+            UnPauseGame();
+        }
         else
-        PauseGame();
+        {
+            PauseGame();
+        }
+        
     }
     public void PlayGame()
     {

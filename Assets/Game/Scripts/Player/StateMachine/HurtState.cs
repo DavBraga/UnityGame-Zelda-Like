@@ -18,11 +18,13 @@ public class HurtState: State
         player.animator.SetTrigger("tHurt");
         hurtDuration = player.hurtDuration;
         player.RemovePlayerControl();
+        Time.timeScale = .7f;
     }
     public override void OnStateExit()
     {
         base.OnStateExit();
         player.TryGivePlayerControl();
+         Time.timeScale = 1f;
     }
     public override void OnStateUpdate()
     {

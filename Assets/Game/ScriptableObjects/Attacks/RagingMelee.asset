@@ -19,7 +19,7 @@ MonoBehaviour:
   warmupTime: 0.1
   damageDelay: 0.4
   attackDamage: 2
-  attackPushPower: 70
+  attackPushPower: 45
   lookAtMyTarget: 1
   activationFX: {fileID: 0}
   hitFX: {fileID: 9162766622479337070, guid: 83bda84d53a21a24183f774ff300901e, type: 3}

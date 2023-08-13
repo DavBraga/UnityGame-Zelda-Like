@@ -461,8 +461,7 @@ MonoBehaviour:
   hurtDuration: 0.3
   staggerImunityDuration: 0.15
   isUnstoppable: 0
-  ceaseFollowThreshold: 2
-  chaseDuration: 1
+  ceaseFollowThreshold: 25
   doesItDespawns: 1
   despawnParticlePrefab: {fileID: 7672096331310234116, guid: 839bdfcea31d04741848360d58a2200f,
     type: 3}

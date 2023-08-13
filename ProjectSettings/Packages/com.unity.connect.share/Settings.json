@@ -19,7 +19,7 @@
             {
                 "type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
                 "key": "buildOutputDirList",
-                "value": "{\"m_Value\":\"D:/Projetos/Unity/DioChallenger/Zelda Like/WebGL Builds;;;;;;;;;\"}"
+                "value": "{\"m_Value\":\"D:/Projetos/Unity/DioChallenger/Zelda Like/WebGL Builds/0.1.4;D:/Projetos/Unity/DioChallenger/Zelda Like/WebGL Builds/0.1.31;D:/Projetos/Unity/DioChallenger/Zelda Like/WebGL Builds/0.1.3;D:/Projetos/Unity/DioChallenger/Zelda Like/WebGL Builds/0.1.2;D:/Projetos/Unity/DioChallenger/Zelda Like/WebGL Builds/0.1.1;D:/Projetos/Unity/DioChallenger/Zelda Like/WebGL Builds;;;;\"}"
             }
         ]
     }

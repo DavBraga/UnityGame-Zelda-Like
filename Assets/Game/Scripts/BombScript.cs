@@ -35,9 +35,14 @@ public class BombScript : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(transform.position, blastRadius,effectMask);
         foreach(Collider collider in colliders)
         {
-            if(collider.TryGetComponent<Health>(out Health healthComp))
-                healthComp.TakeDamage(this.gameObject, blastPower,damageType.bomb); 
-            
+            if(collider.TryGetComponent(out CreatureController creatureController))
+            {
+                creatureController.TakeDamage(this.gameObject,blastPower);
+            }
+            else
+                if(collider.TryGetComponent(out Health healthComp))
+                    healthComp.TakeDamage(this.gameObject, blastPower,damageType.bomb);
+                     
             Vector3 pushDirection = collider.transform.position - transform.position;
             pushDirection.Normalize(); 
             collider.gameObject.GetComponent<Pushable>()?.BePushed(pushPower,pushDirection);

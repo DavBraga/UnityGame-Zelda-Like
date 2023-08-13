@@ -16,7 +16,7 @@ MonoBehaviour:
   attackRange: 2
   attackDuration: 1.1
   attackCoolDown: 0.6
-  warmupTime: 0.1
+  warmupTime: 0.3
   damageDelay: 0.5
   attackDamage: 1
   attackPushPower: 15

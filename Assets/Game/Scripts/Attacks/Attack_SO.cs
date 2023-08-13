@@ -73,7 +73,7 @@ public class Attack_SO : ScriptableObject
         // check for player collide hits
         RaycastHit[] hits = Physics.SphereCastAll(attackerController.transform.position, attackRadius,
             targetDirection,
-           AttackRange, LayerMask.GetMask("Actors"));           
+           AttackRange, LayerMask.GetMask("Player"));           
         // debug only on editor
         Debug.DrawRay(controllerTransform.position,
             CreatureHelper.GetTargetDirection(controllerTransform.position),
@@ -113,6 +113,6 @@ public class Attack_SO : ScriptableObject
     }
     protected void DealDamage(GameObject attacker, PlayerController player)
     {
-        player.TakeDamage(attacker, AttackDamage);
+        if(player.TakeDamage(attacker, AttackDamage)) Debug.Log("my target died");
     }
 }

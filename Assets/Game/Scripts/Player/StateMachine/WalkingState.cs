@@ -30,7 +30,9 @@ public class WalkingState : State
     {
         base.OnStateFixedUpdate();    
         player.PlayerMovment();
+        player.LimitMovmentSpeed();
         player.RotateBodyToFace();
+        
     }
     public override void OnStateLateUpdate()
     {

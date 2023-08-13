@@ -35,6 +35,10 @@ public class DefendState : State
     public override void OnStateFixedUpdate()
     {
         base.OnStateFixedUpdate();
+        player.LimitMovmentSpeed(.1f);
+        player.PlayerMovment();
+        
+        player.RotateBodyToFace(.03f);
     }
     public override void OnStateLateUpdate()
     {

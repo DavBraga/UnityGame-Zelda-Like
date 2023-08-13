@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   power: 1
   explosionRadius: 2
-  pushPower: 15
+  pushPower: 10
   damageLayer:
     serializedVersion: 2
     m_Bits: 1024

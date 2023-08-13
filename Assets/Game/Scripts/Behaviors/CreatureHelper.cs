@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CreatureHelper : MonoBehaviour
 {
+    static readonly int nonActorsMask = LayerMask.GetMask("Player") | LayerMask.GetMask("Default");
     public static bool IstargetInRange(float distance, Vector3 myPos, Vector3 targetPos)
     {
         if (Vector3.Distance(myPos, targetPos) > distance) return false;
@@ -12,7 +13,6 @@ public class CreatureHelper : MonoBehaviour
 
     public static bool CanIHearMyTarget(Vector3 targetPos,Transform myTransform,float hearRange, float myEyeHeight=.7f)
     {
-        int nonActorsMask = LayerMask.GetMask("Actors") | LayerMask.GetMask("Default");
         // check if target is close to be heared
         if(!IstargetInRange(hearRange,myTransform.position, targetPos)) return false;
         Vector3 direction = (targetPos - myTransform.position).normalized;
@@ -21,7 +21,7 @@ public class CreatureHelper : MonoBehaviour
 
     public static bool IsTargetOnSight(Vector3 targetPos,Transform myTransform,float sightRange,float dotFactor=.15f, float myEyeHeight=.7f)
     {
-        int nonActorsMask = LayerMask.GetMask("Actors") | LayerMask.GetMask("Default");
+        
         Vector3 direction = (targetPos - myTransform.position).normalized;
         
         if(Vector3.Dot(myTransform.forward,direction)<dotFactor) return false;

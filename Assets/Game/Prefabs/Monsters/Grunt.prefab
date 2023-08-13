@@ -761,7 +761,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 5686151952628674566}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.55
+  m_Radius: 1
   m_Speed: 4
   m_Acceleration: 10
   avoidancePriority: 50
@@ -787,9 +787,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   creatureCenter: {fileID: 0}
-  sightRange: 20
-  meleeRange: 2
-  hearRange: 5
+  sightRange: 15
+  meleeRange: 2.5
+  hearRange: 7
   isattacking: 0
   baseAttack: {fileID: 11400000, guid: 108a8bc111c2f3345aa11130e18f4dc0, type: 2}
   rangedAttack: {fileID: 0}
@@ -799,8 +799,9 @@ MonoBehaviour:
   hurtDuration: 0.3
   staggerImunityDuration: 2.5
   isUnstoppable: 0
-  ceaseFollowThreshold: 2
-  chaseDuration: 1
+  ceaseFollowThreshold: 10
+  rangedStateIntervals: 0
+  rangedOverMelee: 0
   doesItDespawns: 1
   despawnParticlePrefab: {fileID: 7672096331310234116, guid: 839bdfcea31d04741848360d58a2200f,
     type: 3}

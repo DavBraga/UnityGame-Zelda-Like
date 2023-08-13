@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackRadius: 2.5
   attackRange: 2
-  attackDuration: 0.55
-  attackCoolDown: 0.3
-  warmupTime: 0.4
+  attackDuration: 0.85
+  attackCoolDown: 0.6
+  warmupTime: 0.45
   damageDelay: 0.25
   attackDamage: 2
-  attackPushPower: 15
+  attackPushPower: 10
   lookAtMyTarget: 1
   activationFX: {fileID: 0}
   hitFX: {fileID: 1443014512838139566, guid: 0b8d48b3739098f4a9a5e3bbe3beff96, type: 3}

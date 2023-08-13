@@ -14,12 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackRadius: 1.5
   attackRange: 1.5
-  attackDuration: 1.5
+  attackDuration: 1.3
+  attackCoolDown: 1
+  warmupTime: 0
   damageDelay: 0.3
   attackDamage: 1
-  attackPushPower: 30
+  attackPushPower: 15
   lookAtMyTarget: 1
   activationFX: {fileID: 0}
+  hitFX: {fileID: 0}
   animationTag: tAttack
   projectilePrefab: {fileID: 7154594327498075019, guid: 6ef252945869637438207ca3ec79e10e,
     type: 3}

@@ -10,4 +10,11 @@ public class PowerUpMessages : MonoBehaviour
    {
         this.message.text = message;
    }
+
+   private void OnEnable() {
+      GameManager.Instance.GetPlayer().GetComponent<PlayerController>().HaltEverything();
+   }
+   private void OnDisable() {
+      GameManager.Instance.GetPlayer().GetComponent<PlayerController>().UnHaltEverything();
+   }
 }

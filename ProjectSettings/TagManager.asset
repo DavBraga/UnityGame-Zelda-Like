@@ -19,7 +19,7 @@ TagManager:
   - Ground
   - Platforms
   - 
-  - 
+  - Player
   - Actors
   - Projectiles
   - Pickalbes
@@ -40,7 +40,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - MiniMap
   - Editor Only
   m_SortingLayers:
   - name: Default

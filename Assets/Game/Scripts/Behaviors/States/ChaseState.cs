@@ -11,6 +11,7 @@ public class ChaseState : State
     State fallBackState;
     State rangedState;
     Vector3 targetPosition;
+    float lastRangedState =0;
     public ChaseState(CreatureController controller) : base("ChaseState")
     {
         this.controller =controller;
@@ -56,6 +57,15 @@ public class ChaseState : State
         {
             controller.stateMachine.ChangeState(meleeState);
             return;
+        } 
+        if(controller.rangedOverMelee&& Time.time>lastRangedState+ controller.rangedStateIntervals)
+        {
+            if(SightCheck(targetPosition))
+            {
+                lastRangedState = Time.time;
+                controller.stateMachine.ChangeState(rangedState);
+                return;
+            } 
         }
         //set destination
         if(controller.myNavAgent.enabled)

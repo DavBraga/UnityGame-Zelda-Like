@@ -191,7 +191,7 @@ MonoBehaviour:
   explosionPrefab: {fileID: 2446569909938481402, guid: 1a3b7409078596044b5551fd03151ad6,
     type: 3}
   pushMode: 0
-  pushPower: 25
+  pushPower: 20
 --- !u!54 &-7949896909294091184
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -23,7 +23,7 @@ public class BombTool : MonoBehaviour
     IEnumerator PlacingBombRoutine()
     {
         canBomb =false;
-        Instantiate(bombPrefab,transform.position+2*(transform.forward),Quaternion.identity);
+        Instantiate(bombPrefab,transform.position+(2*(transform.forward))+new Vector3(0,1.4f,0),Quaternion.identity);
         onPlaceBomb?.Invoke();
         yield return new WaitForSeconds(bombIntervals);
         onBombCooldownEnds?.Invoke();
