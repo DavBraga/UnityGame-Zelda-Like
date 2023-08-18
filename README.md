@@ -1,8 +1,7 @@
 # Dungeon Fall
 
-
-Jogo no playUnity: https://play.unity.com/mg/other/webgl-builds-363257
-
+Jogo no itch.io: https://bragadavi.itch.io/dungeon-fall
+Versão do código do jogo aqui no git é 0.1.4
 
 ## Descrição
 
