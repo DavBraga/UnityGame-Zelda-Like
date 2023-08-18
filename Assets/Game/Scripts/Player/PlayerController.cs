@@ -8,6 +8,9 @@ public class PlayerController : MonoBehaviour
 {
     public UnityAction onMap;
     public UnityAction onUnpause;
+
+    
+    [SerializeField] bool startWithInputs = false;
     PlayerInput input;
     // state machine
     public StateMachine stateMachine{ get; private set;}
@@ -110,16 +113,21 @@ public class PlayerController : MonoBehaviour
     public boolConditionDelegate damageConditions;
     bool canttrigger= true;
 
+    [Header("Input")]
+    ControllerRumbleManager myRumbleManager;
+
     [Header("Debug")]
     [SerializeField] string currentStateName;
 
     [SerializeField] float currentVelocity;
     public int attackstage =0;
 
+
     private void Awake()
     {
         InitializeStateMachine();
         input = GetComponent<PlayerInput>();
+        if(!startWithInputs)
         input.DeactivateInput();
         myRigidbody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
@@ -130,6 +138,7 @@ public class PlayerController : MonoBehaviour
         shieldBlock = GetComponent<ShieldBlock>();
         mySFXManager = GetComponent<SFXManager>();
         pushable = GetComponent<Pushable>();
+        myRumbleManager = GetComponent<ControllerRumbleManager>();
         bounds = thisCollider.bounds;
         SetUpWeaponColliders();
     }
@@ -236,7 +245,6 @@ public class PlayerController : MonoBehaviour
 
              if(!IsGrounded()&&isTouchingSomethingAhead)
              {
-                Debug.Log("touching");
                 return;
              } 
         Debug.DrawRay(castOrigin,movmentVector*2,Color.red,.01f);
@@ -260,7 +268,6 @@ public class PlayerController : MonoBehaviour
         if(!gotControl|| GameManager.Instance.GameState!= GameState.playing) return false; 
         //
        if(Time.time<exitiAttackTime) return false;
-        //if(!inputMovmentVector.isZero()) return false;
 
         if(stateMachine.currentState!=attackState)
             stateMachine.ChangeState(attackState);
@@ -339,10 +346,11 @@ public class PlayerController : MonoBehaviour
             {
                 stateMachine.ChangeState(deadState);
                 return true;
-            }  
+            }
+            myRumbleManager.RumblePulse(.25f,.85f,hurtDuration*.65f);  
             stateMachine.ChangeState(hurtState);   
         }
-        return false;
+        return true;
     }
     public void BePushed(GameObject pusher,float pushPower, Vector3 direction)
     {

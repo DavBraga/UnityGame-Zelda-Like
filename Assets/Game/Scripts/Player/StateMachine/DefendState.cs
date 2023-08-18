@@ -38,7 +38,7 @@ public class DefendState : State
         player.LimitMovmentSpeed(.1f);
         player.PlayerMovment();
         
-        player.RotateBodyToFace(.03f);
+        //player.RotateBodyToFace(.03f);
     }
     public override void OnStateLateUpdate()
     {

@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96b23d19481ea364797def7fd439fdf6, type: 3}
   m_Name: GruntAttack
   m_EditorClassIdentifier: 
-  attackRadius: 2.5
-  attackRange: 2
-  attackDuration: 0.85
-  attackCoolDown: 0.6
-  warmupTime: 0.45
+  attackRadius: 2
+  attackRange: 0.5
+  attackDuration: 1.02
+  attackCoolDown: 0.77
+  warmupTime: 0.1
   damageDelay: 0.25
-  attackDamage: 2
+  attackDamage: 1
   attackPushPower: 10
   lookAtMyTarget: 1
   activationFX: {fileID: 0}

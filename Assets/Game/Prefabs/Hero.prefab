@@ -370,7 +370,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5649132547281052234
 Transform:
   m_ObjectHideFlags: 0
@@ -380,8 +380,8 @@ Transform:
   m_GameObject: {fileID: 615339647067290719}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.26781315, y: 0.90881044, z: 0.06022289}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.2}
+  m_LocalPosition: {x: 0.022450149, y: 0.58, z: 0.021383595}
+  m_LocalScale: {x: 0.28, y: 1.22, z: 0.49}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8864300262240082240}
@@ -450,7 +450,7 @@ BoxCollider:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 2147589367
-  m_LayerOverridePriority: 0
+  m_LayerOverridePriority: 3
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
@@ -470,6 +470,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitVfx: {fileID: 644250500410998029, guid: 09b6068b2ddda4f47a9d40f1be722702, type: 3}
+  layer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &719803877630669292
 GameObject:
   m_ObjectHideFlags: 0
@@ -971,7 +974,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7147598781152158849
 Transform:
   m_ObjectHideFlags: 0
@@ -981,8 +984,8 @@ Transform:
   m_GameObject: {fileID: 1970680696019690679}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.15, y: 0, z: 0.124}
-  m_LocalScale: {x: 0.25, y: 0.74, z: 1.5}
+  m_LocalPosition: {x: -0.15, y: -0.22, z: 0.124}
+  m_LocalScale: {x: 0.25, y: 1.1, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 505494900560010439}
@@ -1051,7 +1054,7 @@ BoxCollider:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 2147589367
-  m_LayerOverridePriority: 0
+  m_LayerOverridePriority: 3
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
@@ -1071,6 +1074,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitVfx: {fileID: 644250500410998029, guid: 09b6068b2ddda4f47a9d40f1be722702, type: 3}
+  layer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &2037200706722854289
 GameObject:
   m_ObjectHideFlags: 0
@@ -2246,7 +2252,8 @@ GameObject:
   - component: {fileID: 3588023386680757289}
   - component: {fileID: 7001629617725784315}
   - component: {fileID: 1577161762438815778}
-  m_Layer: 10
+  - component: {fileID: 5071681383695632639}
+  m_Layer: 9
   m_Name: Hero
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2308,15 +2315,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 610e423f86fb8984584ce070cd57d785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startWithInputs: 0
   attacking: 0
+  defending: 0
   thisCollider: {fileID: 0}
-  acceleration: 45
-  maxSpeed: 8
+  acceleration: 40
+  maxSpeed: 6.5
   SnapStop: 1
   ExtraStopForce: 70
-  collisionsLayer:
-    serializedVersion: 2
-    m_Bits: 1
   slopeAngle: 0
   MaxSlopeAngle: 50
   jumpPower: 10
@@ -2330,21 +2336,21 @@ MonoBehaviour:
   shieldCollider: {fileID: 1970680696019690679}
   shieldBlockVfx: {fileID: 0}
   attackPreparationTime:
-  - 0.05
+  - 0.03
   - 0.07
   - 0.12
   attackDuration:
-  - 0.3
+  - 0.27
   - 0.2
   - 0.3
   attackCooldown:
-  - 0.1
+  - 0.16
   - 0.1
   - 0.2
   attackImpulse:
   - 3
   - 5
-  - 25
+  - 12
   attackPower: 1
   knockbackPower: 5
   shieldKnocBack: 7
@@ -2511,7 +2517,8 @@ MonoBehaviour:
   gotBombTool: 0
   bombPrefab: {fileID: 4851751799453869322, guid: 2759472c906e0784bbd86d64d74965b1,
     type: 3}
-  bombIntervals: 1.5
+  bombIntervals: 3
+  placingBombRange: 2.5
 --- !u!114 &7130696774617080318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2640,7 +2647,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c2d955925d6ae140b3b5d8dd27582f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shieldDefenseRange: -0.25
+  shieldblockVFX: {fileID: 4871602434016315307, guid: c396c5f12ab50ad41a042aa936ab34ab,
+    type: 3}
+  shieldDefenseRange: -0.15
 --- !u!114 &3146682249316136297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2680,7 +2689,7 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 0.5
+          m_FloatArgument: 0.25
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -2713,6 +2722,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 1
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1577161762438815778}
+        m_TargetAssemblyTypeName: MoveWithPlatform, Assembly-CSharp
+        m_MethodName: LeavePlatform
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2877,7 +2898,19 @@ MonoBehaviour:
     m_ActionId: 35fb3673-aade-4a8e-8cdc-9f2b20578bab
     m_ActionName: Player/Pause[/Keyboard/escape,/XInputControllerWindows/start]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1891819706870232647}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: SetMap
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: c67c50d3-906d-41fc-988d-521ecca14ccc
     m_ActionName: Player/Select[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
@@ -2898,6 +2931,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   platform: {fileID: 0}
+--- !u!114 &5071681383695632639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5660140284519701741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9aad19ace05d44cac5f9aac129b21c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5797920743832173111
 GameObject:
   m_ObjectHideFlags: 0
@@ -4348,8 +4393,137 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5377340444825115547, guid: fa81e3b6822561a4f8cb0ebdf77765ab,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3456477214127482317}
+    - targetCorrespondingSourceObject: {fileID: 5377340444825115547, guid: fa81e3b6822561a4f8cb0ebdf77765ab,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6747438045837981788}
   m_SourcePrefab: {fileID: 100100000, guid: fa81e3b6822561a4f8cb0ebdf77765ab, type: 3}
+--- !u!1 &4378146769282269093 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5377340444825115547, guid: fa81e3b6822561a4f8cb0ebdf77765ab,
+    type: 3}
+  m_PrefabInstance: {fileID: 8530499316953097278}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &3456477214127482317
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4378146769282269093}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 3961223ecd55f77479ad2cae378b0ae8, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &6747438045837981788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4378146769282269093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a017c95d08e73884bb2683514b5c9f3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
+  pitchRange: {x: 1.1, y: 1.6}
+  volumeRange: {x: 0.2, y: 0.3}
+  audioRatio: 1
+  clips:
+  - {fileID: 8300000, guid: 3961223ecd55f77479ad2cae378b0ae8, type: 3}
+  playOnStart: 0
 --- !u!4 &6230544432942591374 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2311820813506382256, guid: fa81e3b6822561a4f8cb0ebdf77765ab,

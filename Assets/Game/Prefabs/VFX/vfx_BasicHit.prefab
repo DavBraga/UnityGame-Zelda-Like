@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1650629384221195931}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.33, y: 0.33, z: 0.33}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2242307151870375816}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &9176538609964258281
 ParticleSystem:
@@ -4908,6 +4908,7 @@ GameObject:
   - component: {fileID: 2242307151870375818}
   - component: {fileID: 4714420677431626002}
   - component: {fileID: 4539717718266030150}
+  - component: {fileID: 8401239977497384068}
   m_Layer: 16
   m_Name: vfx_BasicHit
   m_TagString: Untagged
@@ -4922,6 +4923,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2242307151870375829}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.5, y: 0.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -4930,7 +4932,6 @@ Transform:
   - {fileID: 5558199907770424920}
   - {fileID: 5316953622298467270}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &2242307151870375819
 ParticleSystem:
@@ -9792,7 +9793,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2242307151870375829}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c493cecb6630e44997605a8dba4a533, type: 3}
   m_Name: 
@@ -9807,7 +9808,8 @@ AudioSource:
   m_GameObject: {fileID: 2242307151870375829}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -2615436855098659132, guid: cb6ee2f8ed97fa749bcd0b0e485515a5,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: 1d74880bed4586644a16a79a2d9dc8af, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.7
@@ -9894,6 +9896,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8401239977497384068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2242307151870375829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c6595a9260dfca47ae9e3cd5bc044f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aftertime: 1
 --- !u!1 &7567547062659399807
 GameObject:
   m_ObjectHideFlags: 0
@@ -9919,13 +9934,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7567547062659399807}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2242307151870375816}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!198 &6204480336455582202
 ParticleSystem:

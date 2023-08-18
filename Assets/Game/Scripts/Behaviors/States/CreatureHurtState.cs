@@ -6,6 +6,7 @@ public class CreatureHurtState : State
 {
     CreatureController controller;
     float hurtDuration;
+    float imunityDuration;
     State fallBackState;
     public CreatureHurtState(CreatureController controller) : base("CreatureHurt")
     {
@@ -19,6 +20,7 @@ public class CreatureHurtState : State
         controller.myHealth.SetIgnoreDamage(true);
         controller.myNavAgent.isStopped = true;
         hurtDuration = controller.hurtDuration;
+        imunityDuration =Time.time+ controller.imunityDuration;
         
     }
 
@@ -38,6 +40,7 @@ public class CreatureHurtState : State
     {
         base.OnStateUpdate();
         hurtDuration -= Time.deltaTime;
+        if(Time.time>imunityDuration)controller.myHealth.SetIgnoreDamage(false);
         if(hurtDuration<=0)
             controller.stateMachine.ChangeState(fallBackState);             
 

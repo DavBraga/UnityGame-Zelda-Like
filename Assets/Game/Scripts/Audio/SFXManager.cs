@@ -19,7 +19,11 @@ public class SFXManager : MonoBehaviour
         audioSource.clip=clips[0];
     }
     private void Start() {
-        if(playOnStart) PlayAudio();
+        //if(playOnStart) PlayAudio();
+    }
+    private void OnEnable() {
+        if(playOnStart) audioSource.PlayOneShot(audioSource.clip);
+        RandomizeSound();
     }
     public void PlayAudio()
     {
@@ -30,6 +34,18 @@ public class SFXManager : MonoBehaviour
             return;
         } 
         audioSource.PlayOneShot(clips[audioToPlay]);
+        RandomizeSound();
+    }
+
+    public void PlayAudio(AudioClip clip)
+    {
+        if(audioToPlay>=clips.Length)
+        {
+            Debug.Log("no audio");
+            RandomizeSound();
+            return;
+        } 
+        audioSource.PlayOneShot(clip);
         RandomizeSound();
     }
 
@@ -60,7 +76,6 @@ public class SFXManager : MonoBehaviour
     private void RandomizeSound()
     {
         audioToPlay = Random.Range(0, clips.Length*audioRatio);
-        
         if(audioToPlay>=clips.Length) return;
         audioSource.clip = clips[audioToPlay];
         audioSource.pitch = Random.Range(pitchRange.x, pitchRange.y);

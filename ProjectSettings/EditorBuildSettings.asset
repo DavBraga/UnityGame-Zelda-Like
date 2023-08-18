@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/_Prototype/Tests.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
+    path: Assets/Game/Scenes/PreScene.unity
+    guid: 41d5f5d1c226b8b498579c642767f578
+  - enabled: 1
     path: Assets/Game/Scenes/MainMenu.unity
     guid: 3870ed88682f9794b82d8f72332fe6e5
   - enabled: 1

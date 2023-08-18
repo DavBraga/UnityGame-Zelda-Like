@@ -13,7 +13,14 @@ public class BombTool : MonoBehaviour
     [SerializeField] bool gotBombTool= false;
     [SerializeField] GameObject bombPrefab;
     [SerializeField] float bombIntervals = 3f;
+    [SerializeField] float placingBombRange =2f;
+    SphereCollider bombcollider;
+
     bool canBomb = true;
+
+    private void Awake() {
+        bombcollider = bombPrefab.GetComponent<SphereCollider>();
+    }
     public void PutBomb()
     {
         if(!gotBombTool) return;
@@ -23,7 +30,18 @@ public class BombTool : MonoBehaviour
     IEnumerator PlacingBombRoutine()
     {
         canBomb =false;
-        Instantiate(bombPrefab,transform.position+(2*(transform.forward))+new Vector3(0,1.4f,0),Quaternion.identity);
+        if(Physics.Raycast(transform.position+new Vector3(0,1.4f,0),transform.forward,out RaycastHit hitInfo,placingBombRange))
+        {
+            Vector3 pointDirection = hitInfo.point - transform.position;
+            pointDirection = new Vector3(pointDirection.x,0, pointDirection.z);
+            Instantiate(bombPrefab,hitInfo.point+(pointDirection- transform.forward*(4*bombcollider.radius)),Quaternion.identity);
+           // Vector3 pointDirection = hitInfo.point - transform.position;
+
+        }
+        else
+            Instantiate(bombPrefab,transform.position+(placingBombRange*(transform.forward))+new Vector3(0,1.4f,0)- transform.forward*(3*bombcollider.radius),Quaternion.identity);
+       // onPlaceBomb?.Invoke();
+        //Instantiate(bombPrefab,transform.position+(2*(transform.forward))+new Vector3(0,1.4f,0),Quaternion.identity);
         onPlaceBomb?.Invoke();
         yield return new WaitForSeconds(bombIntervals);
         onBombCooldownEnds?.Invoke();

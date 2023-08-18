@@ -34,6 +34,7 @@ public class CreatureController : MonoBehaviour
     [Header("Hurt")]
     public float hurtDuration= .3f;
     public float staggerImunityDuration=0.15f;
+    public float imunityDuration = .3f;
     bool isStaggerImune = false;
     float timeOfDamage;
 
@@ -86,11 +87,8 @@ public class CreatureController : MonoBehaviour
     }
     IEnumerator WaitForGameManager()
     {
-        Debug.Log("wait for manager");
         yield return new WaitUntil(()=> GameManager.IsManagerReady());
-        Debug.Log("Manager ready");
         yield return new WaitUntil(()=>GameManager.Instance.CheckForPlayer());
-        Debug.Log("found player");
         GameManager.Instance.GetPlayer().GetComponent<PlayerController>().onDeath+= ReturnHome;
     }
 

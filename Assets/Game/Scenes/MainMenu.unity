@@ -20,7 +20,7 @@ RenderSettings:
   m_FogDensity: 0.12
   m_LinearFogStart: 0
   m_LinearFogEnd: 45
-  m_AmbientSkyColor: {r: 0.24313723, g: 0.5264238, b: 0.8392157, a: 1}
+  m_AmbientSkyColor: {r: 0.34042364, g: 0.5238968, b: 0.8490566, a: 1}
   m_AmbientEquatorColor: {r: 0.0745098, g: 0.36862746, b: 0.22959022, a: 1}
   m_AmbientGroundColor: {r: 0.6313726, g: 0.5019608, b: 0.54506165, a: 1}
   m_AmbientIntensity: 1
@@ -1014,13 +1014,13 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 603049008}
-  - {fileID: 308959393}
+  - {fileID: 1354016595}
   - {fileID: 602932630}
   - {fileID: 841017565}
+  - {fileID: 603049008}
+  - {fileID: 308959393}
   - {fileID: 7662876238825797647}
   - {fileID: 1862428081}
-  - {fileID: 1354016595}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1385,7 +1385,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ver. 0.1.4
+  m_text: ver. 0.3.0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1850,7 +1850,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &424821540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4056,7 +4056,7 @@ GameObject:
   - component: {fileID: 1354016597}
   - component: {fileID: 1354016596}
   m_Layer: 5
-  m_Name: Version (1)
+  m_Name: Credits
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4078,7 +4078,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -20, y: -10}
+  m_AnchoredPosition: {x: -30, y: -30}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1354016596

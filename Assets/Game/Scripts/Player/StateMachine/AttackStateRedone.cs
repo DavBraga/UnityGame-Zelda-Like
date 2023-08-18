@@ -13,12 +13,19 @@ public class AttackStateRedone : State
 
     float startTime;
     //float DurationTime;
-    float anticipationTime;
+    float antecipationTime;
     float attackCoolDown;
     bool applyImpulse = false;
 
     float effectDuration = 0.6f;
     bool isEffectsActive = false;
+
+    bool waitForInput= false;
+    
+    bool antecipation = false;
+    bool duration = false;
+    bool cooldown = false;
+    float lastedtime = 0f;
     public AttackStateRedone(PlayerController playerController, GameObject attackCollider) : base("Attack")
     {
         player = playerController;
@@ -30,6 +37,7 @@ public class AttackStateRedone : State
         base.OnStateEnter();
         player.animator.SetBool("bIsAttacking", true);
         attackStage = 0;
+        attackCollider.SetActive(true);
         StartAttack();
         SetAttackTimers();
     }
@@ -42,47 +50,116 @@ public class AttackStateRedone : State
     }
     public override void OnStateUpdate()
     {
+        AttackRountineVer1();
+        //AttackRountineVer2();
+    }
+
+    private void AttackRountineVer2()
+    {
+        
+        base.OnStateUpdate();
+        // wait atecipation
+        if(!antecipation)
+        {
+            if(Time.time< startTime+antecipationTime) return;
+            antecipation = true;
+            Debug.Log("antecipation");
+        }
+        
+        
+        // trigger effect
+        if (!isEffectsActive)
+        {
+            TriggerAttackEffects(attackStage);
+            startTime = Time.time;
+            return;
+        } 
+        
+        //wait duration
+        if(!duration)
+        {
+            if(Time.time< startTime+effectDuration) return;
+            Debug.Log("Duration");
+            startTime = Time.time;
+            duration = true;
+            //disable effect
+            if (isEffectsActive)
+            {
+                lastedtime = Time.time - lastedtime;
+                Debug.Log(lastedtime);
+                attackCollider.SetActive(false);
+                isEffectsActive = false;
+            }
+            return;
+        }
+         //if not input leave
+        if (!player.ReadAttackInput())
+            {
+                player.stateMachine.ChangeState(player.idleState);
+                return;
+            }
+        // wait cooldown
+        if(!cooldown)
+        {
+            if(Time.time<startTime+attackCoolDown) return;
+            Debug.Log("Cooldown");
+            cooldown = true;
+            startTime = Time.time;
+            //read input 
+            if (player.ReadAttackInput())
+                {
+                    EvolveAttackStages();
+                    StartAttack();
+                    return;
+                }
+        }    
+    }
+
+    private void AttackRountineVer1()
+    {
         base.OnStateUpdate();
         // se excedeu a duração voltar para idle;
-        if(Time.time>startTime+anticipationTime+effectDuration+attackCoolDown+attackChainWindow){
+        if (Time.time > startTime + antecipationTime + effectDuration + attackCoolDown + attackChainWindow)
+        {
             player.stateMachine.ChangeState(player.idleState);
             return;
         }
         // espera antencipação
-        if(Time.time<startTime+anticipationTime) return;
+        if (Time.time < startTime + antecipationTime) return;
         // aplicar efeitos após tempo de antecipação
-        if(Time.time< startTime+ anticipationTime+effectDuration)
-        if(!isEffectsActive) TriggerAttackEffects(attackStage);
+        if (Time.time < startTime + antecipationTime + effectDuration)
+            if (!isEffectsActive) TriggerAttackEffects(attackStage);
 
         // espera o tempo de efeito para desliga-lo e ler inputs
-        if(Time.time> startTime+ anticipationTime+effectDuration)
+        if (Time.time > startTime + antecipationTime + effectDuration)
         {
             // destivar efeitos se o tempo de efeito ja passou
-            if(isEffectsActive)
+            if (isEffectsActive)
             {
+                
                 attackCollider.SetActive(false);
                 isEffectsActive = false;
             }
             //cancelar se jogador se movimenta
-            if(!player.ReadAttackInput())
+            if (!player.ReadAttackInput())
             {
                 player.stateMachine.ChangeState(player.idleState);
                 return;
             }
         }
         // após o cooldown abrir input do jogador
-         if(Time.time> startTime+ anticipationTime+effectDuration+attackCoolDown)
-            { 
-           
-                // abrir janela de encadeamento de ataques
-                if (player.ReadAttackInput())
-                {
-                    EvolveAttackStages();
-                    StartAttack();
-                    return;
-                } 
+        if (Time.time > startTime + antecipationTime + effectDuration + attackCoolDown)
+        {
+
+            // abrir janela de encadeamento de ataques
+            if (player.ReadAttackInput())
+            {
+                EvolveAttackStages();
+                StartAttack();
                 return;
             }
+            return;
+        }
     }
 
     private void StartAttack()
@@ -98,9 +175,10 @@ public class AttackStateRedone : State
 
     public void TriggerAttackEffects(int stage)
     {
-        
+        Debug.Log("triggerer");
         isEffectsActive = true;
         //turn on colliders
+        lastedtime = Time.time;
         attackCollider.SetActive(true);
         applyImpulse = true;
         //add impulse
@@ -120,9 +198,14 @@ public class AttackStateRedone : State
     private void SetAttackTimers()
     {
         startTime = Time.time;
-        anticipationTime = player.GetAttackPreparationTIme()[attackStage];
+        antecipationTime = player.GetAttackPreparationTIme()[attackStage];
         effectDuration = player.attackDuration[attackStage];
         attackCoolDown = player.attackCooldown[attackStage];
+
+        antecipation = false;
+        duration = false;
+        cooldown = false;
+
         
     }
 
@@ -135,12 +218,22 @@ public class AttackStateRedone : State
             player.PlayAttackImpulse(attackStage);
             applyImpulse = false;
         }
-        // if(Time.time< startTime+ anticipationTime+effectDuration)
-        // player.PlayerMovment(.3f);
     }   
     public override void OnStateLateUpdate()
     {
         base.OnStateLateUpdate();
+    }
+
+    IEnumerator TriggerEffectsForATime(float duration)
+    {
+        StartAttack();
+        yield return new WaitForSeconds(antecipationTime);
+        TriggerAttackEffects(attackStage);
+        yield return new WaitForSeconds(effectDuration);
+        attackCollider.SetActive(false);
+        isEffectsActive = false;
+        yield return new WaitForSeconds(attackCoolDown);
+
     }
 }
 

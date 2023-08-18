@@ -10,7 +10,7 @@ public class AttackState : State
     GameObject attackCollider;
     int attackStage = -1; 
 
-    float attackChainWindow;
+    float attackChainWindow= 2.1f;
     float stageRemainingDuration;
 
     bool applyImpulse = false;
@@ -25,8 +25,11 @@ public class AttackState : State
     public override void OnStateEnter()
     {
         base.OnStateEnter();
-       EvolveAttackStages();
-       SetVariables();
+        attackCollider.SetActive(true);
+        SetVariables();
+        EvolveAttackStages();
+       
+       
        
        player.animator.SetBool("bIsAttacking", true);
        
@@ -83,6 +86,7 @@ public class AttackState : State
         attackStage ++;
         player.attackstage = attackStage;
         applyImpulse = true;
+        attackCollider.SetActive(true);
         Debug.Log("Went stage:"+ attackStage);
         player.mySFXManager.PlayAudio();
 
@@ -97,7 +101,7 @@ public class AttackState : State
 
         if(applyImpulse)
         {
-            attackCollider.SetActive(true);
+            
             player.PlayAttackImpulse(attackStage);
             applyImpulse = false;
         }

@@ -87,7 +87,7 @@ public class Attack_SO : ScriptableObject
             if (hit.collider.gameObject.CompareTag("Player"))
             {
                 GameObject hitObj = hit.collider.gameObject;
-                if (doesItGotHitFX) Instantiate(hitFX,hitObj.transform);
+                
                 if (hitObj.TryGetComponent<PlayerController>(out PlayerController player))
                 {
                     DealDamage(attackerController.gameObject, player);
@@ -113,6 +113,7 @@ public class Attack_SO : ScriptableObject
     }
     protected void DealDamage(GameObject attacker, PlayerController player)
     {
-        if(player.TakeDamage(attacker, AttackDamage)) Debug.Log("my target died");
+        if(!player.TakeDamage(attacker, AttackDamage)) return;
+        if (doesItGotHitFX) Instantiate(hitFX,player.transform);
     }
 }

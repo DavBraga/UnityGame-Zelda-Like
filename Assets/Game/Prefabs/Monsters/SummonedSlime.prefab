@@ -460,8 +460,11 @@ MonoBehaviour:
   searchRadius: 100
   hurtDuration: 0.3
   staggerImunityDuration: 0.15
+  imunityDuration: 0.3
   isUnstoppable: 0
   ceaseFollowThreshold: 25
+  rangedStateIntervals: 0
+  rangedOverMelee: 0
   doesItDespawns: 1
   despawnParticlePrefab: {fileID: 7672096331310234116, guid: 839bdfcea31d04741848360d58a2200f,
     type: 3}
@@ -585,7 +588,8 @@ AudioSource:
   m_GameObject: {fileID: 5686151952628674566}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -2615436855098659132, guid: cb6ee2f8ed97fa749bcd0b0e485515a5,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1

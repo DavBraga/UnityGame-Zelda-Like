@@ -427,7 +427,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 360
-  m_StoppingDistance: 1.1
+  m_StoppingDistance: 0.6
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -449,7 +449,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   creatureCenter: {fileID: 0}
   sightRange: 12
-  meleeRange: 2
+  meleeRange: 1
   hearRange: 5
   isattacking: 0
   baseAttack: {fileID: 11400000, guid: 0091940b19fd5db45b1e5ee05c827368, type: 2}
@@ -459,10 +459,11 @@ MonoBehaviour:
   searchRadius: 100
   hurtDuration: 0.3
   staggerImunityDuration: 0.5
+  imunityDuration: 0.3
   isUnstoppable: 0
   ceaseFollowThreshold: 15
-  rangedStateIntervals: 0
-  rangedOverMelee: 0
+  rangedStateIntervals: 3
+  rangedOverMelee: 1
   doesItDespawns: 1
   despawnParticlePrefab: {fileID: 7672096331310234116, guid: 839bdfcea31d04741848360d58a2200f,
     type: 3}
@@ -586,7 +587,8 @@ AudioSource:
   m_GameObject: {fileID: 5686151952628674566}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -2615436855098659132, guid: cb6ee2f8ed97fa749bcd0b0e485515a5,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1

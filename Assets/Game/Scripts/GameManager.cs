@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public UnityAction onGAmeGoesPlayMode;
     public static GameManager Instance{get; private set;}
     public GameState GameState { get => gameState; set => gameState = value; }
+    [SerializeField] GameObject pauseMenu;
     [SerializeField] LayerMask groundLayer;
     [SerializeField] LayerMask collisionLayer;
    [SerializeField] GameState gameState;
@@ -103,6 +104,7 @@ public class GameManager : MonoBehaviour
         if(gameState!= GameState.cinematic)
         
         onGamePauses?.Invoke();
+        
         ChangeGameState(GameState.pause);
         Time.timeScale = 0;
     }
@@ -111,6 +113,7 @@ public class GameManager : MonoBehaviour
     { 
         ChangeGameState(GameState.playing);
         onGAmeGoesPlayMode?.Invoke();
+        
        
         Time.timeScale = 1;
     }
@@ -120,10 +123,12 @@ public class GameManager : MonoBehaviour
         if(gameState == GameState.pause)
         {
             UnPauseGame();
+            pauseMenu.SetActive(false);
         }
         else
         {
             PauseGame();
+            pauseMenu.SetActive(true);
         }
         
     }

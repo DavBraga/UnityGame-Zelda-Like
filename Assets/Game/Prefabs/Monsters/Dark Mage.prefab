@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   creatureCenter: {fileID: 0}
-  sightRange: 20
+  sightRange: 15
   meleeRange: 2
   hearRange: 7
   isattacking: 0
@@ -119,6 +119,7 @@ MonoBehaviour:
   searchRadius: 100
   hurtDuration: 0.3
   staggerImunityDuration: 0.5
+  imunityDuration: 0.3
   isUnstoppable: 0
   ceaseFollowThreshold: 10
   rangedStateIntervals: 2
@@ -246,7 +247,8 @@ AudioSource:
   m_GameObject: {fileID: 5686151952628674566}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -2615436855098659132, guid: cb6ee2f8ed97fa749bcd0b0e485515a5,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1

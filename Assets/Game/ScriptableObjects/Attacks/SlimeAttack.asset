@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SlimeAttack
   m_EditorClassIdentifier: 
   attackRadius: 1
-  attackRange: 1
+  attackRange: 0.5
   attackDuration: 1.27
   attackCoolDown: 1
   warmupTime: 0.2
