@@ -29,19 +29,23 @@ public class HudHandler : MonoBehaviour
     [Header("BombButton")]
 
     [SerializeField] Animator bombButtonAnimator;
-
+    [SerializeField] Animator bombNonVirtual;
     [SerializeField] PlayerInventory inventory;
 
     [Header("Animator")]
     [SerializeField] Animator myAnimator;
     [SerializeField] string ShowHudTrigger = "THudFadeIn";
     [SerializeField] string HideHudTrigger = "THudFadeOut";
+
+    [SerializeField] VirtualInputSetter virtualInputSetter;
+    bool virtualHud = false;
     float delay = 1f;
     float startTime = 0;
     bool isloaded = false;
 
     private void Awake()
     {
+        virtualInputSetter.onVirtualInputToggles+= SetVirtualHud;
         playerHealth.onChangeHealth += () => { 
             playerBar.UpdateMaxValue (playerHealth.GetMaxHealth()); 
             playerBar.UpdateBarValue(playerHealth.GetCurrentHealth()); 
@@ -54,12 +58,25 @@ public class HudHandler : MonoBehaviour
         mychannel.RegisterUI(this);
     }
 
+    public void SetVirtualHud(bool isOn)
+    {
+        virtualHud = isOn;
+
+    }
+
     private void SetUpBombButton()
     {
         BombTool bombTool = player.GetComponent<BombTool>();
         bombTool.onPlaceBomb += BOmbBUttonCooldown;
         bombTool.onBombCooldownEnds += BOmbBUttonReady;
-        bombTool.onLearnBombTool += () => { bombButtonAnimator.gameObject.SetActive(true); };
+        bombTool.onLearnBombTool += EnableBombButton;
+    }
+    public void EnableBombButton()
+    {
+        if(virtualHud)
+        bombButtonAnimator.gameObject.SetActive(true);
+        else
+        bombNonVirtual.gameObject.SetActive(true);
     }
 
        private void SetUpPotionButton()
@@ -73,6 +90,7 @@ public class HudHandler : MonoBehaviour
     void Start()
     {
         startTime =Time.time;
+        virtualHud = PlayerPrefs.GetInt("usingVirtualInput")>0;
     }
 
     public void UpdateItensOnHud(ItemSO itemtype)
@@ -84,12 +102,18 @@ public class HudHandler : MonoBehaviour
 
     public void BOmbBUttonReady()
     {
+        if(virtualHud)
         bombButtonAnimator.SetTrigger("tReady");
+        else
+        bombNonVirtual.SetTrigger("tReady");
     }
 
     public void BOmbBUttonCooldown()
     {
+        if(virtualHud)
         bombButtonAnimator.SetTrigger("tCooldown");
+        else
+        bombNonVirtual.SetTrigger("tCooldown");
     }
 
     // Update is called once per frame
@@ -132,6 +156,13 @@ public class HudHandler : MonoBehaviour
     {
         powerUpMessages.gameObject.SetActive(true);
         powerUpMessages.SetUpMessage(message);
+    }
+    private void OnEnable() {
+        
+    }
+    public void ReloadHud()
+    {
+
     }
 }
 

@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Screens_pt-BR
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: pt-BR
+  m_SharedData: {fileID: 11400000, guid: 492f8bfe6cdc13b4fbd312cce9d8f156, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 16094216192
+    m_Localized: Toque para Iniciar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 172973768704
+    m_Localized: Um jogo por Davi Braga
+    m_Metadata:
+      m_Items: []
+  - m_Id: 343979737088
+    m_Localized: Criado por
+    m_Metadata:
+      m_Items: []
+  - m_Id: 749359218688
+    m_Localized: "Sob a orienta\xE7\xE3o de"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 863813386240
+    m_Localized: Assets Terceirizados
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1075747373056
+    m_Localized: "Todas as M\xFAsicas por"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1329918001152
+    m_Localized: '  Obrigado por Jogar!'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26473667379200
+    m_Localized: "[Bot\xE3o Esquerdo ] Segure para atacar."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26897510187008
+    m_Localized: "[Bot\xE3o Direito] Segure para bloquear dano frontal."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27689004711936
+    m_Localized: "[Barra de espa\xE7o] para pular."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28112398729216
+    m_Localized: "[Alpha 1] para usar  po\xE7\xF5es."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28850784976896
+    m_Localized: '[WASD] para se mover.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29370132086784
+    m_Localized: '[Tab] para aumentar o mapa.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30106899333120
+    m_Localized: Bem-vindo!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30745486311424
+    m_Localized: 'Gatilho Direito: Bloquear'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31114996105216
+    m_Localized: Bombas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31385902006272
+    m_Localized: Atacar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31773870931968
+    m_Localized: Interagir
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31975302381568
+    m_Localized: Pular
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

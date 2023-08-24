@@ -107,6 +107,15 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TouchScreen"",
+                    ""type"": ""Button"",
+                    ""id"": ""2cce6bdf-2b53-49c5-9845-22dab21a00f8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -450,6 +459,17 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""action"": ""Select"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6438af7c-14a7-41f0-99d8-929f2ef5a71c"",
+                    ""path"": ""<Touchscreen>/Press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TouchScreen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -467,6 +487,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         m_Player_Select = m_Player.FindAction("Select", throwIfNotFound: true);
+        m_Player_TouchScreen = m_Player.FindAction("TouchScreen", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -537,6 +558,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_Pause;
     private readonly InputAction m_Player_Select;
+    private readonly InputAction m_Player_TouchScreen;
     public struct PlayerActions
     {
         private @GameInput m_Wrapper;
@@ -550,6 +572,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputAction @Select => m_Wrapper.m_Player_Select;
+        public InputAction @TouchScreen => m_Wrapper.m_Player_TouchScreen;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -586,6 +609,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @Select.started += instance.OnSelect;
             @Select.performed += instance.OnSelect;
             @Select.canceled += instance.OnSelect;
+            @TouchScreen.started += instance.OnTouchScreen;
+            @TouchScreen.performed += instance.OnTouchScreen;
+            @TouchScreen.canceled += instance.OnTouchScreen;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -617,6 +643,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @Select.started -= instance.OnSelect;
             @Select.performed -= instance.OnSelect;
             @Select.canceled -= instance.OnSelect;
+            @TouchScreen.started -= instance.OnTouchScreen;
+            @TouchScreen.performed -= instance.OnTouchScreen;
+            @TouchScreen.canceled -= instance.OnTouchScreen;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -645,5 +674,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
+        void OnTouchScreen(InputAction.CallbackContext context);
     }
 }

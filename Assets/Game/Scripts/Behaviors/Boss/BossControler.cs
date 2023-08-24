@@ -151,6 +151,7 @@ public class BossControler : CreatureController
         myHealth.SetIgnoreDamage(true);
         myNavAgent.enabled = false;
         Teleport();
+        overpowerStages[currentStage].bindedObject.gameObject.SetActive(true);
         overpowerStages[currentStage].bindedObject.GetComponent<Health>().SetIgnoreDamage(false);
         currentStage++;
     }
@@ -224,7 +225,12 @@ public class BossControler : CreatureController
 
     public void Rewind()
     {
+        
         LeaveOverpower();
+        foreach (OverpowerStages stage in overpowerStages)
+        {
+            stage.bindedObject.SetActive(false);
+        }
         stateMachine.ChangeState(creatureWaitingState);
         overpowerCamera.gameObject.SetActive(false);
         StopAllCoroutines();

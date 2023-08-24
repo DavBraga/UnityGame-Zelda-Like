@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
-
+using UnityEngine.InputSystem;
 public class GameManager : MonoBehaviour
 {
     public UnityAction onGamePauses;
@@ -12,16 +12,17 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance{get; private set;}
     public GameState GameState { get => gameState; set => gameState = value; }
     [SerializeField] GameObject pauseMenu;
+    [SerializeField] GameObject virtualInput;
     [SerializeField] LayerMask groundLayer;
     [SerializeField] LayerMask collisionLayer;
-   [SerializeField] GameState gameState;
+    [SerializeField] GameState gameState;
+
 
    [SerializeField] string creditsScene;
 
     //  TODO improve it
     [SerializeField] GameObject player;
     bool gotPlayer= false;
-
     static bool ManagerIsReady = false;
 
     private void OnDisable() {
@@ -46,7 +47,6 @@ public class GameManager : MonoBehaviour
         Instance = this;
         ManagerIsReady = true;
     }
-
     static public bool IsManagerReady()
     {
         return ManagerIsReady;
@@ -107,15 +107,23 @@ public class GameManager : MonoBehaviour
         
         ChangeGameState(GameState.pause);
         Time.timeScale = 0;
+        
     }
 
     public void UnPauseGame()
     { 
         ChangeGameState(GameState.playing);
         onGAmeGoesPlayMode?.Invoke();
+        if(Application.isMobilePlatform||Application.platform==RuntimePlatform.WebGLPlayer)
+        {
+             if(PlayerPrefs.GetInt("usingVirtualInput")>0)
+            virtualInput.SetActive(true);
+        }
+       
         
        
         Time.timeScale = 1;
+        PlayerPrefs.Save();
     }
 
     public void TogglePause()
@@ -124,11 +132,13 @@ public class GameManager : MonoBehaviour
         {
             UnPauseGame();
             pauseMenu.SetActive(false);
+            
         }
         else
         {
             PauseGame();
             pauseMenu.SetActive(true);
+            virtualInput.SetActive(false);
         }
         
     }
@@ -139,6 +149,7 @@ public class GameManager : MonoBehaviour
     public void CinematicMode()
     {
         onGameGoesCinematics?.Invoke();
+        virtualInput.SetActive(false);
         ChangeGameState(GameState.cinematic);
     }
     public void GoCredits()

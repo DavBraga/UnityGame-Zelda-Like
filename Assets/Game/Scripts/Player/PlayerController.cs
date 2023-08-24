@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
 {
     public UnityAction onMap;
     public UnityAction onUnpause;
+    public UnityAction onLossControl;
+    public UnityAction onControlRecover;
 
     
     [SerializeField] bool startWithInputs = false;
@@ -252,6 +254,11 @@ public class PlayerController : MonoBehaviour
         myRigidbody?.AddForce(movmentVector,ForceMode.Force);
     }
 
+    public void SetMovmentVector(Vector2 vector)
+    {
+        inputMovmentVector = vector;
+    }
+
     public void Jump()
     {
         if(!IsGrounded())  return;
@@ -300,7 +307,6 @@ public class PlayerController : MonoBehaviour
         myRigidbody.isKinematic = false;
         if(stateMachine.currentState == deadState)
         {
-            Debug.Log("ressurected");
             deadCamera.SetActive(false);
             
             StartCoroutine(WaitAndRess());
@@ -507,94 +513,59 @@ public class PlayerController : MonoBehaviour
     }
     public bool TryGivePlayerControl()
     {
-       // UnHaltEverything();
-        // if(stateMachine.currentState== hurtState) return false;
-        // if(stateMachine.currentState == deadState) return false;
          gotControl = true;
+         onControlRecover?.Invoke();
          return gotControl;
-        
     }
 
     public void RemovePlayerControl()
     {
         gotControl = false;
+        onLossControl?.Invoke();
         
     }
-    public void SetMovment(InputAction.CallbackContext value)
+    public void TryJump(bool jumpTrigger)
     {
-        inputMovmentVector = value.ReadValue<Vector2>();
-    }
-
-    public void SetUpJump(InputAction.CallbackContext value)
-    {
+        if(!jumpTrigger) return;
         if(GameManager.Instance.GameState != GameState.playing) return;
         if(!gotControl) return;
-        if(value.performed)
-         Jump(); 
+        Jump(); 
     }
-    public void SetAttack(InputAction.CallbackContext value)
+    public void TryAttack(bool attackTrigger)
     {
         if(GameManager.Instance.GameState != GameState.playing) return;
-        //if(!gotControl) return;
-
-        // if(value.started)
-        if(value.performed)
-        {
-            KeepChooping();
-            Debug.Log("doing");
-        }
-        
-        attacking = !value.canceled;
-        
-        if(value.canceled) 
-        {
-            Debug.Log("cancelled");
-            return;
-        }
-        
+        if(attackTrigger) KeepChooping();
+        attacking = attackTrigger;
     }
-    public void SetBlock(InputAction.CallbackContext value)
+    public void TryBlock(bool blockTrigger)
     {
         if(GameManager.Instance.GameState != GameState.playing) return;
-       // if(!gotControl) return;
-
-        defending = !value.canceled;
+        defending = blockTrigger;
         Defend();
-    }
 
-    public void SetUseTool(InputAction.CallbackContext value)
+    }
+    public void TryUseTool()
     {
         if(GameManager.Instance.GameState != GameState.playing) return;
         if(!gotControl) return;
         if(defending) return;
-        if(value.performed)
         bombTool.PutBomb(); 
     }
-
-    public void SetUsePotion(InputAction.CallbackContext value)
+    public void TryUsePotion()
     {
         if(GameManager.Instance.GameState != GameState.playing) return;
         if(!gotControl) return;
-        if(value.performed)
         usePotion.Use(); 
     }
-    public void SetUseInteraction(InputAction.CallbackContext value)
+    public void TryToInteract()
     {
         if(GameManager.Instance.GameState != GameState.playing) return;
         if(!gotControl) return;
-        if(value.performed)
         onInteractHook?.Invoke();
     }
-    public void SetPauseGame(InputAction.CallbackContext value)
+    public void TryEnlargeMap(bool enlargeTrigger)
     {
-         
-        if(value.performed)
-            GameManager.Instance.TogglePause();
-        
-    }
-
-    public void SetMap(InputAction.CallbackContext value)
-    {
+        if(!enlargeTrigger) return;
         if(!gotControl) return;
         onMap?.Invoke();
     }
@@ -602,18 +573,8 @@ public class PlayerController : MonoBehaviour
     {
         attackPower+=amount;
     }
-    // For test purpose Only
-    // private void OnDrawGizmos() {
-
-        
-    //     Vector3 direction = Vector3.down;
-    //     Bounds bounds = thisCollider.bounds;
-    //     Vector3 origin = transform.position + new Vector3(0,bounds.size.y,0);
-    //     float radius = bounds.size.x * 0.33f;
-    //     float maxDistance = bounds.size.y;// *0.3f;
-    //     Vector3 spherePosition = direction* maxDistance + origin;
-
-    //     Gizmos.color = grounded? Color.green : Color.red;
-    //     Gizmos.DrawSphere(spherePosition, radius );
-    // }
+    public bool PlayerGotControl()
+    {
+        return gotControl;
+    }
 }

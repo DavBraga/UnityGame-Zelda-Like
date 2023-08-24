@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Hud Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: Hud
+  m_TableCollectionNameGuidString: 40ed05e9e0a61154cb373b63e9e60a8a
+  m_Entries:
+  - m_Id: 17952292864
+    m_Key: key_potions
+    m_Metadata:
+      m_Items: []
+  - m_Id: 150618128384
+    m_Key: key_powerUP_bomb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 287486656512
+    m_Key: key_powerUP_potionStack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 581373149184
+    m_Key: key_powerUP_health
+    m_Metadata:
+      m_Items: []
+  - m_Id: 693059076096
+    m_Key: key_powerUp_Damage
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 1696254503909326849
+  references:
+    version: 2
+    RefIds:
+    - rid: 1696254503909326849
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1692792368436

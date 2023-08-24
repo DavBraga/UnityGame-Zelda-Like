@@ -1,0 +1,103 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Settings_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 80cd47a7c92ec8c48a5cd401911e9848, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 158683774976
+    m_Localized: Gamepad Detected!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 647144030208
+    m_Localized: Graphics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2640520560640
+    m_Localized: PLAY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3699624263680
+    m_Localized: 'Resolution Scale : '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3824119595008
+    m_Localized: Quality Level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3989190623232
+    m_Localized: Minimum
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4123592900608
+    m_Localized: Peformance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4247266148352
+    m_Localized: Balanced
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4395555766272
+    m_Localized: High
+    m_Metadata:
+      m_Items: []
+  - m_Id: 158371425173504
+    m_Localized: Audio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 158649226510336
+    m_Localized: Master Volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 158759901609984
+    m_Localized: Music
+    m_Metadata:
+      m_Items: []
+  - m_Id: 158812800172032
+    m_Localized: Voices
+    m_Metadata:
+      m_Items: []
+  - m_Id: 158871365238784
+    m_Localized: Sound Effects
+    m_Metadata:
+      m_Items: []
+  - m_Id: 179411161333760
+    m_Localized: Options
+    m_Metadata:
+      m_Items: []
+  - m_Id: 359979173953536
+    m_Localized: Minimum
+    m_Metadata:
+      m_Items: []
+  - m_Id: 360001777057792
+    m_Localized: Peformant
+    m_Metadata:
+      m_Items: []
+  - m_Id: 360019531546624
+    m_Localized: Balanced
+    m_Metadata:
+      m_Items: []
+  - m_Id: 360037248286720
+    m_Localized: High Fidelity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 369472427409408
+    m_Localized: Exit Game
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

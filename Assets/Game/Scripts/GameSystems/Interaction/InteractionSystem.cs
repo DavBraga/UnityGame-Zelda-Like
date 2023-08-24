@@ -5,6 +5,8 @@ using UnityEngine.Events;
 
 public class InteractionSystem : MonoBehaviour
 {
+    public UnityAction onANewInteractingObject;
+    public UnityAction onClearInteractingObject;
     [SerializeField] float distanceCheckInterval = .3f;
     [SerializeField] InteractionEvent interactionEvent;
 
@@ -39,6 +41,7 @@ public class InteractionSystem : MonoBehaviour
     {
         if((distanceCheckCooldown-=Time.deltaTime)>0) return;
         distanceCheckCooldown = distanceCheckInterval;
+        if(interactingOBject.distance<0)onClearInteractingObject?.Invoke();
         CheckListernsInRadius();
     }
     public void TrySetTheInteraction(IInteractable interactable, float distance)
@@ -54,29 +57,45 @@ public class InteractionSystem : MonoBehaviour
     {
         Debug.Log("Setting new interactable");
         if(interactingOBject.distance>0)
-            interactingOBject.currentObject.FlagForInteraction(false);
+        {
+            //interactingOBject.currentObject.FlagForInteraction(false);
+            ClearInteractingObject();
+
+        }
+            
 
         interactingOBject.currentObject = interactable;
         interactingOBject.distance = distance; 
         interactingOBject.currentObject.FlagForInteraction();
+        onANewInteractingObject?.Invoke();
+        
     }
 
     public void Interact()
     {
         CheckListernsInRadius();
         //only if valid distance
-        if(interactingOBject.distance<0)
+        if (interactingOBject.distance < 0)
         {
             Debug.Log("None in range to interact");
             return;
         }
-        
+
         interactingOBject.currentObject.Interact(playerTransform.gameObject);
-        interactingOBject.distance = -1;
+        ClearInteractingObject();
         CheckListernsInRadius();
 
 
     }
+
+    private void ClearInteractingObject()
+    {
+        if(interactingOBject.distance <0) return;
+        interactingOBject.distance = -1;
+        interactingOBject.currentObject.FlagForInteraction(false);
+        onClearInteractingObject?.Invoke();
+    }
+
     public void CheckListernsInRadius()
     {   
         if(interactionEvent.GetInteractionList().Count<1) return;
@@ -111,7 +130,7 @@ public class InteractionSystem : MonoBehaviour
             }
             else
             {
-                 interactable.SetCloseness(false); 
+                 interactable.SetCloseness(false);
                  
             }   
         }
@@ -120,7 +139,7 @@ public class InteractionSystem : MonoBehaviour
        {
         interactingOBject.currentObject.FlagForInteraction(false);
         interactingOBject.currentObject=null;
-        interactingOBject.distance = -1;
-       } 
+        interactingOBject.distance = -1; 
+       }
     }
 }

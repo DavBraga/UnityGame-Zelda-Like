@@ -8,6 +8,8 @@ public class MapHandler : MonoBehaviour
     [SerializeField] GameObject miniMap;
     bool isBigMap = false;
 
+    
+
     private void Start() {
         StartCoroutine(WaitForGameManager());
     }

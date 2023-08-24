@@ -65,8 +65,13 @@ public class MainScreen : MonoBehaviour
 
     public void Credits(InputAction.CallbackContext value)
     {
-        if(value.performed)
-        SceneManager.LoadScene(creditsScreen);
+        if (value.performed)
+        CallCredits();
+    }
+
+    public void CallCredits()
+    {
+            SceneManager.LoadScene(creditsScreen);
     }
 
 }
