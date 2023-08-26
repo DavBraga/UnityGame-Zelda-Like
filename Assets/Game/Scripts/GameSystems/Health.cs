@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class Health : MonoBehaviour
 {
-    public UnityAction<GameObject,int> onTakeDamage;
+    public UnityAction<int> onTakeDamage;
     public UnityAction onTakeDamageNoParam;
 
     public UnityAction onChangeHealth;
@@ -28,7 +28,7 @@ public class Health : MonoBehaviour
         
     }
 
-    virtual public bool  TakeDamage(GameObject attacker, int damage, damageType damageType = damageType.normal)
+    virtual public bool  TakeDamage(int damage, damageType damageType = damageType.normal)
     {
         if(ignoreDamage) return false;
         if(damageType == damageImunity) return false;
@@ -36,7 +36,7 @@ public class Health : MonoBehaviour
         if (damageParticles) Destroy(Instantiate(damageParticles, transform), FXLifetime);
         // damage 
         currentHealth -= damage;
-        PlayOnDamageEvents(attacker, damage);
+        PlayOnDamageEvents(damage);
         // death management
         if (currentHealth < 1) OnDeath();
         if(destructionParticles)
@@ -45,22 +45,22 @@ public class Health : MonoBehaviour
         return true;
     }
 
-    private void PlayOnDamageEvents(GameObject attacker, int damage)
+    private void PlayOnDamageEvents(int damage)
     {
-        onTakeDamage?.Invoke(attacker, damage);
+        onTakeDamage?.Invoke(damage);
         onTakeDamageNoParam?.Invoke();
         onTakeDamageEvent?.Invoke();
         onChangeHealth?.Invoke();
     }
 
-    virtual public bool  ForceTakeDamage(GameObject attacker, int damage)
+    virtual public bool  ForceTakeDamage(int damage)
     {
 
         if(damageParticles) Destroy(Instantiate(damageParticles, transform.position,  damageParticles.transform.rotation),FXLifetime);
 
         // damage 
         currentHealth -=damage;
-        onTakeDamage?.Invoke(attacker,damage);
+        onTakeDamage?.Invoke(damage);
         onTakeDamageNoParam?.Invoke();
 
         // death management

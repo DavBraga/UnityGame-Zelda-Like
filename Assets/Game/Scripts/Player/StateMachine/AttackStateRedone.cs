@@ -6,6 +6,8 @@ public class AttackStateRedone : State
 {
     PlayerController player;
 
+    List<PlayerAttack> attackChain;
+
     GameObject attackCollider;
     int attackStage = -1; 
 
@@ -26,10 +28,15 @@ public class AttackStateRedone : State
     bool duration = false;
     bool cooldown = false;
     float lastedtime = 0f;
-    public AttackStateRedone(PlayerController playerController, GameObject attackCollider) : base("Attack")
+    public AttackStateRedone(PlayerController playerController) : base("Attack")
     {
         player = playerController;
-        this.attackCollider = attackCollider;
+    }
+
+    public void SetAttackChain(List<PlayerAttack> attackChain, GameObject attackCollider)
+    {
+        this.attackChain = attackChain;
+        this.attackCollider =attackCollider;
     }
 
     public override void OnStateEnter()
@@ -164,11 +171,7 @@ public class AttackStateRedone : State
 
     private void StartAttack()
     {
-        player.PlayAttackAnimation(attackStage);
-        
-       // player.PlayAttackImpulse(attackStage);
-       
-        // play sound
+        player.PlayAttackAnimation(attackChain[attackStage].GetAttackStats().AttackTriggerTag);
         player.mySFXManager.PlayAudio();
         SetAttackTimers();
     }
@@ -183,24 +186,22 @@ public class AttackStateRedone : State
         applyImpulse = true;
         //add impulse
         
-        
-        
     }
     public void EvolveAttackStages()
     {
         attackStage++;
         Debug.Log("went attack stage:"+attackStage);
-        // trocar 2 por uma variável.
-        if (attackStage > 2) attackStage = 0;
+        if (attackStage >= attackChain.Count) attackStage = 0;
         player.attackstage = attackStage;
     }
 
     private void SetAttackTimers()
     {
+        PlayerAttackStruct attackStats= attackChain[attackStage].GetAttackStats();
         startTime = Time.time;
-        antecipationTime = player.GetAttackPreparationTIme()[attackStage];
-        effectDuration = player.attackDuration[attackStage];
-        attackCoolDown = player.attackCooldown[attackStage];
+        antecipationTime = attackStats.attackPreparationTime;
+        effectDuration = attackStats.attackDuration;
+        attackCoolDown = attackStats.attackCooldown;
 
         antecipation = false;
         duration = false;
@@ -212,10 +213,11 @@ public class AttackStateRedone : State
     public override void OnStateFixedUpdate()
     {
         base.OnStateFixedUpdate();
-        player.RotateBodyToFace(1);
+        player.onRotate?.Invoke(1);
         if(applyImpulse) 
         {
-            player.PlayAttackImpulse(attackStage);
+            player.onPlayerImpulse(attackChain[attackStage].GetAttackStats().AttackImpulse);
+            //player.PlayAttackImpulse(attackStage);
             applyImpulse = false;
         }
     }   

@@ -6,9 +6,13 @@ public class DefendState : State
 {
     PlayerController player;
     GameObject shieldCollider;
-    public DefendState(PlayerController playerController, GameObject shieldCollider) : base("Defend")
+    public DefendState(PlayerController playerController) : base("Defend")
     {
         player = playerController;
+    }
+
+    public void SetShieldCollider(GameObject shieldCollider)
+    {
         this.shieldCollider = shieldCollider;
         shieldCollider.SetActive(false);
     }
@@ -35,24 +39,11 @@ public class DefendState : State
     public override void OnStateFixedUpdate()
     {
         base.OnStateFixedUpdate();
-        player.LimitMovmentSpeed(.1f);
-        player.PlayerMovment();
-        
-        //player.RotateBodyToFace(.03f);
+        player.onMove.Invoke(.1f);
+
     }
     public override void OnStateLateUpdate()
     {
         base.OnStateLateUpdate();
-    }
-
-    public bool CanInflictDamage(GameObject attacker, int Damage)
-    {
-        Vector3 playerDirection = player.transform.TransformDirection(Vector3.forward);
-        Vector3 attackerDirection = (player.transform.position- attacker.transform.position).normalized;
-        float dot = Vector3.Dot(playerDirection, attackerDirection);
-        Debug.Log(dot);
-        if(dot<-.25f) return false;
-        
-        return true;
     }
 }

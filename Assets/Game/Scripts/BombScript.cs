@@ -41,7 +41,7 @@ public class BombScript : MonoBehaviour
             }
             else
                 if(collider.TryGetComponent(out Health healthComp))
-                    healthComp.TakeDamage(this.gameObject, blastPower,damageType.bomb);
+                    healthComp.TakeDamage( blastPower,damageType.bomb);
                      
             Vector3 pushDirection = collider.transform.position - transform.position;
             pushDirection.Normalize(); 

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff435a509b534424e8b80a6141808c1e, type: 3}
+  m_Name: Attack2
+  m_EditorClassIdentifier: 
+  attackStats:
+    AttackImpulse: 5
+    attackPreparationTime: 0.07
+    AttackTriggerTag: tAttack2
+    attackDuration: 0.2
+    attackCooldown: 0.1
+    attackPower: 1
+    attaclknockbackPower: 10

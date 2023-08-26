@@ -54,12 +54,12 @@ public class Projectile : MonoBehaviour
             player.TakeDamage(this.gameObject, power);
 
             if(pushMode == PushMode.shoot)
-            player.BePushed(this.gameObject,pushPower,new Vector3(transform.forward.x,0,transform.forward.z));
+            player.onPushed.Invoke(pushPower,new Vector3(transform.forward.x,0,transform.forward.z));
             else
             {
                 Vector3 pushDirection = other.transform.position - transform.position;
                 pushDirection.Normalize(); 
-                player.BePushed(this.gameObject,pushPower,new Vector3(pushDirection.x,0,pushDirection.z));
+                player.onPushed.Invoke(pushPower,new Vector3(pushDirection.x,0,pushDirection.z));
             }                    
         }
     }

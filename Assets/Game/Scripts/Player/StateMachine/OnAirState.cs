@@ -29,16 +29,15 @@ public class OnAirState : State
     {
         base.OnStateUpdate(); 
        
-        if(player.IsGrounded())
+        if(player.isGroundedDelegate())
             player.stateMachine.ChangeState(player.idleState);
     }
     public override void OnStateFixedUpdate()
     {
         base.OnStateFixedUpdate();
-        player.LimitMovmentSpeed(movmentIntensity);
-        player.PlayerMovment();
-        
-        player.RotateBodyToFace(movmentIntensity);
+        player.onMove.Invoke(movmentIntensity);
+        player.onRotate.Invoke(movmentIntensity);
+
     }
     public override void OnStateLateUpdate()
     {

@@ -17,7 +17,7 @@ public class WalkingState : State
     }
     public override void OnStateUpdate()
     {
-        if(!player.IsGrounded())
+        if(!player.isGroundedDelegate())
             player.stateMachine.ChangeState(player.onAirState);
 
         if(player.inputMovmentVector.isZero())
@@ -29,9 +29,8 @@ public class WalkingState : State
     public override void OnStateFixedUpdate()
     {
         base.OnStateFixedUpdate();    
-        player.PlayerMovment();
-        player.LimitMovmentSpeed();
-        player.RotateBodyToFace();
+        player.onMove.Invoke(1);
+        player.onRotate.Invoke(.15f);
         
     }
     public override void OnStateLateUpdate()

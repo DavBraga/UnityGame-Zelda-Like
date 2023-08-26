@@ -184,7 +184,7 @@ public class CreatureController : MonoBehaviour
         if(Time.time<timeOfDamage+0.3f) return;
 
         timeOfDamage = Time.time;
-        myHealth.TakeDamage(attacker,damage);
+        myHealth.TakeDamage(damage);
         if(myHealth.GetCurrentHealth()<1)
         {
             Die();

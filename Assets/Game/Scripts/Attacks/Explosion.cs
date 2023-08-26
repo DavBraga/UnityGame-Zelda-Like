@@ -29,7 +29,7 @@ public class Explosion : MonoBehaviour
                     {
                         Vector3 pushDirection = colliders[colliderIndex].transform.position - transform.position;
                         pushDirection.Normalize(); 
-                        player.BePushed(this.gameObject, pushPower,new Vector3(pushDirection.x,0,pushDirection.z));
+                        player.onPushed.Invoke(pushPower,new Vector3(pushDirection.x,0,pushDirection.z));
                     }
                 }
             }

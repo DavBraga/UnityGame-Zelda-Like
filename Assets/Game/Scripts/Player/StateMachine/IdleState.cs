@@ -12,8 +12,8 @@ public class IdleState : State
 
     public override void OnStateEnter()
     {
-        if(player.attacking) player.KeepChooping();
-        if(player.defending) player.Defend();
+        if(player.attacking) player.onAttack.Invoke();
+        if(player.defending) player.onDefend.Invoke();
         base.OnStateEnter();
     }
     public override void OnStateExit()
@@ -23,17 +23,14 @@ public class IdleState : State
     public override void OnStateUpdate()
     {
         base.OnStateUpdate(); 
-        if(!player.IsGrounded())
+        if(!player.isGroundedDelegate())
         {
             player.stateMachine.ChangeState(player.onAirState);
         }
         if(!player.inputMovmentVector.isZero())
         {
             player.stateMachine.ChangeState(player.walkingState);
-        }
-       // if(player.ReadSpaceBarInput()) player.Jump();
-        
-        
+        }      
     }
     public override void OnStateFixedUpdate()
     {

@@ -6,11 +6,15 @@ using UnityEngine;
 public class ShieldBlock : MonoBehaviour
 {
     [SerializeField] GameObject shieldblockVFX;
+    float shieldKnocBack = 10f;
     GameObject instantiatedVFX;
     bool instantiated = false;
     [Range(-1, 1)]
     [Tooltip("-1 full defense, 1 no defense")]
     [SerializeField]float shieldDefenseRange = -.25f;
+
+    public float ShieldKnocBack { get => shieldKnocBack;private set => shieldKnocBack = value; }
+
     public bool DirectionCanDealDamage(GameObject attacker)
     {
         Vector3 playerDirection = transform.TransformDirection(Vector3.forward);
