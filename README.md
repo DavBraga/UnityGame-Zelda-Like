@@ -1,4 +1,5 @@
 # Dungeon Fall
+[PT-BR Readme](readme_PT_BR.md)
 
 Game on itch.io: [Dungeon Fall on itch.io](https://bragadavi.itch.io/dungeon-fall)
 
