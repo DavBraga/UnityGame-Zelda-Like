@@ -1,70 +1,57 @@
-# [Unity Game] Dungeon Fall
+# Dungeon Fall
 
-Jogo no itch.io: [Link para o Dungeon Fall no itch.io](https://bragadavi.itch.io/dungeon-fall)
+Game on itch.io: [Dungeon Fall on itch.io](https://bragadavi.itch.io/dungeon-fall)
 
-Versão do código do jogo aqui no Git é 0.5.0
+Game Code Version on Git: 0.5.0
 
-## Sobre
+## About
 
-Dungeon Fall é um jogo desenvolvido na Unity Engine como projeto final do curso [Formação Unity 3D Game Developer](https://www.dio.me/curso-unity-3d) oferecido pela DIO.me.
+Dungeon Fall is a game developed in the Unity Engine as the final project for the [Unity 3D Game Developer Course](https://www.dio.me/curso-unity-3d) offered by DIO.me.
 
-O projeto já foi entregue e certificado atendendo aos requisitos de conclusão do curso. [Confira o certificado aqui.](https://www.dio.me/certificate/94C79951/share).
+The project has been delivered and certified, meeting the course completion requirements. [Check the certificate here](https://www.dio.me/certificate/94C79951/share).
 
-Este jogo presta homenagem aos clássicos como Zelda, Brave Fencer Musashiden e Alundra, com uma câmera top-down que busca trazer elementos de exploração, combate, power-ups, cinemáticas, tesouros valiosos e segredos escondidos em uma masmorra repleta de mistérios.
+This game pays homage to classics like Zelda, Brave Fencer Musashiden, and Alundra, featuring a top-down camera perspective that aims to bring elements of exploration, combat, power-ups, cinematics, valuable treasures, and hidden secrets within a dungeon filled with mysteries.
 
-### Ações do Jogador
+### Player Actions
 
-- Movimentar-se,
-- Atacar inimigos,
-- Pular,
-- Utilizar consumíveis,
-- Interagir com objetos próximos,
-- Utilizar a ferramenta bomba para destruir obstáculos.
+- Move around,
+- Attack enemies,
+- Jump,
+- Use consumables,
+- Interact with nearby objects,
+- Utilize the bomb tool to destroy obstacles.
 
-## Desenvolvimento Adicional
+## Additional Development
 
-Apesar de ser um jogo para demonstrar capacidades técnicas como desenvolvedor de jogos, programador e Game Designer, busquei entregar uma experiência completa com início, meio e fim. Para isso, novas funcionalidades foram adicionadas com o tempo. Diversas características foram incluídas para aprimorar o jogo. A seguir está uma lista do que está presente neste projeto.
+Although intended as a showcase of technical capabilities as a game developer, programmer, and Game Designer, I aimed to deliver a complete experience with a clear beginning, middle, and end. To achieve this, additional features were gradually incorporated. Several enhancements have been introduced to enrich the game. Here's a list of what's included in this project.
 
-### Funcionalidades Técnicas
+### Technical Features
 
-- Uso da CineMachine para câmera top-down.
-- Movimento do personagem com física personalizada.
-- Suporte a gamepads e controles virtuais.
-- Portabilidade para PC Windows, Browser (WebGL) e Android.
-- Sistema de localização com duas línguas implementadas e suporte para expansão: PT-BR, EN.
-- Menus de controle de áudio e qualidade gráfica.
-- Utilização de pós-processamento para a atmosfera das cenas e áreas.
-- Partículas personalizadas para o jogo.
-- Máquinas de estados para os diversos estados dos personagens e criaturas do jogo.
+- Camera system using CineMachine for top-down view.
+- Character movement with custom physics.
+- Support for gamepads and virtual controls.
+- Ported to PC Windows, Browser (WebGL), and Android platforms.
+- Localization system with two implemented languages and support for expansion: PT-BR, EN.
+- Audio and graphical quality control menus.
+- Use of post-processing for scene and area atmosphere.
+- Customized particles for in-game effects.
+- State machines for various character and creature states.
 
-### Funcionalidades do Jogo
+### Gameplay Features
 
-- Combate contra monstros com script de comportamento simples e navegação via NAVMESH.
-- Batalha final scriptada com mecânicas únicas.
+- Combat against monsters with simple behavior scripts and NAVMESH navigation.
+- Scripted final battle with unique mechanics.
 - Power-ups.
-- Sistema de mapa e minimapa.
-- Sistema de drops aleatórios.
-- Cutscenes implementadas usando a Unity Timeline.
+- Map and minimap systems.
+- Random drop system.
+- Cutscenes implemented using Unity Timeline.
 
-## Melhorias no Código
+## Code Refinement
 
-Agora que os objetivos e funcionalidades foram alcançados e implementados, o código passa por uma revisão para melhorar a legibilidade humana, a modularidade, a escalabilidade e reduzir o acoplamento do código, facilitando o reuso de partes em outros projetos, bem como a otimização e expansão futura.
+With the objectives and features now achieved and implemented, the code is undergoing a review to enhance human readability, modularity, scalability, and to reduce code coupling. This aims to facilitate the reuse of code components in other projects, streamline the code optimization process, and accommodate future expansion.
 
-Esse processo é realizado aplicando princípios de Clean Code e SOLID de maneira flexível, focando em pontos críticos onde a necessidade é mais evidente.
+This process applies principles of Clean Code and SOLID in a flexible manner, targeting critical areas where the need is most apparent.
 
-A primeira área a ser modificada é o `PlayerController`, onde há um alto acoplamento e acumulação de funcionalidades, tornando-o o maior script do projeto. O design empregado envolve o uso de eventos e delegates para separar cada funcionalidade agregada no script em scripts independentes, que utilizarão o `PlayerController` como interface para ações, interações e reações.
+The first area being modified is the `PlayerController`, which has exhibited high coupling and an accumulation of functionalities, making it the largest script in the project. The applied design involves the use of events and delegates to partition each aggregated functionality within the script into independent scripts. These scripts will then utilize the `PlayerController` as an interface for actions, interactions, and reactions.
 
-Estou à disposição para qualquer esclarecimento ou dúvida.
-
-### Assets de Terceiros
-
-O jogo fez uso de assets gráficos e de áudio disponibilizados gratuitamente de terceiros. Uma lista de seus autores:
-
-- YouFulca
-- CatBorg Studio
-- Dungeon Mason
-- Just Labbing
-- Polygonal Stuff
-- Kenny
-- Leohpaz
-- Imphenzia
+Feel free to reach out for clarifications or inquiries.
