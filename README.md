@@ -55,7 +55,6 @@ This process applies principles of Clean Code and SOLID in a flexible manner, ta
 
 The first area being modified is the `PlayerController`, which has exhibited high coupling and an accumulation of functionalities, making it the largest script in the project. The applied design involves the use of events and delegates to partition each aggregated functionality within the script into independent scripts. These scripts will then utilize the `PlayerController` as an interface for actions, interactions, and reactions.
 
-Feel free to reach out for clarifications or inquiries.
 
 ## Third Party Assets
 
@@ -71,3 +70,6 @@ Authors of the Third Party Assets used in this project:
 - Kenny
 - Leohpaz
 - Imphenzia
+
+
+Feel free to reach out for clarifications or inquiries.
