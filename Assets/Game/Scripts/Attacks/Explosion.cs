@@ -24,7 +24,7 @@ public class Explosion : MonoBehaviour
                 PlayerController player ;
                 if(colliders[colliderIndex].gameObject.TryGetComponent(out player))
                 {
-                    player.TakeDamage(gameObject,power);
+                    player.onPlayerTakeDamage.Invoke(gameObject,power);
                     if(pushPower>0)
                     {
                         Vector3 pushDirection = colliders[colliderIndex].transform.position - transform.position;

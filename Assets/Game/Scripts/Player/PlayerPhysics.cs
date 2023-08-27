@@ -43,6 +43,9 @@ public class PlayerPhysics : MonoBehaviour
         thisCollider = GetComponent<Collider>();
         pushable = GetComponent<Pushable>();
     }
+    private void Start() {
+        bounds = thisCollider.bounds;
+    }
 
    private void OnEnable() {
         playerController.onJump+= Jump;
@@ -50,18 +53,33 @@ public class PlayerPhysics : MonoBehaviour
         playerController.onRotate+= RotateBodyToFace;
         playerController.onMovmentInput+=CalculateVelocityRate;
         playerController.isGroundedDelegate+=IsGrounded;
+        playerController.onAir += ForceNormalGravity;
+        playerController.onLand+= StopForcingNormalGravity;
         playerController.onPlayerImpulse+=PlayerImpulse;
         playerController.onPushed +=BePushed;
+        playerController.onStateInitializationFinished+=SetUpAirState;
+        playerController.onDeath+= TurnOffPhysics;
+       // playerController.onControlRecover += TurnOnPhysics;
  
    }
    private void OnDisable() {
         playerController.onJump-= Jump;
         playerController.onMove-= PlayerManagedMove;
         playerController.onRotate-= RotateBodyToFace;
-         playerController.onMovmentInput-=CalculateVelocityRate;
-         playerController.isGroundedDelegate-=IsGrounded;
-         playerController.onPlayerImpulse-=PlayerImpulse;
-         playerController.onPushed -=BePushed;
+        playerController.onMovmentInput-=CalculateVelocityRate;
+        playerController.isGroundedDelegate-=IsGrounded;
+        playerController.onAir -= ForceNormalGravity;
+        playerController.onLand -= StopForcingNormalGravity;
+        playerController.onPlayerImpulse-=PlayerImpulse;
+        playerController.onPushed -=BePushed;
+        playerController.onStateInitializationFinished-=SetUpAirState;
+        playerController.onDeath-= TurnOffPhysics;
+        //playerController.onControlRecover -= TurnOnPhysics;
+   }
+
+   public void SetUpAirState()
+   {
+        playerController.onAirState.SetAirMovmentModifier(airMovmentSpeedModifier);
    }
 
 
@@ -205,5 +223,25 @@ public class PlayerPhysics : MonoBehaviour
     public void BePushed(float pushPower, Vector3 direction)
     {
         pushable.BePushed(pushPower, direction);
+    }
+    public void TurnOffPhysics()
+    {
+        thisCollider.enabled = false;
+        myRigidbody.isKinematic = true;
+    }
+    public void TurnOnPhysics()
+    {
+        thisCollider.enabled = true;
+        myRigidbody.isKinematic = false;
+    }
+
+    public void ForceNormalGravity()
+    {
+        forceNormalGravity = true;
+    }
+    public void StopForcingNormalGravity()
+    {
+        forceNormalGravity = false;
+
     }
 }

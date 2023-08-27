@@ -17,10 +17,6 @@ public class CreatureController : MonoBehaviour
 
     public bool isattacking= false;
     public Attack_SO baseAttack;
-    // public float attackRadius= 1.5f;
-    // public float attackDuration= 1f;
-    // public float damageDelay = .3f;
-    // public int attackDamage=1;
 
     [Header ("Ranged Attack")]
 
@@ -89,12 +85,12 @@ public class CreatureController : MonoBehaviour
     {
         yield return new WaitUntil(()=> GameManager.IsManagerReady());
         yield return new WaitUntil(()=>GameManager.Instance.CheckForPlayer());
-        GameManager.Instance.GetPlayer().GetComponent<PlayerController>().onDeath+= ReturnHome;
+        GameManager.Instance.GetPlayer().GetComponent<PlayerController>().onRessurect+= ReturnHome;
     }
 
     private void OnDisable() {
         if(GameManager.Instance.GetPlayer())
-        GameManager.Instance.GetPlayer().GetComponent<PlayerController>().onDeath-= ReturnHome;
+        GameManager.Instance.GetPlayer().GetComponent<PlayerController>().onRessurect-= ReturnHome;
     }
     private void Start() {
         startingPostion = transform.position;
@@ -106,6 +102,8 @@ public class CreatureController : MonoBehaviour
     {
         Debug.Log("returning home");
         stateMachine.ChangeState(creatureRoamingState);
+        myNavAgent.ResetPath();
+        myNavAgent.isStopped = true;
         StartCoroutine(WaitAndReturn());
         
         
@@ -114,9 +112,10 @@ public class CreatureController : MonoBehaviour
     IEnumerator WaitAndReturn()
     {
         yield return new WaitForSeconds(3.5f);
-        myNavAgent.ResetPath();
         transform.position = startingPostion;
         transform.rotation = startingRotation;
+        myNavAgent.isStopped = false;
+        myNavAgent.ResetPath();
 
     }
 

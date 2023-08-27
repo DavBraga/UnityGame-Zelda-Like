@@ -17,6 +17,7 @@ public class GraphicsOptions : MonoBehaviour
     
     public void ChangeResolutionScale(float value)
     {
+        if(value==piplelineAsset.renderScale*100) return;
         piplelineAsset.renderScale = value*0.01f;
         PlayerPrefs.SetFloat("resolutionScale", value);
     }
@@ -24,6 +25,7 @@ public class GraphicsOptions : MonoBehaviour
     private void OnEnable() {
         currentAsset = QualitySettings.GetRenderPipelineAssetAt(QualitySettings.GetQualityLevel());
         piplelineAsset = currentAsset as UniversalRenderPipelineAsset;
+        ChangeResolutionScale(piplelineAsset.renderScale*100);
     }
 
     public void ChangeQuality(int index)

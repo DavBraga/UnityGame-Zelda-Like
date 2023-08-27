@@ -6,31 +6,6 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    //coupling issues
-
-    //PlayerController does too much:
-
-
-    // - Interfaces player interaction
-    // - Handles movement
-    // - manages state machine
-    // - interfaces animations, sounds
-    // - manages attack action
-    // - manages a variety of player actions(jump, open map,etc..)
-
-    // plan of action:
-
-    // Apply a simple componetization design where PlayerController will only interface player character actions interactions and game systems comunication. 
-    // All other jobs player controller is doing will be separeted in different script componenets.
-    
-    //1- start at physics. FIRST ITERATION DONE
-    //2- do a combat script. FIRST ITERATION DONE
-
-
-    // how to integrate the player physics script
-
-    // events, reference, message system
-
     public UnityAction onMap;
     public UnityAction onUnpause;
     public UnityAction onLossControl;
@@ -50,7 +25,6 @@ public class PlayerController : MonoBehaviour
     public DefendState defendState{get; private set;}
     public HurtState hurtState{get; private set;}
     public Vector2 inputMovmentVector{ get; private set;}
-    public Rigidbody myRigidbody{ get; private set;}
     public  Animator animator{ get; private set;}
 
     //private bool grounded= true;
@@ -60,26 +34,14 @@ public class PlayerController : MonoBehaviour
     public UnityAction onInteractHook; 
     
     //GENERAL
-    public Health health{get; private set;}
-    public Collider thisCollider;
-    BombTool bombTool;
-    UsePotion usePotion;
-
-    [Header("Movment")]
-    [SerializeField] float acceleration = 10f;
-
-    [Header("Jump and MidAir")]
-    [SerializeField] float airMovmentSpeedModifier =0.25f;
-
-
-    public bool forceNormalGravity = false;
+    //public Health health{get; private set;}
 
     [Header("Hurt")]
     public float hurtDuration = 1f;
 
     [Header("DeadState")]
-    [SerializeField]GameObject deadCamera;
-    public UnityAction onDeath;
+   // [SerializeField]GameObject deadCamera;
+    public UnityAction onDeath,onRessurect;
 
     [Header("Attack")]
     [HideInInspector]public float exitiAttackTime = 0;
@@ -88,37 +50,32 @@ public class PlayerController : MonoBehaviour
     public SFXManager mySFXManager;
     public boolConditionDelegate damageConditions;
 
-    [Header("Input")]
-    ControllerRumbleManager myRumbleManager;
-
     [Header("Debug")]
     [SerializeField] string currentStateName;
     public int attackstage =0;
     // event interface
     public UnityAction onJump; 
     public UnityAction onMovmentInput;
+    public UnityAction onStateInitializationFinished;
     // physics
     public UnityAction<float> onMove, onRotate, onPlayerImpulse;
+    public UnityAction onAir, onLand;
+    public UnityAction<bool> onRigidBodyChanges;
     // combat
     public delegate bool TakeDamageDelegate(GameObject attacker, int value);
-    public TakeDamageDelegate onTakeDamage;
-    public UnityAction onAttack, onDefend, onPowerIncrease;
+    public TakeDamageDelegate onPlayerTakeDamage;
+    public UnityAction onAttack, onDefend, onPowerIncrease; 
+    public UnityAction<GameObject,float,Vector3> onCombatPushed;
     public UnityAction<float,Vector3> onPushed;
-    //public UnityAction<int> onTakeDamage;
+    // actions
+    public UnityAction onUseTool, onUsePotion;
     private void Awake()
     {
-        InitializeStateMachine();
         input = GetComponent<PlayerInput>();
         if(!startWithInputs)
         input.DeactivateInput();
-        myRigidbody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
-        thisCollider = GetComponent<Collider>();
-        health = GetComponent<Health>();
-        bombTool = GetComponent<BombTool>();
-        usePotion = GetComponent<UsePotion>();
         mySFXManager = GetComponent<SFXManager>();
-        myRumbleManager = GetComponent<ControllerRumbleManager>();
     }
 
     private void OnDestroy() {
@@ -129,7 +86,8 @@ public class PlayerController : MonoBehaviour
          GameManager.Instance?.RemovePlayer(this);
     }
     private void Start() {
-        StartCoroutine(SubscribleToGameManager());    
+        StartCoroutine(SubscribleToGameManager()); 
+        InitializeStateMachine();   
     }
     IEnumerator SubscribleToGameManager()
     {
@@ -174,67 +132,20 @@ public class PlayerController : MonoBehaviour
         stateMachine = new StateMachine();
         idleState = new IdleState(this);
         walkingState = new WalkingState(this);
-        onAirState = new OnAirState(this, airMovmentSpeedModifier);
-        //attackState = new AttackState(this, attackCollider);
+        onAirState = new OnAirState(this);
         attackState = new AttackStateRedone(this);
         hurtState = new HurtState(this);
         deadState = new DeadState(this);
+        defendState = new DefendState(this);
+
+        onStateInitializationFinished?.Invoke();
         stateMachine.ChangeState(idleState);
     }
     public void SetMovmentVector(Vector2 vector)
     {
         inputMovmentVector = vector;
     }
-    public int GetCurrentHealth()
-    {
-        Debug.Log("Current health:"+ health.GetCurrentHealth());
-        return health.GetCurrentHealth();
-    }
-
-    public void Die()
-    {
-        thisCollider.enabled= false;
-        if(stateMachine.currentState!= deadState)
-            stateMachine.ChangeState(deadState);
-    }
-
-    public void Ressurect()
-    {
-        thisCollider.enabled = true;
-        myRigidbody.isKinematic = false;
-        if(stateMachine.currentState == deadState)
-        {
-            deadCamera.SetActive(false);
-            StartCoroutine(WaitAndRess());
-        }
-    }
-    IEnumerator WaitAndRess()
-    {
-        yield return new WaitForSeconds(2f);
-        stateMachine.ChangeState(idleState);
-        yield return new WaitForSeconds(2f);
-        
-        
-        health.Heal(Mathf.RoundToInt(health.GetMaxHealth()/2));
-       
-        health.SetIgnoreDamage(false);
-        UnHaltEverything();
-        TryGivePlayerControl();
-    }
     //REACTION METHODS
-
-    public bool TakeDamage(GameObject attacker,int damage)
-    {   
-        // check attacksuccess
-        if(stateMachine.currentState!= hurtState)
-        {
-            bool returningValue = onTakeDamage.Invoke(attacker, damage);
-            if(!returningValue) return false;
-            myRumbleManager.RumblePulse(.25f,.85f,hurtDuration*.65f); 
-            return returningValue;   
-        }
-        return false;
-    }
     public bool ReadDefenseInput()
     {
         return defending;
@@ -285,22 +196,22 @@ public class PlayerController : MonoBehaviour
     public void TryBlock(bool blockTrigger)
     {
         if(GameManager.Instance.GameState != GameState.playing) return;
+        if(gotControl||defending)onDefend.Invoke();
         defending = blockTrigger;
-        if(!gotControl) return; 
-        onDefend.Invoke();
+        
     }
     public void TryUseTool()
     {
         if(GameManager.Instance.GameState != GameState.playing) return;
         if(!gotControl) return;
         if(defending) return;
-        bombTool.PutBomb(); 
+        onUseTool?.Invoke(); 
     }
     public void TryUsePotion()
     {
         if(GameManager.Instance.GameState != GameState.playing) return;
         if(!gotControl) return;
-        usePotion.Use(); 
+        onUsePotion?.Invoke(); 
     }
     public void TryToInteract()
     {

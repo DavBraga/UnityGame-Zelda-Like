@@ -19,7 +19,6 @@ public class PlayerCombat : MonoBehaviour
     
 
     private void Awake() {
-        SetUpWeaponColliders();
         health = GetComponent<Health>();
         player = GetComponent<PlayerController>();
         shieldBlock = GetComponent<ShieldBlock>();
@@ -27,55 +26,64 @@ public class PlayerCombat : MonoBehaviour
 
     private void OnEnable() 
     {
-         player.onTakeDamage+=TakeDamage;
+       GetComponent<PlayerDeath>().onTakeDamage+=TakeDamage;
          player.onAttack+= KeepChooping;
          player.onDefend+= Defend;
          player.onPowerIncrease+= increasePower;
+         player.onStateInitializationFinished+=SetStates;
+         player.onCombatPushed+=BePushed;
         
     }
     private void OnDisable() 
     {
-        player.onTakeDamage-=TakeDamage;
+        GetComponent<PlayerDeath>().onTakeDamage-=TakeDamage;
         player.onAttack-=KeepChooping;
         player.onDefend-= Defend;
         player.onPowerIncrease-= increasePower;
+        player.onStateInitializationFinished-=SetStates;
+        player.onCombatPushed-=BePushed;
         
     }
-    private void Start() {
-        player.attackState.SetAttackChain(attackChain,attackCollider);
+    private void Start()
+    {
+        SetUpWeaponColliders();
+    }
+
+    private void SetStates()
+    {
+        Debug.Log("states set");
+        player.attackState.SetAttackChain(attackChain, attackCollider);
         player.defendState.SetShieldCollider(shieldCollider);
     }
+
     public void KeepChooping()
     {   
         if(player.exitiAttackTime>Time.time) return;
         if(player.stateMachine.currentState!=player.attackState)
             player.stateMachine.ChangeState(player.attackState);
     }
-      public void Defend()
+    public void Defend()
     {
         if(player.stateMachine.currentState!=player.defendState)
             player.stateMachine.ChangeState(player.defendState);
     }
-
-
     public bool TakeDamage(GameObject attacker, int damage)
     {
         if(player.stateMachine.currentState == player.deadState) return false;
         if(player.stateMachine.currentState== player.defendState&& !shieldBlock.DirectionCanDealDamage(attacker)) return false;
         
         if(!health.TakeDamage(damage)) return false;
-
-        if(health.GetCurrentHealth()<1)
-        {
-            player.stateMachine.ChangeState(player.deadState);
-            return true;
-        }
-        else
-        {
             player.stateMachine.ChangeState(player.hurtState);   
-        }
         return true;
     }
+
+     public void BePushed(GameObject pusher ,float pushPower, Vector3 direction)
+     {
+        if(player.stateMachine.currentState == player.deadState) return;
+        if(player.stateMachine.currentState== player.defendState&& !shieldBlock.DirectionCanDealDamage(pusher)) return ;
+        player.onPushed(pushPower,direction);
+
+     }
 
     public void AttackTrigger(Collider other)
     {

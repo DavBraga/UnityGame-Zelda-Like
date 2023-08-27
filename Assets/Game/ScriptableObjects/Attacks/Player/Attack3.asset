@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Attack3
   m_EditorClassIdentifier: 
   attackStats:
-    AttackImpulse: 12
+    AttackImpulse: 8
     attackPreparationTime: 0.12
     AttackTriggerTag: tAttack3
     attackDuration: 0.3

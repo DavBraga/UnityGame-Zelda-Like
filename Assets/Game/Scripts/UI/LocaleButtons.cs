@@ -18,6 +18,10 @@ public class LocaleButtons : MonoBehaviour
         UpdateLocale();
     }
 
+    private void OnEnable() {
+        UpdateLocale();
+    }
+
     public void UpdateLocale()
     {
         myCanvas.alpha = LocalizationSettings.SelectedLocale == myLocale ? 1 : 0.1f;

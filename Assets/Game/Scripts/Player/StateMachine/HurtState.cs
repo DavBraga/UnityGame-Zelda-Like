@@ -30,13 +30,7 @@ public class HurtState: State
         base.OnStateUpdate(); 
         if((hurtDuration -=Time.deltaTime)<0)
         {
-            if(player.GetCurrentHealth()<=0)
-                {
-                    Debug.Log("dies");
-                    player.Die();
-                }
-            else
-                player.stateMachine.ChangeState(player.idleState);
+            player.stateMachine.ChangeState(player.idleState);
         }
         
     }

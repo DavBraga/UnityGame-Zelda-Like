@@ -11,9 +11,9 @@ public class ControllerRumbleManager : MonoBehaviour
 
     public void RumblePulse(float lowFrequency,float highFrequency,float duration)
     {
+        if(Application.isMobilePlatform&&Gamepad.all.Count<1)Handheld.Vibrate();
         if(Gamepad.all.Count<1) return;
         gamepad = Gamepad.current;
-        
         gamepad?.SetMotorSpeeds(lowFrequency,highFrequency);
         if(rumbleRoutine!=null) StopCoroutine(rumbleRoutine);
         rumbleRoutine = StartCoroutine(StopRumbpleAfterAwhile(duration));

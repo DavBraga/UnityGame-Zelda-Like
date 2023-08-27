@@ -54,7 +54,7 @@ public class CheckPointManager : MonoBehaviour
             inventoryChannel.AddItem(potions,99);
         }
         fader.FadeIn();
-        player.Ressurect();
+        player.onRessurect?.Invoke();
         GameManager.Instance?.ChangeGameState(GameState.playing);
     }
 }

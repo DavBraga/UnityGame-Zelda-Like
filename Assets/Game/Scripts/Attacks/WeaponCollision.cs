@@ -32,14 +32,6 @@ public class WeaponCollision : MonoBehaviour
             }
         particlePointer = 0;
     }
-
-    private void OnEnable() {
-    //   Collider[] colliders =  Physics.OverlapBox(colliderComponent.bounds.center, colliderComponent.bounds.extents,Quaternion.identity, LayerMask.NameToLayer("Attackable"));
-    //   foreach (Collider collider in colliders)
-    //   {
-    //         OnTriggerEnter(collider);
-    //   }
-    }
     private void OnTriggerEnter(Collider other) {
         
         onHit?.Invoke(other);

@@ -44,6 +44,10 @@ public class Health : MonoBehaviour
 
         return true;
     }
+    public void SetHealth(int value)
+    {
+        currentHealth = value;
+    }
 
     private void PlayOnDamageEvents(int damage)
     {

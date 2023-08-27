@@ -8,7 +8,7 @@ public class DeathZone : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             Debug.Log("Death trigger");
-            other.GetComponent<PlayerController>().Die();
+            other.GetComponent<PlayerController>().onDeath?.Invoke();
         }
     }
 }

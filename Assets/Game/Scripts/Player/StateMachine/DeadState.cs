@@ -13,20 +13,10 @@ public class DeadState : State
     public override void OnStateEnter()
     {
         base.OnStateEnter();
-    
-        player.HaltEverything();
-        player.health.SetIgnoreDamage(true);
-        player.myRigidbody.isKinematic = true;
-        player.thisCollider.enabled = false;
-        player.onDeath?.Invoke();
-
-        player.animator.SetBool("bDead", true);
-        player.RemovePlayerControl();
     }
     public override void OnStateExit()
     {
         base.OnStateExit();
-        player.animator.SetBool("bDead", false);
     }
     public override void OnStateUpdate()
     {

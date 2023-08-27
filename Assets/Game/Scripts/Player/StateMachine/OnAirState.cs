@@ -12,17 +12,25 @@ public class OnAirState : State
         this.movmentIntensity =movmentIntensity;
     }
 
+    public void SetAirMovmentModifier(float value)
+    {
+        this.movmentIntensity = value;
+    }
+
     public override void OnStateEnter()
     {
         player.animator.SetBool("bOnAir", true);
-        player.forceNormalGravity = true;
+        
+        player.onAir.Invoke();
+        //player.forceNormalGravity = true;
         base.OnStateEnter();
     }
     public override void OnStateExit()
     {
         player.animator.SetBool("bOnAir", false);
         player.animator.ResetTrigger("tJump");
-        player.forceNormalGravity = false;
+        player.onLand.Invoke();
+        //player.forceNormalGravity = false;
         base.OnStateExit();
     }
     public override void OnStateUpdate()

@@ -51,7 +51,7 @@ public class Projectile : MonoBehaviour
             PlayerController player = other.gameObject.GetComponent<PlayerController>();
             if(!player) return; 
             
-            player.TakeDamage(this.gameObject, power);
+            player.onPlayerTakeDamage.Invoke(this.gameObject, power);
 
             if(pushMode == PushMode.shoot)
             player.onPushed.Invoke(pushPower,new Vector3(transform.forward.x,0,transform.forward.z));

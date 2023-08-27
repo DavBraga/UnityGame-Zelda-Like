@@ -21,6 +21,12 @@ public class BombTool : MonoBehaviour
     private void Awake() {
         bombcollider = bombPrefab.GetComponent<SphereCollider>();
     }
+    private void OnEnable() {
+        GetComponent<PlayerController>().onUseTool+=PutBomb;
+    }
+    private void OnDisable() {
+        GetComponent<PlayerController>().onUseTool-=PutBomb;
+    }
     public void PutBomb()
     {
         if(!gotBombTool) return;

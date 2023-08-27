@@ -24,6 +24,12 @@ public class UsePotion : MonoBehaviour
         affectedHealth = GetComponent<Health>();
         if(usageFX) usesUsageFx = true;
     }
+    private void OnEnable() {
+        GetComponent<PlayerController>().onUsePotion+=Use;
+    }
+    private void OnDisable() {
+        GetComponent<PlayerController>().onUsePotion-=Use;
+    }
     public void Use()
     {
         if (canUse)
