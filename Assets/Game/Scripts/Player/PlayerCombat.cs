@@ -12,6 +12,8 @@ public class PlayerCombat : MonoBehaviour
     ShieldBlock shieldBlock;
     Health health;
 
+    int powerModifer = 0;
+
     int CurrentAttackStage=0;
 
     
@@ -28,6 +30,7 @@ public class PlayerCombat : MonoBehaviour
          player.onTakeDamage+=TakeDamage;
          player.onAttack+= KeepChooping;
          player.onDefend+= Defend;
+         player.onPowerIncrease+= increasePower;
         
     }
     private void OnDisable() 
@@ -35,6 +38,7 @@ public class PlayerCombat : MonoBehaviour
         player.onTakeDamage-=TakeDamage;
         player.onAttack-=KeepChooping;
         player.onDefend-= Defend;
+        player.onPowerIncrease-= increasePower;
         
     }
     private void Start() {
@@ -77,7 +81,7 @@ public class PlayerCombat : MonoBehaviour
     {
         if(other.TryGetComponent(out CreatureController creatureController))
         {
-            creatureController.TakeDamage(gameObject, attackChain[CurrentAttackStage].GetAttackStats().attackPower);
+            creatureController.TakeDamage(gameObject, attackChain[CurrentAttackStage].GetAttackStats().attackPower+powerModifer);
         }
         if(other.TryGetComponent(out Pushable pushable))
         {
@@ -111,6 +115,10 @@ public class PlayerCombat : MonoBehaviour
         shieldCollider.GetComponent<WeaponCollision>().onHit += ShieldTrigger;
         attackCollider.SetActive(false);
         shieldCollider.SetActive(false);
+    }
+    public void increasePower()
+    {
+        powerModifer++;
     }
 
 }

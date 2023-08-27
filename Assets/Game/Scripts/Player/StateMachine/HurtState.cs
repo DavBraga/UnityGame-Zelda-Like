@@ -14,7 +14,6 @@ public class HurtState: State
     public override void OnStateEnter()
     {
         base.OnStateEnter();
-        Debug.Log("enters hurt state");
         player.animator.SetTrigger("tHurt");
         hurtDuration = player.hurtDuration;
         player.RemovePlayerControl();

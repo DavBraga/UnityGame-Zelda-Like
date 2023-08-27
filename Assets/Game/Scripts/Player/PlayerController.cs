@@ -82,15 +82,7 @@ public class PlayerController : MonoBehaviour
     public UnityAction onDeath;
 
     [Header("Attack")]
-
-    [SerializeField]float exitAttackCooldown =.3f;
     [HideInInspector]public float exitiAttackTime = 0;
-    [SerializeField] float[] attackPreparationTime;
-    public float[] attackDuration;
-    public float[] attackCooldown;
-    [SerializeField] float[] attackImpulse;
-
-    [SerializeField] int attackPower = 1;
 
     [Header("Audio")]
     public SFXManager mySFXManager;
@@ -110,7 +102,7 @@ public class PlayerController : MonoBehaviour
     // combat
     public delegate bool TakeDamageDelegate(GameObject attacker, int value);
     public TakeDamageDelegate onTakeDamage;
-    public UnityAction onAttack, onDefend;
+    public UnityAction onAttack, onDefend, onPowerIncrease;
     public UnityAction<float,Vector3> onPushed;
     //public UnityAction<int> onTakeDamage;
     private void Awake()
@@ -321,9 +313,5 @@ public class PlayerController : MonoBehaviour
         if(!enlargeTrigger) return;
         if(!gotControl) return;
         onMap?.Invoke();
-    }
-    public void IncreaseAttackPower(int amount =1)
-    {
-        attackPower+=amount;
     }
 }

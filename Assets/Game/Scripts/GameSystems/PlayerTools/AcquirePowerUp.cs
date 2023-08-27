@@ -47,7 +47,7 @@ public class AcquirePowerUp : MonoBehaviour
     }
     public void AddPower(GameObject player)
     {
-       player.GetComponent<PlayerController>().IncreaseAttackPower();
+       player.GetComponent<PlayerController>()?.onPowerIncrease.Invoke();
        // uichannel.ComunicatePowerUP("Attack power increased by 1!");
         uichannel.ComunicatePowerUP(GetLocalizedString("key_powerUp_Damage"));
         GameManager.Instance?.PauseGame();
