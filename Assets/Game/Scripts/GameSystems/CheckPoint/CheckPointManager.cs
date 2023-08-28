@@ -11,13 +11,13 @@ public class CheckPointManager : MonoBehaviour
     [SerializeField] string lastCheckpoint= "";
     int potionCount= 0;
     Transform returnPostion;
-    PlayerController player;
+    PlayerAvatar player;
     Coroutine restorationRoutine;
 
     UnityAction eventONRestore;
 
     private void Awake() {
-        player = GetComponent<PlayerController>();
+        player = GetComponent<PlayerAvatar>();
     }
     public void SaveCheckPoint(Transform respawnPosition,int potions, string checkpointName)
     {

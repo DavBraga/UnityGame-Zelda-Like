@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class DefendState : State
 {
-    PlayerController player;
+    PlayerAvatar player;
     GameObject shieldCollider;
-    public DefendState(PlayerController playerController) : base("Defend")
+    public DefendState(PlayerAvatar playerController) : base("Defend")
     {
         player = playerController;
     }

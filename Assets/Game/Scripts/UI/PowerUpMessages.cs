@@ -12,9 +12,9 @@ public class PowerUpMessages : MonoBehaviour
    }
 
    private void OnEnable() {
-      GameManager.Instance.GetPlayer().GetComponent<PlayerController>().HaltEverything();
+      GameManager.Instance.GetPlayer().GetComponent<PlayerAvatar>().HaltEverything();
    }
    private void OnDisable() {
-      GameManager.Instance.GetPlayer().GetComponent<PlayerController>().UnHaltEverything();
+      GameManager.Instance.GetPlayer().GetComponent<PlayerAvatar>().UnHaltEverything();
    }
 }

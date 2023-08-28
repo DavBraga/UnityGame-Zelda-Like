@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AttackStateRedone : State
 {
-    PlayerController player;
+    PlayerAvatar player;
 
     List<PlayerAttack> attackChain;
 
@@ -28,7 +28,7 @@ public class AttackStateRedone : State
     bool duration = false;
     bool cooldown = false;
     float lastedtime = 0f;
-    public AttackStateRedone(PlayerController playerController) : base("Attack")
+    public AttackStateRedone(PlayerAvatar playerController) : base("Attack")
     {
         player = playerController;
     }

@@ -66,14 +66,14 @@ public class GameManager : MonoBehaviour
         return collisionLayer;
     }
 
-    public void SetPlayer(PlayerController player)
+    public void SetPlayer(PlayerAvatar player)
     {
         this.player = player.gameObject;
         if(player!=null)
         gotPlayer = true;
     }
 
-    public bool RemovePlayer(PlayerController player)
+    public bool RemovePlayer(PlayerAvatar player)
     {
         if(this.player==player)
         {

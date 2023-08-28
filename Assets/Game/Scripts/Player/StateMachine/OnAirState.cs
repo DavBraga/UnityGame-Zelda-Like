@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class OnAirState : State
 {
-    PlayerController player;
+    PlayerAvatar player;
     float movmentIntensity;
-    public OnAirState(PlayerController playerController, float movmentIntensity=1) : base("OnAirState")
+    public OnAirState(PlayerAvatar playerController, float movmentIntensity=1) : base("OnAirState")
     {
         player = playerController;
         this.movmentIntensity =movmentIntensity;

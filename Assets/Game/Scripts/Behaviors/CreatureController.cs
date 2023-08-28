@@ -85,12 +85,12 @@ public class CreatureController : MonoBehaviour
     {
         yield return new WaitUntil(()=> GameManager.IsManagerReady());
         yield return new WaitUntil(()=>GameManager.Instance.CheckForPlayer());
-        GameManager.Instance.GetPlayer().GetComponent<PlayerController>().onRessurect+= ReturnHome;
+        GameManager.Instance.GetPlayer().GetComponent<PlayerAvatar>().onRessurect+= ReturnHome;
     }
 
     private void OnDisable() {
         if(GameManager.Instance.GetPlayer())
-        GameManager.Instance.GetPlayer().GetComponent<PlayerController>().onRessurect-= ReturnHome;
+        GameManager.Instance.GetPlayer().GetComponent<PlayerAvatar>().onRessurect-= ReturnHome;
     }
     private void Start() {
         startingPostion = transform.position;
@@ -206,7 +206,7 @@ public class CreatureController : MonoBehaviour
     }
     public virtual void Die()
     {
-        GameManager.Instance.GetPlayer().GetComponent<PlayerController>().onDeath -= ReturnHome;
+        GameManager.Instance.GetPlayer().GetComponent<PlayerAvatar>().onDeath -= ReturnHome;
         stateMachine.ChangeState(creatureDeadState);
         myAnimator?.SetBool("bDead", true);
         myNavAgent.isStopped=true;

@@ -11,7 +11,7 @@ public class Playerinputs : MonoBehaviour
     public UnityAction<int> onVibrationChanges;
     Gamepad gamepad;
     Coroutine rumbleRoutine;
-    [SerializeField]PlayerController player;
+    [SerializeField]PlayerAvatar player;
    [SerializeField] bool virtualInput = false;
 
    private void Awake() {
@@ -44,7 +44,7 @@ public class Playerinputs : MonoBehaviour
         virtualInput = virtualInputOn;
     }
 
-    public void SetPlayer(PlayerController newPlayer)
+    public void SetPlayer(PlayerAvatar newPlayer)
     {
         if(virtualInput) return;
         player = newPlayer;

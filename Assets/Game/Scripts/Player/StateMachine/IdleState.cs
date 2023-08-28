@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class IdleState : State
 {
-    PlayerController player;
-    public IdleState(PlayerController playerController) : base("Idle")
+    PlayerAvatar player;
+    public IdleState(PlayerAvatar playerController) : base("Idle")
     {
         player = playerController;
     }

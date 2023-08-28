@@ -98,6 +98,11 @@ MonoBehaviour:
     m_Key: key_exitGame
     m_Metadata:
       m_Items: []
+  - m_Id: 1755142802784256
+    m_Key: Level/Canvas/Settings/Game Settings/Graphics/Content (1)/GraphicSettings/GameObject/Toggle/Tag
+      Quality Settings
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

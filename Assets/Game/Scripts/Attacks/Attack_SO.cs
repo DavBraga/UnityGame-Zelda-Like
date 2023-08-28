@@ -88,7 +88,7 @@ public class Attack_SO : ScriptableObject
             {
                 GameObject hitObj = hit.collider.gameObject;
                 
-                if (hitObj.TryGetComponent<PlayerController>(out PlayerController player))
+                if (hitObj.TryGetComponent<PlayerAvatar>(out PlayerAvatar player))
                 {
                     DealDamage(attackerController.gameObject, player);
                     DealPushEffect(attackerController.gameObject, player, attackPushPower, new Vector3(controllerTransform.forward.x, 0, controllerTransform.forward.z));
@@ -107,11 +107,11 @@ public class Attack_SO : ScriptableObject
         return controllerTransform;
     }
 
-    protected void DealPushEffect(GameObject pusher, PlayerController target, float pushPower,Vector3 direction)
+    protected void DealPushEffect(GameObject pusher, PlayerAvatar target, float pushPower,Vector3 direction)
     {
           target.onCombatPushed.Invoke(pusher, pushPower, direction);
     }
-    protected void DealDamage(GameObject attacker, PlayerController player)
+    protected void DealDamage(GameObject attacker, PlayerAvatar player)
     {
         if(!player.onPlayerTakeDamage.Invoke(attacker, AttackDamage)) return;
         if (doesItGotHitFX) Instantiate(hitFX,player.transform);

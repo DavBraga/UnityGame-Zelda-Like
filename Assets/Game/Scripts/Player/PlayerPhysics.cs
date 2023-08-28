@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerPhysics : MonoBehaviour
 {
     private Rigidbody myRigidbody;
-    private PlayerController playerController;
+    private PlayerAvatar playerController;
     bool forceNormalGravity;
     Pushable pushable;
 
@@ -38,7 +38,7 @@ public class PlayerPhysics : MonoBehaviour
     // For further refactor, check animator prompts.
 
     private void Awake() {
-        playerController = GetComponent<PlayerController>();
+        playerController = GetComponent<PlayerAvatar>();
         myRigidbody = GetComponent<Rigidbody>();
         thisCollider = GetComponent<Collider>();
         pushable = GetComponent<Pushable>();

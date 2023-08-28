@@ -1,8 +1,8 @@
 using UnityEngine;
 public class WalkingState : State
 {
-    PlayerController player;
-    public WalkingState(PlayerController playerController) : base("Walking")
+    PlayerAvatar player;
+    public WalkingState(PlayerAvatar playerController) : base("Walking")
     {
         player = playerController;
     }

@@ -98,6 +98,10 @@ MonoBehaviour:
     m_Localized: Sair do Jogo
     m_Metadata:
       m_Items: []
+  - m_Id: 1755142802784256
+    m_Localized: "Vibra\xE7\xE3o"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

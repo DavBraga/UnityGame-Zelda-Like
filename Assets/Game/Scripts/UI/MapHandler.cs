@@ -18,13 +18,13 @@ public class MapHandler : MonoBehaviour
     {
         yield return new WaitUntil(()=> GameManager.IsManagerReady());
         yield return new WaitUntil(()=> GameManager.Instance.CheckForPlayer());
-        GameManager.Instance.GetPlayer().GetComponent<PlayerController>().onMap+=ToggleMap;
+        GameManager.Instance.GetPlayer().GetComponent<PlayerAvatar>().onMap+=ToggleMap;
     }
 
     public void OnDisable()
     {   
         if(GameManager.IsManagerReady())
-            GameManager.Instance.GetPlayer().GetComponent<PlayerController>().onMap-=ToggleMap;
+            GameManager.Instance.GetPlayer().GetComponent<PlayerAvatar>().onMap-=ToggleMap;
     }
     public void EnableBigMap()
     {

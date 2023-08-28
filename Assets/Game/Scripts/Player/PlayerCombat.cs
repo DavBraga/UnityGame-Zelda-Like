@@ -8,7 +8,7 @@ public class PlayerCombat : MonoBehaviour
 
     [SerializeField] GameObject attackCollider;
     [SerializeField] GameObject shieldCollider;
-    PlayerController player;
+    PlayerAvatar player;
     ShieldBlock shieldBlock;
     Health health;
 
@@ -20,7 +20,7 @@ public class PlayerCombat : MonoBehaviour
 
     private void Awake() {
         health = GetComponent<Health>();
-        player = GetComponent<PlayerController>();
+        player = GetComponent<PlayerAvatar>();
         shieldBlock = GetComponent<ShieldBlock>();
     }
 

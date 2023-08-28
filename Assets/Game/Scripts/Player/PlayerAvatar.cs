@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerAvatar : MonoBehaviour
 {
     public UnityAction onMap;
     public UnityAction onUnpause;
@@ -20,7 +20,6 @@ public class PlayerController : MonoBehaviour
     public WalkingState walkingState{ get; private set;}
     public DeadState deadState{get; private set;}
     public OnAirState onAirState{ get; private set;}
-    //public AttackState attackState{get; private set;}
     public AttackStateRedone attackState{get; private set;}
     public DefendState defendState{get; private set;}
     public HurtState hurtState{get; private set;}
@@ -38,9 +37,6 @@ public class PlayerController : MonoBehaviour
 
     [Header("Hurt")]
     public float hurtDuration = 1f;
-
-    [Header("DeadState")]
-   // [SerializeField]GameObject deadCamera;
     public UnityAction onDeath,onRessurect;
 
     [Header("Attack")]

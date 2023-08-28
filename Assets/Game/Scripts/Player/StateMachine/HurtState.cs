@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class HurtState: State
 {
-    PlayerController player;
+    PlayerAvatar player;
     float hurtDuration;
-    public HurtState(PlayerController playerController) : base("HurtState")
+    public HurtState(PlayerAvatar playerController) : base("HurtState")
     {
         player = playerController;
     }

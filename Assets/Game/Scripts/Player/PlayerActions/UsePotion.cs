@@ -25,10 +25,10 @@ public class UsePotion : MonoBehaviour
         if(usageFX) usesUsageFx = true;
     }
     private void OnEnable() {
-        GetComponent<PlayerController>().onUsePotion+=Use;
+        GetComponent<PlayerAvatar>().onUsePotion+=Use;
     }
     private void OnDisable() {
-        GetComponent<PlayerController>().onUsePotion-=Use;
+        GetComponent<PlayerAvatar>().onUsePotion-=Use;
     }
     public void Use()
     {

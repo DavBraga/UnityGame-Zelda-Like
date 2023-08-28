@@ -25,7 +25,6 @@ public class Health : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
-        
     }
 
     virtual public bool  TakeDamage(int damage, damageType damageType = damageType.normal)

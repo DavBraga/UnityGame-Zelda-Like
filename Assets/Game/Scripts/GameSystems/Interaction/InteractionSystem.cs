@@ -34,7 +34,7 @@ public class InteractionSystem : MonoBehaviour
     {
         yield return new WaitUntil(()=>GameManager.IsManagerReady());
         yield return new WaitUntil(()=>GameManager.Instance.CheckForPlayer());
-        GameManager.Instance.GetPlayer().GetComponent<PlayerController>().onInteractHook+=Interact;
+        GameManager.Instance.GetPlayer().GetComponent<PlayerAvatar>().onInteractHook+=Interact;
     }
     // Update is called once per frame
     void Update()

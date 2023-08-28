@@ -48,7 +48,7 @@ public class Projectile : MonoBehaviour
         if(other.gameObject.CompareTag("Player"))
         {
             Debug.Log("trriggered");
-            PlayerController player = other.gameObject.GetComponent<PlayerController>();
+            PlayerAvatar player = other.gameObject.GetComponent<PlayerAvatar>();
             if(!player) return; 
             
             player.onPlayerTakeDamage.Invoke(this.gameObject, power);

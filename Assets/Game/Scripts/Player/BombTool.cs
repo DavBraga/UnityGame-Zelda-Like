@@ -22,10 +22,10 @@ public class BombTool : MonoBehaviour
         bombcollider = bombPrefab.GetComponent<SphereCollider>();
     }
     private void OnEnable() {
-        GetComponent<PlayerController>().onUseTool+=PutBomb;
+        GetComponent<PlayerAvatar>().onUseTool+=PutBomb;
     }
     private void OnDisable() {
-        GetComponent<PlayerController>().onUseTool-=PutBomb;
+        GetComponent<PlayerAvatar>().onUseTool-=PutBomb;
     }
     public void PutBomb()
     {

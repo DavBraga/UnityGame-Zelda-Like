@@ -17,13 +17,13 @@ public class PlayerDeath : MonoBehaviour
     CheckPointManager checkPointManager;
 
     Coroutine playerDeathRoutine;
-    PlayerController player;
+    PlayerAvatar player;
 
     private void Awake() {
         checkPointManager =GetComponent<CheckPointManager>();
         health = GetComponent<Health>();
-        player = GetComponent<PlayerController>();
-        GetComponent<PlayerController>().onDeath+=PlayPlayerDeath;
+        player = GetComponent<PlayerAvatar>();
+        GetComponent<PlayerAvatar>().onDeath+=PlayPlayerDeath;
     }
 
     private void OnEnable() {

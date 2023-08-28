@@ -21,7 +21,7 @@ public class Explosion : MonoBehaviour
          {
             if(colliders[colliderIndex].CompareTag(playerTag))
             {
-                PlayerController player ;
+                PlayerAvatar player ;
                 if(colliders[colliderIndex].gameObject.TryGetComponent(out player))
                 {
                     player.onPlayerTakeDamage.Invoke(gameObject,power);
