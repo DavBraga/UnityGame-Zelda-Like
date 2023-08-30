@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class IdleState : State
 {
-    PlayerAvatar player;
-    public IdleState(PlayerAvatar playerController) : base("Idle")
+    PlayerController player;
+    public IdleState(PlayerController playerController) : base("Idle")
     {
         player = playerController;
     }
@@ -23,7 +23,7 @@ public class IdleState : State
     public override void OnStateUpdate()
     {
         base.OnStateUpdate(); 
-        if(!player.isGroundedDelegate())
+        if(!player.GetControlledAvatar().isGroundedDelegate())
         {
             player.stateMachine.ChangeState(player.onAirState);
         }

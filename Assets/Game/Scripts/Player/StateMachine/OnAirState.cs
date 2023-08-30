@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class OnAirState : State
 {
-    PlayerAvatar player;
+    PlayerController player;
+    PlayerAvatar avatar;
     float movmentIntensity;
-    public OnAirState(PlayerAvatar playerController, float movmentIntensity=1) : base("OnAirState")
+    public OnAirState(PlayerController playerController, float movmentIntensity=1) : base("OnAirState")
     {
         player = playerController;
+        avatar = player.GetControlledAvatar();
         this.movmentIntensity =movmentIntensity;
     }
 
@@ -19,17 +21,17 @@ public class OnAirState : State
 
     public override void OnStateEnter()
     {
-        player.animator.SetBool("bOnAir", true);
+        avatar.animator.SetBool("bOnAir", true);
         
-        player.onAir.Invoke();
+        player.GetControlledAvatar().onAir.Invoke();
         //player.forceNormalGravity = true;
         base.OnStateEnter();
     }
     public override void OnStateExit()
     {
-        player.animator.SetBool("bOnAir", false);
-        player.animator.ResetTrigger("tJump");
-        player.onLand.Invoke();
+        avatar.animator.SetBool("bOnAir", false);
+        avatar.animator.ResetTrigger("tJump");
+        player.GetControlledAvatar().onLand.Invoke();
         //player.forceNormalGravity = false;
         base.OnStateExit();
     }
@@ -37,14 +39,14 @@ public class OnAirState : State
     {
         base.OnStateUpdate(); 
        
-        if(player.isGroundedDelegate())
+        if(player.GetControlledAvatar().isGroundedDelegate())
             player.stateMachine.ChangeState(player.idleState);
     }
     public override void OnStateFixedUpdate()
     {
         base.OnStateFixedUpdate();
-        player.onMove.Invoke(movmentIntensity);
-        player.onRotate.Invoke(movmentIntensity);
+        player.GetControlledAvatar().onMove.Invoke(movmentIntensity);
+        player.GetControlledAvatar().onRotate.Invoke(movmentIntensity);
 
     }
     public override void OnStateLateUpdate()

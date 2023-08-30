@@ -1,8 +1,8 @@
 using UnityEngine;
 public class WalkingState : State
 {
-    PlayerAvatar player;
-    public WalkingState(PlayerAvatar playerController) : base("Walking")
+    PlayerController player;
+    public WalkingState(PlayerController playerController) : base("Walking")
     {
         player = playerController;
     }
@@ -17,7 +17,7 @@ public class WalkingState : State
     }
     public override void OnStateUpdate()
     {
-        if(!player.isGroundedDelegate())
+        if(!player.GetControlledAvatar().isGroundedDelegate())
             player.stateMachine.ChangeState(player.onAirState);
 
         if(player.inputMovmentVector.isZero())
@@ -29,8 +29,8 @@ public class WalkingState : State
     public override void OnStateFixedUpdate()
     {
         base.OnStateFixedUpdate();    
-        player.onMove.Invoke(1);
-        player.onRotate.Invoke(.15f);
+        player.GetControlledAvatar().onMove.Invoke(1);
+        player.GetControlledAvatar().onRotate.Invoke(.15f);
         
     }
     public override void OnStateLateUpdate()

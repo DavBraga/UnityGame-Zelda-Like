@@ -380,8 +380,8 @@ Transform:
   m_GameObject: {fileID: 615339647067290719}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.022450149, y: 0.58, z: 0.021383595}
-  m_LocalScale: {x: 0.28, y: 1.22, z: 0.49}
+  m_LocalPosition: {x: 0.022450149, y: 0.85, z: 0.021383595}
+  m_LocalScale: {x: 0.28, y: 1.4, z: 0.49}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8864300262240082240}
@@ -469,6 +469,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b45327eb153c3a349884d83ffe35daf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxParticleCount: 5
   hitVfx: {fileID: 644250500410998029, guid: 09b6068b2ddda4f47a9d40f1be722702, type: 3}
   layer:
     serializedVersion: 2
@@ -847,7 +848,8 @@ AudioSource:
   m_GameObject: {fileID: 1850209111003160218}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -6174457644032418760, guid: cb6ee2f8ed97fa749bcd0b0e485515a5,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -1073,6 +1075,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b45327eb153c3a349884d83ffe35daf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxParticleCount: 5
   hitVfx: {fileID: 644250500410998029, guid: 09b6068b2ddda4f47a9d40f1be722702, type: 3}
   layer:
     serializedVersion: 2
@@ -2238,21 +2241,15 @@ GameObject:
   - component: {fileID: 73977968382995643}
   - component: {fileID: 6256679538896721255}
   - component: {fileID: 1891819706870232647}
+  - component: {fileID: 4703192755089745628}
   - component: {fileID: 8084301430195034589}
   - component: {fileID: 7630944653120732046}
-  - component: {fileID: 4363800982080424034}
   - component: {fileID: 3612249064004806051}
-  - component: {fileID: 6546538780796276215}
-  - component: {fileID: 3565865716118718216}
-  - component: {fileID: 5448895765087019173}
   - component: {fileID: 7130696774617080318}
   - component: {fileID: 421855489243533827}
   - component: {fileID: 6792158433978830588}
   - component: {fileID: 3146682249316136297}
-  - component: {fileID: 3588023386680757289}
-  - component: {fileID: 7001629617725784315}
   - component: {fileID: 1577161762438815778}
-  - component: {fileID: 5071681383695632639}
   m_Layer: 9
   m_Name: Hero
   m_TagString: Player
@@ -2315,52 +2312,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 610e423f86fb8984584ce070cd57d785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startWithInputs: 0
+  controller: {fileID: 0}
+  startWithInputs: 1
   attacking: 0
   defending: 0
-  thisCollider: {fileID: 0}
-  acceleration: 40
-  maxSpeed: 6.5
-  SnapStop: 1
-  ExtraStopForce: 70
-  slopeAngle: 0
-  MaxSlopeAngle: 50
-  jumpPower: 10
-  airMovmentSpeedModifier: 0.9
-  forceNormalGravity: 0
   hurtDuration: 0.5
-  deadCamera: {fileID: 7872234547745446327}
-  exitAttackCooldown: 0.3
   exitiAttackTime: 0
-  attackCollider: {fileID: 615339647067290719}
-  shieldCollider: {fileID: 1970680696019690679}
-  shieldBlockVfx: {fileID: 0}
-  attackPreparationTime:
-  - 0.03
-  - 0.07
-  - 0.12
-  attackDuration:
-  - 0.27
-  - 0.2
-  - 0.3
-  attackCooldown:
-  - 0.16
-  - 0.1
-  - 0.2
-  attackImpulse:
-  - 3
-  - 5
-  - 12
-  attackPower: 1
-  knockbackPower: 5
-  shieldKnocBack: 7
-  inputCooldown: 0.001
-  shieldBlock: {fileID: 0}
-  attackFX: {fileID: 0}
   mySFXManager: {fileID: 0}
   currentStateName: Idle
-  currentVelocity: 0
   attackstage: 0
+--- !u!114 &4703192755089745628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5660140284519701741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 809be9b28e64c1449bfa3594429a8559, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thisCollider: {fileID: 0}
+  acceleration: 40
+  maxSpeed: 6
+  jumpPower: 10
+  airMovmentSpeedModifier: 0.7
+  slopeAngle: 0
+  MaxSlopeAngle: 45
+  SnapStop: 1
+  ExtraStopForce: 70
 --- !u!54 &8084301430195034589
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2411,55 +2392,6 @@ CapsuleCollider:
   m_Height: 1.25
   m_Direction: 1
   m_Center: {x: 0, y: 0.62, z: 0}
---- !u!114 &4363800982080424034
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5660140284519701741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d165c311931bc349b9049b723e760ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onDeathEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3588023386680757289}
-        m_TargetAssemblyTypeName: PlayerDeath, Assembly-CSharp
-        m_MethodName: PlayPlayerDeath
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onTakeDamageEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3537646968574268207}
-        m_TargetAssemblyTypeName: SFXManager, Assembly-CSharp
-        m_MethodName: PlayAudio
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  maxHealth: 10
-  destructionParticles: {fileID: 0}
-  damageParticles: {fileID: 1443014512838139566, guid: 0b8d48b3739098f4a9a5e3bbe3beff96,
-    type: 3}
-  FXLifetime: 1.5
-  damageImunity: 0
-  ignoreDamage: 0
 --- !u!114 &3612249064004806051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2472,53 +2404,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c20c4b45ce74d26489a53b2944225d30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6546538780796276215
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5660140284519701741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94763380e2ac2e044a8325e0f120287b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  potionCD: 2.7
-  inventoryChannel: {fileID: 11400000, guid: e6e982848a1a71940837baa02a25e6ce, type: 2}
-  potion: {fileID: 11400000, guid: a1d7312199f345e459b45c093ee76a8b, type: 2}
-  potionPower: 3
-  usageFX: {fileID: 1974319073004612, guid: f03a3f0a1e000af43946ab0392cc6eee, type: 3}
---- !u!114 &3565865716118718216
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5660140284519701741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ea5e49547f072d4dae20ddbb0312218, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hurtVolume: {fileID: 0}
---- !u!114 &5448895765087019173
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5660140284519701741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bc11ff87730c7e4cae9d4e57cd25575, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gotBombTool: 0
-  bombPrefab: {fileID: 4851751799453869322, guid: 2759472c906e0784bbd86d64d74965b1,
-    type: 3}
-  bombIntervals: 3
-  placingBombRange: 2.5
 --- !u!114 &7130696774617080318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2548,7 +2433,8 @@ AudioSource:
   m_GameObject: {fileID: 5660140284519701741}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -6174457644032418760, guid: cb6ee2f8ed97fa749bcd0b0e485515a5,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: 3e064fb515728184289cdc53f71d1799, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -2666,258 +2552,6 @@ MonoBehaviour:
   potions: {fileID: 11400000, guid: a1d7312199f345e459b45c093ee76a8b, type: 2}
   fader: {fileID: 0}
   lastCheckpoint: 
---- !u!114 &3588023386680757289
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5660140284519701741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1654b7d66ce3604eb5ecbc4024aba03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onDeath:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3537646968574268207}
-        m_TargetAssemblyTypeName: SFXManager, Assembly-CSharp
-        m_MethodName: SetVolume
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0.25
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 3537646968574268207}
-        m_TargetAssemblyTypeName: SFXManager, Assembly-CSharp
-        m_MethodName: SetPitch
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 1
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 3537646968574268207}
-        m_TargetAssemblyTypeName: SFXManager, Assembly-CSharp
-        m_MethodName: PlayAudioOnRequest
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 24cb778f27c481641b459f62eb71a3f3,
-            type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 1
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 7872234547745446327}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 1
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1577161762438815778}
-        m_TargetAssemblyTypeName: MoveWithPlatform, Assembly-CSharp
-        m_MethodName: LeavePlatform
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 1
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-  fader: {fileID: 0}
---- !u!114 &7001629617725784315
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5660140284519701741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 2676586d7f21f174f9fd944eb06020f2,
-    type: 3}
-  m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1891819706870232647}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: SetUpJump
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 2287bdbf-7752-47db-8670-04c9b39cb387
-    m_ActionName: Player/Jump[/Keyboard/space,/XInputControllerWindows/buttonSouth]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1891819706870232647}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: SetMovment
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: df89cd4e-10ee-4930-b70c-aa463157f1a8
-    m_ActionName: Player/New action[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/XInputControllerWindows/leftStick/up,/XInputControllerWindows/leftStick/down,/XInputControllerWindows/leftStick/left,/XInputControllerWindows/leftStick/right,/XInputControllerWindows/dpad/up,/XInputControllerWindows/dpad/down,/XInputControllerWindows/dpad/left,/XInputControllerWindows/dpad/right]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1891819706870232647}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: SetAttack
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 065c2002-2183-48ca-b708-9c978665328e
-    m_ActionName: Player/Attack[/XInputControllerWindows/buttonWest,/Mouse/leftButton]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1891819706870232647}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: SetBlock
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 42234074-7f85-42e9-ba88-30d8e09a0254
-    m_ActionName: Player/Defend[/XInputControllerWindows/rightShoulder,/Mouse/rightButton]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1891819706870232647}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: SetUseTool
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: ee5fbd72-5714-43d9-93ff-3d5f24e044be
-    m_ActionName: Player/UseTool[/XInputControllerWindows/buttonNorth,/Keyboard/q]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1891819706870232647}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: SetUsePotion
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: d4ea27e6-3317-4578-9edd-2f2b9f2a418c
-    m_ActionName: Player/UsePotion[/XInputControllerWindows/rightShoulder,/Keyboard/1]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1891819706870232647}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: SetUseInteraction
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: bb906548-1811-4f09-9763-e11156678a8e
-    m_ActionName: Player/Interact[/Keyboard/e]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1891819706870232647}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: SetPauseGame
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 35fb3673-aade-4a8e-8cdc-9f2b20578bab
-    m_ActionName: Player/Pause[/Keyboard/escape,/XInputControllerWindows/start]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1891819706870232647}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: SetMap
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: c67c50d3-906d-41fc-988d-521ecca14ccc
-    m_ActionName: Player/Select[/Keyboard/escape]
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!114 &1577161762438815778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2931,18 +2565,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   platform: {fileID: 0}
---- !u!114 &5071681383695632639
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5660140284519701741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9aad19ace05d44cac5f9aac129b21c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5797920743832173111
 GameObject:
   m_ObjectHideFlags: 0

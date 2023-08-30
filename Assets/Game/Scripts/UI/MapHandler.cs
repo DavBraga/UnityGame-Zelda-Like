@@ -7,24 +7,11 @@ public class MapHandler : MonoBehaviour
     [SerializeField] GameObject map;
     [SerializeField] GameObject miniMap;
     bool isBigMap = false;
-
-    
-
-    private void Start() {
-        StartCoroutine(WaitForGameManager());
+    private void OnEnable() {
+        GetComponent<PlayerController>().onMap+= ToggleMap;
     }
-
-    IEnumerator WaitForGameManager()
-    {
-        yield return new WaitUntil(()=> GameManager.IsManagerReady());
-        yield return new WaitUntil(()=> GameManager.Instance.CheckForPlayer());
-        GameManager.Instance.GetPlayer().GetComponent<PlayerAvatar>().onMap+=ToggleMap;
-    }
-
-    public void OnDisable()
-    {   
-        if(GameManager.IsManagerReady())
-            GameManager.Instance.GetPlayer().GetComponent<PlayerAvatar>().onMap-=ToggleMap;
+    private void OnDisable() {
+        GetComponent<PlayerController>().onMap-= ToggleMap;
     }
     public void EnableBigMap()
     {

@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class HurtState: State
 {
-    PlayerAvatar player;
+    PlayerController player;
     float hurtDuration;
-    public HurtState(PlayerAvatar playerController) : base("HurtState")
+    public HurtState(PlayerController playerController) : base("HurtState")
     {
         player = playerController;
     }
@@ -14,7 +14,7 @@ public class HurtState: State
     public override void OnStateEnter()
     {
         base.OnStateEnter();
-        player.animator.SetTrigger("tHurt");
+        player.GetControlledAvatar().animator.SetTrigger("tHurt");
         hurtDuration = player.hurtDuration;
         player.RemovePlayerControl();
         Time.timeScale = .7f;

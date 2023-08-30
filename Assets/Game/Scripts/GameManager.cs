@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
 
     //  TODO improve it
     [SerializeField] GameObject player;
+    [SerializeField] PlayerController playerController;
     bool gotPlayer= false;
     static bool ManagerIsReady = false;
 
@@ -155,6 +156,10 @@ public class GameManager : MonoBehaviour
     public void GoCredits()
     {
         SceneManager.LoadScene(creditsScene);
+    }
+    public PlayerController GetPlayerController()
+    {
+        return playerController;
     }
 }
 

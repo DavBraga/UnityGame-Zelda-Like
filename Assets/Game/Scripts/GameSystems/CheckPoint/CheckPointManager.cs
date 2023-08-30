@@ -17,7 +17,13 @@ public class CheckPointManager : MonoBehaviour
     UnityAction eventONRestore;
 
     private void Awake() {
-        player = GetComponent<PlayerAvatar>();
+         
+    }
+    private void OnEnable() {
+        GetComponent<PlayerAvatar>().onRessurect+= RestorePlayer;
+    }
+    private void OnDisable() {
+        GetComponent<PlayerAvatar>().onRessurect-= RestorePlayer;
     }
     public void SaveCheckPoint(Transform respawnPosition,int potions, string checkpointName)
     {
@@ -54,7 +60,6 @@ public class CheckPointManager : MonoBehaviour
             inventoryChannel.AddItem(potions,99);
         }
         fader.FadeIn();
-        player.onRessurect?.Invoke();
         GameManager.Instance?.ChangeGameState(GameState.playing);
     }
 }

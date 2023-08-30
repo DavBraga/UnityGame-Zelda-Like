@@ -5,7 +5,7 @@ using UnityEngine;
 public class VirtualControllersUI : MonoBehaviour
 {
     [Header("Output")]
-        public PlayerAvatar player;
+        public PlayerController player;
     
     [SerializeField] GameObject interactionButton;
     [SerializeField]InteractionSystem interactionSystem;

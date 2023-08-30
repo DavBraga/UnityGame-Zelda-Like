@@ -22,21 +22,21 @@ public class BombTool : MonoBehaviour
         bombcollider = bombPrefab.GetComponent<SphereCollider>();
     }
     private void OnEnable() {
-        GetComponent<PlayerAvatar>().onUseTool+=PutBomb;
+        GetComponent<PlayerController>().onUseTool+=PutBomb;
     }
     private void OnDisable() {
-        GetComponent<PlayerAvatar>().onUseTool-=PutBomb;
+        GetComponent<PlayerController>().onUseTool-=PutBomb;
     }
-    public void PutBomb()
+    public void PutBomb(Transform userTransform)
     {
         if(!gotBombTool) return;
         if(!canBomb) return;
-        StartCoroutine(PlacingBombRoutine());
+        StartCoroutine(PlacingBombRoutine(userTransform));
     }
-    IEnumerator PlacingBombRoutine()
+    IEnumerator PlacingBombRoutine(Transform userTransform)
     {
         canBomb =false;
-        if(Physics.Raycast(transform.position+new Vector3(0,1.4f,0),transform.forward,out RaycastHit hitInfo,placingBombRange))
+        if(Physics.Raycast(userTransform.position+new Vector3(0,1.4f,0),transform.forward,out RaycastHit hitInfo,placingBombRange))
         {
             Vector3 pointDirection = hitInfo.point - transform.position;
             pointDirection = new Vector3(pointDirection.x,0, pointDirection.z);
@@ -45,7 +45,7 @@ public class BombTool : MonoBehaviour
 
         }
         else
-            Instantiate(bombPrefab,transform.position+(placingBombRange*(transform.forward))+new Vector3(0,1.4f,0)- transform.forward*(3*bombcollider.radius),Quaternion.identity);
+            Instantiate(bombPrefab,userTransform.position+(placingBombRange*(transform.forward))+new Vector3(0,1.4f,0)- transform.forward*(3*bombcollider.radius),Quaternion.identity);
        // onPlaceBomb?.Invoke();
         //Instantiate(bombPrefab,transform.position+(2*(transform.forward))+new Vector3(0,1.4f,0),Quaternion.identity);
         onPlaceBomb?.Invoke();

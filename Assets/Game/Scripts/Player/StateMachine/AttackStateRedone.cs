@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class AttackStateRedone : State
 {
-    PlayerAvatar player;
+    PlayerController player;
+    PlayerAvatar avatar;
 
     List<PlayerAttack> attackChain;
 
@@ -28,9 +29,10 @@ public class AttackStateRedone : State
     bool duration = false;
     bool cooldown = false;
     float lastedtime = 0f;
-    public AttackStateRedone(PlayerAvatar playerController) : base("Attack")
+    public AttackStateRedone(PlayerController playerController) : base("Attack")
     {
         player = playerController;
+        avatar = player.GetControlledAvatar();
     }
 
     public void SetAttackChain(List<PlayerAttack> attackChain, GameObject attackCollider)
@@ -42,7 +44,7 @@ public class AttackStateRedone : State
     public override void OnStateEnter()
     {
         base.OnStateEnter();
-        player.animator.SetBool("bIsAttacking", true);
+        avatar.animator.SetBool("bIsAttacking", true);
         attackStage = 0;
         attackCollider.SetActive(true);
         StartAttack();
@@ -52,7 +54,7 @@ public class AttackStateRedone : State
     {
         base.OnStateExit();
        attackCollider.SetActive(false);
-       player.animator.SetBool("bIsAttacking", false);
+       avatar.animator.SetBool("bIsAttacking", false);
        player.exitiAttackTime = Time.time+attackCoolDown;
     }
     public override void OnStateUpdate()
@@ -171,8 +173,8 @@ public class AttackStateRedone : State
 
     private void StartAttack()
     {
-        player.PlayAttackAnimation(attackChain[attackStage].GetAttackStats().AttackTriggerTag);
-        player.mySFXManager.PlayAudio();
+        player.GetControlledAvatar().PlayAttackAnimation(attackChain[attackStage].GetAttackStats().AttackTriggerTag);
+        player.GetControlledAvatar().mySFXManager.PlayAudio();
         SetAttackTimers();
     }
 
@@ -192,7 +194,7 @@ public class AttackStateRedone : State
         attackStage++;
         Debug.Log("went attack stage:"+attackStage);
         if (attackStage >= attackChain.Count) attackStage = 0;
-        player.attackstage = attackStage;
+        player.GetControlledAvatar().attackstage = attackStage;
     }
 
     private void SetAttackTimers()
@@ -213,10 +215,10 @@ public class AttackStateRedone : State
     public override void OnStateFixedUpdate()
     {
         base.OnStateFixedUpdate();
-        player.onRotate?.Invoke(1);
+        player.GetControlledAvatar().onRotate?.Invoke(1);
         if(applyImpulse) 
         {
-            player.onPlayerImpulse(attackChain[attackStage].GetAttackStats().AttackImpulse);
+            player.GetControlledAvatar().onPlayerImpulse(attackChain[attackStage].GetAttackStats().AttackImpulse);
             //player.PlayAttackImpulse(attackStage);
             applyImpulse = false;
         }

@@ -11,7 +11,7 @@ public class Playerinputs : MonoBehaviour
     public UnityAction<int> onVibrationChanges;
     Gamepad gamepad;
     Coroutine rumbleRoutine;
-    [SerializeField]PlayerAvatar player;
+    [SerializeField]PlayerController player;
    [SerializeField] bool virtualInput = false;
 
    private void Awake() {
@@ -28,10 +28,10 @@ public class Playerinputs : MonoBehaviour
     }
 
     private void OnEnable() {
-        player.GetComponent<PlayerDeath>().onTakeDamageAction+= DamageRumble;
+        player.GetComponent<PlayerLifeCycle>().onTakeDamageAction+= DamageRumble;
     }
     private void OnDisable() {
-        player.GetComponent<PlayerDeath>().onTakeDamageAction-= DamageRumble;
+        player.GetComponent<PlayerLifeCycle>().onTakeDamageAction-= DamageRumble;
     }
 
     public void SetVibration(bool value)
@@ -44,7 +44,7 @@ public class Playerinputs : MonoBehaviour
         virtualInput = virtualInputOn;
     }
 
-    public void SetPlayer(PlayerAvatar newPlayer)
+    public void SetPlayer(PlayerController newPlayer)
     {
         if(virtualInput) return;
         player = newPlayer;
@@ -56,6 +56,7 @@ public class Playerinputs : MonoBehaviour
     }
      public void SetUpJump(InputAction.CallbackContext value)
     {   if(virtualInput) return;
+        Debug.Log("sett jump");
         player.TryJump(value.performed);
     }
     public void SetAttack(InputAction.CallbackContext value)

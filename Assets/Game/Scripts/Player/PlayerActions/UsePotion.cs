@@ -25,30 +25,30 @@ public class UsePotion : MonoBehaviour
         if(usageFX) usesUsageFx = true;
     }
     private void OnEnable() {
-        GetComponent<PlayerAvatar>().onUsePotion+=Use;
+        GetComponent<PlayerController>().onUsePotion+=Use;
     }
     private void OnDisable() {
-        GetComponent<PlayerAvatar>().onUsePotion-=Use;
+        GetComponent<PlayerController>().onUsePotion-=Use;
     }
-    public void Use()
+    public void Use(Transform userTransform)
     {
         if (canUse)
         {
             if (inventoryChannel.RemoveItem(potion))
             {
                 Debug.Log("potionUsed");
-                PlayPotionEffect();
+                PlayPotionEffect(userTransform);
                 StartCoroutine(WaitForPotionCD());
             }
             else Debug.Log("not enough potions to use");
         }
     }
 
-    public void PlayPotionEffect()
+    public void PlayPotionEffect(Transform userTransform)
     {
         affectedHealth.Heal(potionPower);
 
-        if(usageFX)Instantiate(usageFX, transform);
+        if(usageFX)Instantiate(usageFX, userTransform);
     }
 
     public void IncreasePotionPower(int amount = 1)

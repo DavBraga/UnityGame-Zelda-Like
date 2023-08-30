@@ -88,7 +88,7 @@ public class Attack_SO : ScriptableObject
             {
                 GameObject hitObj = hit.collider.gameObject;
                 
-                if (hitObj.TryGetComponent<PlayerAvatar>(out PlayerAvatar player))
+                if (hitObj.TryGetComponent(out PlayerAvatar player))
                 {
                     DealDamage(attackerController.gameObject, player);
                     DealPushEffect(attackerController.gameObject, player, attackPushPower, new Vector3(controllerTransform.forward.x, 0, controllerTransform.forward.z));

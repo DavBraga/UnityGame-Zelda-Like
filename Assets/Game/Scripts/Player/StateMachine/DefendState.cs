@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class DefendState : State
 {
-    PlayerAvatar player;
+    PlayerController player;
+    PlayerAvatar avatar;
     GameObject shieldCollider;
-    public DefendState(PlayerAvatar playerController) : base("Defend")
+    public DefendState(PlayerController playerController) : base("Defend")
     {
         player = playerController;
+        avatar = player.GetControlledAvatar();
     }
 
     public void SetShieldCollider(GameObject shieldCollider)
@@ -19,13 +21,13 @@ public class DefendState : State
 
     public override void OnStateEnter()
     {
-        player.animator.SetBool("bIsDefending", true);
+        avatar.animator.SetBool("bIsDefending", true);
         shieldCollider.SetActive(true);
         base.OnStateEnter();
     }
     public override void OnStateExit()
     {
-        player.animator.SetBool("bIsDefending", false);
+        avatar.animator.SetBool("bIsDefending", false);
         shieldCollider.SetActive(false);
         base.OnStateExit();
     }
@@ -39,7 +41,7 @@ public class DefendState : State
     public override void OnStateFixedUpdate()
     {
         base.OnStateFixedUpdate();
-        player.onMove.Invoke(.1f);
+        player.GetControlledAvatar().onMove.Invoke(.1f);
 
     }
     public override void OnStateLateUpdate()

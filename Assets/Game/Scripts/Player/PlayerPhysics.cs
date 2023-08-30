@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerPhysics : MonoBehaviour
 {
     private Rigidbody myRigidbody;
-    private PlayerAvatar playerController;
+    private PlayerAvatar playerAvatar;
+    PlayerController playerController;
     bool forceNormalGravity;
     Pushable pushable;
 
@@ -38,42 +39,45 @@ public class PlayerPhysics : MonoBehaviour
     // For further refactor, check animator prompts.
 
     private void Awake() {
-        playerController = GetComponent<PlayerAvatar>();
+        playerAvatar = GetComponent<PlayerAvatar>();
         myRigidbody = GetComponent<Rigidbody>();
         thisCollider = GetComponent<Collider>();
         pushable = GetComponent<Pushable>();
+        playerController = playerAvatar.GetPlayerController();
     }
     private void Start() {
         bounds = thisCollider.bounds;
     }
 
    private void OnEnable() {
-        playerController.onJump+= Jump;
-        playerController.onMove+= PlayerManagedMove;
-        playerController.onRotate+= RotateBodyToFace;
+        playerAvatar.onJump+= Jump;
+        playerAvatar.onMove+= PlayerManagedMove;
+        playerAvatar.onRotate+= RotateBodyToFace;
         playerController.onMovmentInput+=CalculateVelocityRate;
-        playerController.isGroundedDelegate+=IsGrounded;
-        playerController.onAir += ForceNormalGravity;
-        playerController.onLand+= StopForcingNormalGravity;
-        playerController.onPlayerImpulse+=PlayerImpulse;
-        playerController.onPushed +=BePushed;
-        playerController.onStateInitializationFinished+=SetUpAirState;
-        playerController.onDeath+= TurnOffPhysics;
+        playerAvatar.isGroundedDelegate+=IsGrounded;
+        playerAvatar.onAir += ForceNormalGravity;
+        playerAvatar.onLand+= StopForcingNormalGravity;
+        playerAvatar.onPlayerImpulse+=PlayerImpulse;
+        playerAvatar.onPushed +=BePushed;
+        playerAvatar.onStateInitializationFinished+=SetUpAirState;
+        playerAvatar.onDeath+= TurnOffPhysics;
+        playerAvatar.onRessurect+=TurnOnPhysics;
        // playerController.onControlRecover += TurnOnPhysics;
  
    }
    private void OnDisable() {
-        playerController.onJump-= Jump;
-        playerController.onMove-= PlayerManagedMove;
-        playerController.onRotate-= RotateBodyToFace;
+        playerAvatar.onJump-= Jump;
+        playerAvatar.onMove-= PlayerManagedMove;
+        playerAvatar.onRotate-= RotateBodyToFace;
         playerController.onMovmentInput-=CalculateVelocityRate;
-        playerController.isGroundedDelegate-=IsGrounded;
-        playerController.onAir -= ForceNormalGravity;
-        playerController.onLand -= StopForcingNormalGravity;
-        playerController.onPlayerImpulse-=PlayerImpulse;
-        playerController.onPushed -=BePushed;
-        playerController.onStateInitializationFinished-=SetUpAirState;
-        playerController.onDeath-= TurnOffPhysics;
+        playerAvatar.isGroundedDelegate-=IsGrounded;
+        playerAvatar.onAir -= ForceNormalGravity;
+        playerAvatar.onLand -= StopForcingNormalGravity;
+        playerAvatar.onPlayerImpulse-=PlayerImpulse;
+        playerAvatar.onPushed -=BePushed;
+        playerAvatar.onStateInitializationFinished-=SetUpAirState;
+        playerAvatar.onDeath-= TurnOffPhysics;
+        playerAvatar.onRessurect-=TurnOnPhysics;
         //playerController.onControlRecover -= TurnOnPhysics;
    }
 
@@ -87,7 +91,7 @@ public class PlayerPhysics : MonoBehaviour
     {
         Vector3 movmentVector = playerController.InputToV3();
         movmentVector = movmentVector.normalized;
-        movmentVector = playerController.GetCameraForward()* movmentVector ;
+        movmentVector = playerAvatar.GetCameraForward()* movmentVector ;
         if(!forceNormalGravity)
         movmentVector = Vector3.ProjectOnPlane(movmentVector, slopeNormal);
         float maxDistance= bounds.size.z;//+.1f;
@@ -120,7 +124,7 @@ public class PlayerPhysics : MonoBehaviour
         if(playerController.inputMovmentVector.isZero()) return;
 
         Quaternion q1 = Quaternion.LookRotation(playerController.InputToV3(),Vector3.up); 
-        Quaternion q2 = playerController.GetCameraForward();
+        Quaternion q2 = playerAvatar.GetCameraForward();
         Quaternion toRotation = q1*q2;
         Quaternion smoothRotation = Quaternion.LerpUnclamped(transform.rotation, toRotation,smoothness);
         myRigidbody.MoveRotation(smoothRotation);
@@ -138,10 +142,10 @@ public class PlayerPhysics : MonoBehaviour
         LayerMask groundLayer = GameManager.Instance.GetGroundLayer();
         if (Physics.SphereCast (origin,radius,direction,out _,maxDistance,groundLayer))
         {
-            playerController.animator.SetBool("bOnAir", false);
+            playerAvatar.animator.SetBool("bOnAir", false);
                 return true;      
         }
-        playerController.animator.SetBool("bOnAir", true);
+        playerAvatar.animator.SetBool("bOnAir", true);
         return false;
     }
 
@@ -167,7 +171,7 @@ public class PlayerPhysics : MonoBehaviour
         fVelocityRate = 0;
 
             fVelocityRate = myRigidbody.velocity.magnitude/maxSpeed;
-            playerController.animator.SetFloat("fVelocity", fVelocityRate);
+            playerAvatar.animator.SetFloat("fVelocity", fVelocityRate);
     } 
 
      private void SufferGravity()
@@ -190,8 +194,9 @@ public class PlayerPhysics : MonoBehaviour
 
     public void Jump()
     {
+        Debug.Log("try jump");
         if(!IsGrounded())  return;
-        playerController.animator.SetTrigger("tJump");
+        playerAvatar.animator.SetTrigger("tJump");
         Debug.Log("Jumps");
         myRigidbody.AddForce((Vector3.up *jumpPower)-gravity.normalized, ForceMode.Impulse);
     }
@@ -209,7 +214,7 @@ public class PlayerPhysics : MonoBehaviour
         if(GameManager.Instance.GameState != GameState.playing) return;
 
         if(!SnapStop) return;
-        if(playerController.inputMovmentVector.isZero())StopFaster(ExtraStopForce);
+        if(playerAvatar.GetPlayerController().inputMovmentVector.isZero())StopFaster(ExtraStopForce);
     }
     private void Update() {
         CalculateVelocityRate();
@@ -217,7 +222,7 @@ public class PlayerPhysics : MonoBehaviour
 
     public void PlayerImpulse(float impulesePower)
     {
-         myRigidbody.AddForce(transform.forward*impulesePower ,ForceMode.Impulse);
+        myRigidbody.AddForce(transform.forward*impulesePower ,ForceMode.Impulse);
     }
 
     public void BePushed(float pushPower, Vector3 direction)

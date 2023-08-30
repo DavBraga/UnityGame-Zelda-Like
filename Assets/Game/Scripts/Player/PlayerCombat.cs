@@ -8,40 +8,37 @@ public class PlayerCombat : MonoBehaviour
 
     [SerializeField] GameObject attackCollider;
     [SerializeField] GameObject shieldCollider;
-    PlayerAvatar player;
+    PlayerController player;
     ShieldBlock shieldBlock;
     Health health;
 
     int powerModifer = 0;
 
     int CurrentAttackStage=0;
-
-    
-
     private void Awake() {
         health = GetComponent<Health>();
-        player = GetComponent<PlayerAvatar>();
-        shieldBlock = GetComponent<ShieldBlock>();
+        player = GetComponent<PlayerController>();
+        shieldBlock = player.GetControlledAvatar().GetComponent<ShieldBlock>();
     }
 
     private void OnEnable() 
     {
-       GetComponent<PlayerDeath>().onTakeDamage+=TakeDamage;
+       GetComponent<PlayerLifeCycle>().onTakeDamage+=TakeDamage;
          player.onAttack+= KeepChooping;
          player.onDefend+= Defend;
          player.onPowerIncrease+= increasePower;
          player.onStateInitializationFinished+=SetStates;
-         player.onCombatPushed+=BePushed;
+         player.GetControlledAvatar().onCombatPushed+=BePushed;
         
     }
     private void OnDisable() 
     {
-        GetComponent<PlayerDeath>().onTakeDamage-=TakeDamage;
+        GetComponent<PlayerLifeCycle>().onTakeDamage-=TakeDamage;
         player.onAttack-=KeepChooping;
         player.onDefend-= Defend;
         player.onPowerIncrease-= increasePower;
         player.onStateInitializationFinished-=SetStates;
-        player.onCombatPushed-=BePushed;
+        player.GetControlledAvatar().onCombatPushed-=BePushed;
         
     }
     private void Start()
@@ -81,7 +78,7 @@ public class PlayerCombat : MonoBehaviour
      {
         if(player.stateMachine.currentState == player.deadState) return;
         if(player.stateMachine.currentState== player.defendState&& !shieldBlock.DirectionCanDealDamage(pusher)) return ;
-        player.onPushed(pushPower,direction);
+        player.GetControlledAvatar().onPushed(pushPower,direction);
 
      }
 
@@ -95,7 +92,7 @@ public class PlayerCombat : MonoBehaviour
         {
             var positionDiff = other.gameObject.transform.position - transform.position;
             positionDiff.Normalize();
-            player.onPushed.Invoke(attackChain[CurrentAttackStage].GetAttackStats().attaclknockbackPower,positionDiff);
+            player.GetControlledAvatar().onPushed.Invoke(attackChain[CurrentAttackStage].GetAttackStats().attaclknockbackPower,positionDiff);
         
         
         }
@@ -114,7 +111,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void PlayAttackImpulse(int attackStage)
     {
-        player.onPlayerImpulse.Invoke(3f);
+        player.GetControlledAvatar().onPlayerImpulse.Invoke(3f);
     }
 
     private void SetUpWeaponColliders()

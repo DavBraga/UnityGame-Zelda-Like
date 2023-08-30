@@ -7,7 +7,7 @@ public class HudHandler : MonoBehaviour
 {
     [SerializeField]UIComunication mychannel;
     [Header("Player")]
-    [SerializeField] PlayerAvatar player;
+    [SerializeField] PlayerController player;
     [SerializeField] BarHandler playerBar;
     [SerializeField] Health playerHealth;
     [SerializeField] PowerUpMessages powerUpMessages;

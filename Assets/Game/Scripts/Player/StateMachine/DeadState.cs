@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class DeadState : State
 {
-    PlayerAvatar player;
-    public DeadState(PlayerAvatar playerController) : base("Idle")
+    PlayerController player;
+    public DeadState(PlayerController playerController) : base("Idle")
     {
         player = playerController;
     }
