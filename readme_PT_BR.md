@@ -54,7 +54,29 @@ Esse processo é realizado aplicando princípios de Clean Code e SOLID de maneir
 
 A primeira área a ser modificada é o `PlayerController`, onde há um alto acoplamento e acumulação de funcionalidades, tornando-o o maior script do projeto. O design empregado envolve o uso de eventos e delegates para separar cada funcionalidade agregada no script em scripts independentes, que utilizarão o `PlayerController` como interface para ações, interações e reações.
 
-Estou à disposição para qualquer esclarecimento ou dúvida.
+
+#### Refatoração do PlayerController
+
+O antigo script `PlayerController` foi reestruturado em dois scripts separados: `PlayerController` e `PlayerAvatar`. Essa divisão de funcionalidades possibilita uma comunicação mais clara e uma organização melhor dentro da arquitetura do jogo.
+
+- `PlayerController`: Este script agora lida com as interações do personagem do jogador relacionadas às regras do jogo e aos domínios de input do jogador. Ele serve como o hub de comunicação para interações relacionadas a esses aspectos.
+
+- `PlayerAvatar`: Responsável por gerenciar o avatar do jogador no mundo e suas interações físicas. Ele cuida de animação, renderização, física e sons. Ele serve como o hub de comunicação para interações relacionadas a esses aspectos.
+
+Esses scripts são atribuídos a diferentes objetos do jogo. A comunicação entre eles é bidirecional, garantindo que as interações estejam devidamente sincronizadas.
+
+Para alcançar essa refatoração, as funcionalidades do antigo `PlayerController` foram distribuídas entre vários novos scripts:
+
+- `PlayerPhysics`: Gerencia as interações físicas do jogador, como movimentos e colisões.
+
+- `PlayerCombat`: Manipula as mecânicas relacionadas a combate, como ataques, defesas e cálculos de dano.
+
+- `PlayerLifeCycle`: Gerencia os eventos do ciclo de vida do jogador, incluindo morte, ressurgimento, ganho e perda de saúde.
+
+- `PlayerPowerUps`: Trata da aplicação e dos efeitos dos power-ups coletados pelo jogador.
+
+Junto com esses novos scripts, os scripts existentes que antes se comunicavam com o antigo `PlayerController` foram adaptados para funcionar  com a nova estrutura. Essa adaptação garante que as interações entre o renovado `PlayerController` e `PlayerAvatar` permaneçam coesas e eficazes. Ao distribuir e redefinir as responsabilidades, a arquitetura geral do jogo foi melhorada, resultando em um código mais organizado e de fácil manutenção.
+
 
 ### Assets de Terceiros
 
@@ -68,3 +90,6 @@ O jogo fez uso de assets gráficos e de áudio disponibilizados gratuitamente de
 - Kenny
 - Leohpaz
 - Imphenzia
+
+  
+Estou à disposição para qualquer esclarecimento ou dúvida.
