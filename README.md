@@ -3,7 +3,7 @@
 
 Game on itch.io: [Dungeon Fall on itch.io](https://bragadavi.itch.io/dungeon-fall)
 
-Game Code Version on Git: 0.5.0
+Game Code Version on Git: 0.5.1
 
 ## About
 
@@ -55,6 +55,27 @@ This process applies principles of Clean Code and SOLID in a flexible manner, ta
 
 The first area being modified is the `PlayerController`, which has exhibited high coupling and an accumulation of functionalities, making it the largest script in the project. The applied design involves the use of events and delegates to partition each aggregated functionality within the script into independent scripts. These scripts will then utilize the `PlayerController` as an interface for actions, interactions, and reactions.
 
+#### PlayerController Refactoring
+
+The previous `PlayerController` script has been restructured into two separate scripts: `PlayerController` and `PlayerAvatar`. This division of functionality allows for clearer communication and organization within the game architecture.
+
+- `PlayerController`: This script now handles player character interactions related to game rules and player input domains. It serves as the communication hub for interactions related to these aspects.
+
+- `PlayerAvatar`: Responsible for managing the player avatar in the world and its physics interactions. it takes care of animation, rendering, physics and sounds.It serves as the communication hub for interactions related to these aspects.
+
+These scripts are assigned to different game objects. The communication between them is bidirectional, ensuring that interactions are properly synchronized.
+
+To achieve this refactor, the functionalities of the old `PlayerController` have been distributed among several new scripts:
+
+- `PlayerPhysics`: Manages player physics interactions, such as movements and collisions.
+
+- `PlayerCombat`: Handles combat-related mechanics, such as attacks, defenses, and damage calculations.
+
+- `PlayerLifeCycle`: Manages the player's lifecycle events, including death, respawning, health gain and loss.
+
+- `PlayerPowerUps`: Deals with the application and effects of power-ups collected by the player.
+
+Alongside these new scripts, existing scripts that previously communicated with the old `PlayerController` have been adapted to work seamlessly with the new structure. This adaptation ensures that interactions between the revamped `PlayerController` and `PlayerAvatar` remain cohesive and effective. By distributing and redefining the responsibilities, the overall game architecture has been improved, leading to more organized and maintainable code.
 
 ## Third Party Assets
 
