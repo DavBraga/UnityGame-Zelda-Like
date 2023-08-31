@@ -26,6 +26,9 @@ public class PlayerController : MonoBehaviour
     public UnityAction<Transform> onUseTool; 
     public UnityAction<Transform> onUsePotion;
 
+    public UnityAction<PowerUpType> onPowerUp;
+    public UnityAction<ItemSO> onInventoryUpgrade;
+
     public UnityAction onDeath;
 
     bool gotControl=true;
@@ -33,16 +36,14 @@ public class PlayerController : MonoBehaviour
     public bool defending;
 
     //stateMachine
-    public StateMachine stateMachine{ get; private set;}
-    public IdleState idleState{ get; private set;}
-    public WalkingState walkingState{ get; private set;}
-    public DeadState deadState{get; private set;}
-    public OnAirState onAirState{ get; private set;}
-    public AttackStateRedone attackState{get; private set;}
-    public DefendState defendState{get; private set;}
-    public HurtState hurtState{get; private set;}
-    //public Vector2 inputMovmentVector{ get; private set;}
-    //public  Animator animator{ get; private set;}
+    public StateMachine StateMachine{ get; private set;}
+    public IdleState IdleState{ get; private set;}
+    public WalkingState WalkingState{ get; private set;}
+    public DeadState DeadState{get; private set;}
+    public OnAirState OnAirState{ get; private set;}
+    public AttackStateRedone AttackState{get; private set;}
+    public DefendState DefendState{get; private set;}
+    public HurtState HurtState{get; private set;}
 
     [HideInInspector]public float exitiAttackTime = 0;
 
@@ -52,24 +53,41 @@ public class PlayerController : MonoBehaviour
 
     private void Start() {
         InitializeStateMachine();
-        controlledAvatar.onPlayerTakeDamage+= onPlayerTakeDamage.Invoke;  
+        controlledAvatar.onPlayerTakeDamage+= onPlayerTakeDamage.Invoke; 
+        controlledAvatar.OnPowerUp+= onPowerUp.Invoke;
+        controlledAvatar.onDeath+= onDeath.Invoke; 
+    }
+
+    public void AttachAvatar(PlayerAvatar avatar)
+    {
+        controlledAvatar = avatar;
+        controlledAvatar.onPlayerTakeDamage+= onPlayerTakeDamage.Invoke; 
+        controlledAvatar.OnPowerUp+= onPowerUp.Invoke;
+         controlledAvatar.onDeath+= onDeath.Invoke; 
+    }
+    public PlayerAvatar DetachCurrentAvatar()
+    {
+        PlayerAvatar detachingAvatar = controlledAvatar;
+        controlledAvatar = null;
+        controlledAvatar.onPlayerTakeDamage-= onPlayerTakeDamage.Invoke; 
+        controlledAvatar.OnPowerUp-= onPowerUp.Invoke;
+         controlledAvatar.onDeath-= onDeath.Invoke; 
+        return detachingAvatar;
     }
     private void InitializeStateMachine()
     {
-        stateMachine = new StateMachine();
-        idleState = new IdleState(this);
-        walkingState = new WalkingState(this);
-        onAirState = new OnAirState(this);
-        attackState = new AttackStateRedone(this);
-        hurtState = new HurtState(this);
-        deadState = new DeadState(this);
-        defendState = new DefendState(this);
+        StateMachine = new StateMachine();
+        IdleState = new IdleState(this);
+        WalkingState = new WalkingState(this);
+        OnAirState = new OnAirState(this);
+        AttackState = new AttackStateRedone(this);
+        HurtState = new HurtState(this);
+        DeadState = new DeadState(this);
+        DefendState = new DefendState(this);
 
         onStateInitializationFinished?.Invoke();
-        stateMachine.ChangeState(idleState);
+        StateMachine.ChangeState(IdleState);
     }
-
-
     public void HaltEverything()
     {
         input.DeactivateInput();
@@ -86,7 +104,6 @@ public class PlayerController : MonoBehaviour
         input.ActivateInput();
        
     }
-
     public void SetMovmentVector(Vector2 vector)
     {
         inputMovmentVector = vector;
@@ -101,13 +118,10 @@ public class PlayerController : MonoBehaviour
     {
         return defending;
     }
-
     public bool ReadAttackInput()
     {
         return attacking;
     }
-
-
     public bool TryGivePlayerControl()
     {
          gotControl = true;
@@ -178,15 +192,14 @@ public class PlayerController : MonoBehaviour
        private void FixedUpdate()
     {
         if(GameManager.Instance.GameState != GameState.playing) return;
-        stateMachine.FixedUpdate();
+        StateMachine.FixedUpdate();
     }
     private void LateUpdate() {
-        stateMachine.LateUpdate();
+        StateMachine.LateUpdate();
     }
      private void Update()
     {
-        //currentStateName = stateMachine.GetCurrentStateName();
         if(!inputMovmentVector.isZero()) onMovmentInput?.Invoke();
-        stateMachine.Update();
+        StateMachine.Update();
     }
 }

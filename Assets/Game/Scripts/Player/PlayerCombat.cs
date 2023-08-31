@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerCombat : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] GameObject attackCollider;
     [SerializeField] GameObject shieldCollider;
     PlayerController player;
+    PlayerAvatar avatar;
     ShieldBlock shieldBlock;
     Health health;
 
@@ -18,7 +20,8 @@ public class PlayerCombat : MonoBehaviour
     private void Awake() {
         health = GetComponent<Health>();
         player = GetComponent<PlayerController>();
-        shieldBlock = player.GetControlledAvatar().GetComponent<ShieldBlock>();
+        avatar = player.GetControlledAvatar();
+        shieldBlock = avatar.GetComponent<ShieldBlock>();
     }
 
     private void OnEnable() 
@@ -28,7 +31,7 @@ public class PlayerCombat : MonoBehaviour
          player.onDefend+= Defend;
          player.onPowerIncrease+= increasePower;
          player.onStateInitializationFinished+=SetStates;
-         player.GetControlledAvatar().onCombatPushed+=BePushed;
+         avatar.onCombatPushed+=BePushed;
         
     }
     private void OnDisable() 
@@ -38,7 +41,7 @@ public class PlayerCombat : MonoBehaviour
         player.onDefend-= Defend;
         player.onPowerIncrease-= increasePower;
         player.onStateInitializationFinished-=SetStates;
-        player.GetControlledAvatar().onCombatPushed-=BePushed;
+        avatar.onCombatPushed-=BePushed;
         
     }
     private void Start()
@@ -49,36 +52,36 @@ public class PlayerCombat : MonoBehaviour
     private void SetStates()
     {
         Debug.Log("states set");
-        player.attackState.SetAttackChain(attackChain, attackCollider);
-        player.defendState.SetShieldCollider(shieldCollider);
+        player.AttackState.SetAttackChain(attackChain, attackCollider);
+        player.DefendState.SetShieldCollider(shieldCollider);
     }
 
     public void KeepChooping()
     {   
         if(player.exitiAttackTime>Time.time) return;
-        if(player.stateMachine.currentState!=player.attackState)
-            player.stateMachine.ChangeState(player.attackState);
+        if(player.StateMachine.currentState!=player.AttackState)
+            player.StateMachine.ChangeState(player.AttackState);
     }
     public void Defend()
     {
-        if(player.stateMachine.currentState!=player.defendState)
-            player.stateMachine.ChangeState(player.defendState);
+        if(player.StateMachine.currentState!=player.DefendState)
+            player.StateMachine.ChangeState(player.DefendState);
     }
     public bool TakeDamage(GameObject attacker, int damage)
     {
-        if(player.stateMachine.currentState == player.deadState) return false;
-        if(player.stateMachine.currentState== player.defendState&& !shieldBlock.DirectionCanDealDamage(attacker)) return false;
+        if(player.StateMachine.currentState == player.DeadState) return false;
+        if(player.StateMachine.currentState== player.DefendState&& !shieldBlock.DirectionCanDealDamage(attacker)) return false;
         
         if(!health.TakeDamage(damage)) return false;
-            player.stateMachine.ChangeState(player.hurtState);   
+            player.StateMachine.ChangeState(player.HurtState);   
         return true;
     }
 
      public void BePushed(GameObject pusher ,float pushPower, Vector3 direction)
      {
-        if(player.stateMachine.currentState == player.deadState) return;
-        if(player.stateMachine.currentState== player.defendState&& !shieldBlock.DirectionCanDealDamage(pusher)) return ;
-        player.GetControlledAvatar().onPushed(pushPower,direction);
+        if(player.StateMachine.currentState == player.DeadState) return;
+        if(player.StateMachine.currentState== player.DefendState&& !shieldBlock.DirectionCanDealDamage(pusher)) return ;
+        avatar.onPushed(pushPower,direction);
 
      }
 
@@ -90,9 +93,10 @@ public class PlayerCombat : MonoBehaviour
         }
         if(other.TryGetComponent(out Pushable pushable))
         {
-            var positionDiff = other.gameObject.transform.position - transform.position;
+            var positionDiff = other.transform.position - avatar.transform.position;
+            Debug.Log(positionDiff);
             positionDiff.Normalize();
-            player.GetControlledAvatar().onPushed.Invoke(attackChain[CurrentAttackStage].GetAttackStats().attaclknockbackPower,positionDiff);
+            pushable.BePushed(attackChain[CurrentAttackStage].GetAttackStats().attackknockbackPower,positionDiff);
         
         
         }
@@ -102,7 +106,7 @@ public class PlayerCombat : MonoBehaviour
     {
         if(other.TryGetComponent(out Pushable pushable))
         {
-            var positionDiff = other.gameObject.transform.position - transform.position;
+            var positionDiff = other.transform.position - avatar.transform.position;
             positionDiff.Normalize();
             // use shield knocback instead
             pushable.BePushed(shieldBlock.ShieldKnocBack,positionDiff);
@@ -111,7 +115,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void PlayAttackImpulse(int attackStage)
     {
-        player.GetControlledAvatar().onPlayerImpulse.Invoke(3f);
+        avatar.onPlayerImpulse.Invoke(3f);
     }
 
     private void SetUpWeaponColliders()

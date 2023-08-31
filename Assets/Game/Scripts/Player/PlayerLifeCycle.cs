@@ -37,14 +37,14 @@ public class PlayerLifeCycle : MonoBehaviour
     }
     public void PlayerDie()
     {
-            if(player.stateMachine.currentState== player.deadState) return;
+            if(player.StateMachine.currentState== player.DeadState) return;
 
-            avatar.animator.SetBool("bDead", true);
+            avatar.Animator.SetBool("bDead", true);
             player.HaltEverything();
             health.SetIgnoreDamage(true);
             //player.animator.SetBool("bDead", true);
             player.RemovePlayerControl();
-            player.stateMachine.ChangeState(player.deadState);
+            player.StateMachine.ChangeState(player.DeadState);
 }
     public void PlayPlayerDeath()
     {
@@ -66,7 +66,7 @@ public class PlayerLifeCycle : MonoBehaviour
     public bool TakeDamage(GameObject attacker,int damage)
     {   
         // check attacksuccess
-        if(player.stateMachine.currentState!= player.hurtState)
+        if(player.StateMachine.currentState!= player.HurtState)
         {
             bool returningValue = onTakeDamage.Invoke(attacker, damage);
             if(!returningValue) return false;
@@ -84,7 +84,7 @@ public class PlayerLifeCycle : MonoBehaviour
     public void Ressurect()
     {
         
-        if(player.stateMachine.currentState == player.deadState)
+        if(player.StateMachine.currentState == player.DeadState)
         {
             avatar.onRessurect.Invoke();
             deadCamera.SetActive(false);
@@ -95,8 +95,8 @@ public class PlayerLifeCycle : MonoBehaviour
     IEnumerator WaitAndRess()
     {
         yield return new WaitForSeconds(2f); 
-        player.stateMachine.ChangeState(player.idleState);
-        avatar.animator.SetBool("bDead", false);
+        player.StateMachine.ChangeState(player.IdleState);
+        avatar.Animator.SetBool("bDead", false);
         yield return new WaitForSeconds(2f);
         
         health.SetHealth(0);

@@ -83,7 +83,7 @@ public class PlayerPhysics : MonoBehaviour
 
    public void SetUpAirState()
    {
-        playerController.onAirState.SetAirMovmentModifier(airMovmentSpeedModifier);
+        playerController.OnAirState.SetAirMovmentModifier(airMovmentSpeedModifier);
    }
 
 
@@ -142,10 +142,10 @@ public class PlayerPhysics : MonoBehaviour
         LayerMask groundLayer = GameManager.Instance.GetGroundLayer();
         if (Physics.SphereCast (origin,radius,direction,out _,maxDistance,groundLayer))
         {
-            playerAvatar.animator.SetBool("bOnAir", false);
+            playerAvatar.Animator.SetBool("bOnAir", false);
                 return true;      
         }
-        playerAvatar.animator.SetBool("bOnAir", true);
+        playerAvatar.Animator.SetBool("bOnAir", true);
         return false;
     }
 
@@ -171,7 +171,7 @@ public class PlayerPhysics : MonoBehaviour
         fVelocityRate = 0;
 
             fVelocityRate = myRigidbody.velocity.magnitude/maxSpeed;
-            playerAvatar.animator.SetFloat("fVelocity", fVelocityRate);
+            playerAvatar.Animator.SetFloat("fVelocity", fVelocityRate);
     } 
 
      private void SufferGravity()
@@ -196,7 +196,7 @@ public class PlayerPhysics : MonoBehaviour
     {
         Debug.Log("try jump");
         if(!IsGrounded())  return;
-        playerAvatar.animator.SetTrigger("tJump");
+        playerAvatar.Animator.SetTrigger("tJump");
         Debug.Log("Jumps");
         myRigidbody.AddForce((Vector3.up *jumpPower)-gravity.normalized, ForceMode.Impulse);
     }

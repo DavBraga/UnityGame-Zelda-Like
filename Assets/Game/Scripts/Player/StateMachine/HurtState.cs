@@ -14,7 +14,7 @@ public class HurtState: State
     public override void OnStateEnter()
     {
         base.OnStateEnter();
-        player.GetControlledAvatar().animator.SetTrigger("tHurt");
+        player.GetControlledAvatar().Animator.SetTrigger("tHurt");
         hurtDuration = player.hurtDuration;
         player.RemovePlayerControl();
         Time.timeScale = .7f;
@@ -30,7 +30,7 @@ public class HurtState: State
         base.OnStateUpdate(); 
         if((hurtDuration -=Time.deltaTime)<0)
         {
-            player.stateMachine.ChangeState(player.idleState);
+            player.StateMachine.ChangeState(player.IdleState);
         }
         
     }

@@ -18,7 +18,7 @@ public class PlayerAttack : ScriptableObject
             attackDuration = attackStats.attackDuration,
             attackCooldown = attackStats.attackCooldown,
             attackPower = attackStats.attackPower,
-            attaclknockbackPower = attackStats.attaclknockbackPower
+            attackknockbackPower = attackStats.attackknockbackPower
         };
     }
 }
@@ -32,5 +32,5 @@ public struct PlayerAttackStruct
     public float attackDuration;
     public float attackCooldown;
     public int attackPower;
-    public float attaclknockbackPower;
+    public float attackknockbackPower;
 }

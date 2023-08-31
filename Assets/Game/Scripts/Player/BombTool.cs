@@ -36,18 +36,16 @@ public class BombTool : MonoBehaviour
     IEnumerator PlacingBombRoutine(Transform userTransform)
     {
         canBomb =false;
-        if(Physics.Raycast(userTransform.position+new Vector3(0,1.4f,0),transform.forward,out RaycastHit hitInfo,placingBombRange))
+        if(Physics.Raycast(userTransform.position+new Vector3(0,1.4f,0),userTransform.forward,out RaycastHit hitInfo,placingBombRange))
         {
-            Vector3 pointDirection = hitInfo.point - transform.position;
+            Vector3 pointDirection = hitInfo.point - userTransform.position;
             pointDirection = new Vector3(pointDirection.x,0, pointDirection.z);
-            Instantiate(bombPrefab,hitInfo.point+(pointDirection- transform.forward*(4*bombcollider.radius)),Quaternion.identity);
-           // Vector3 pointDirection = hitInfo.point - transform.position;
+            Instantiate(bombPrefab,hitInfo.point+(pointDirection- userTransform.forward*(4*bombcollider.radius)),Quaternion.identity);
 
         }
         else
-            Instantiate(bombPrefab,userTransform.position+(placingBombRange*(transform.forward))+new Vector3(0,1.4f,0)- transform.forward*(3*bombcollider.radius),Quaternion.identity);
-       // onPlaceBomb?.Invoke();
-        //Instantiate(bombPrefab,transform.position+(2*(transform.forward))+new Vector3(0,1.4f,0),Quaternion.identity);
+            Instantiate(bombPrefab,userTransform.position+(placingBombRange*userTransform.forward)+new Vector3(0,1.4f,0)- userTransform.forward*(3*bombcollider.radius),Quaternion.identity);
+
         onPlaceBomb?.Invoke();
         yield return new WaitForSeconds(bombIntervals);
         onBombCooldownEnds?.Invoke();

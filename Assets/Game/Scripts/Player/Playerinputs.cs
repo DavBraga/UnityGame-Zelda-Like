@@ -17,8 +17,7 @@ public class Playerinputs : MonoBehaviour
    private void Awake() {
 
     if(!PlayerPrefs.HasKey("vibration")&&!Application.isMobilePlatform)PlayerPrefs.SetInt("vibration",1);
-    if(PlayerPrefs.GetInt("vibration")>0) vibration = true;
-    else vibration= false;
+
    }
     private void Start() {
         if(Application.isMobilePlatform||Application.platform==RuntimePlatform.WebGLPlayer)
@@ -29,9 +28,13 @@ public class Playerinputs : MonoBehaviour
 
     private void OnEnable() {
         player.GetComponent<PlayerLifeCycle>().onTakeDamageAction+= DamageRumble;
+        if(PlayerPrefs.GetInt("vibration")>0) vibration = true;
+        else vibration= false;
     }
     private void OnDisable() {
         player.GetComponent<PlayerLifeCycle>().onTakeDamageAction-= DamageRumble;
+        if(PlayerPrefs.GetInt("vibration")>0) vibration = true;
+        else vibration= false;
     }
 
     public void SetVibration(bool value)
@@ -117,6 +120,7 @@ public class Playerinputs : MonoBehaviour
 
     public void DamageRumble()
     {
+        Debug.Log("rumbles");
         RumblePulse(.25f,.85f,damageRumbleDuration*.65f);
     }
 

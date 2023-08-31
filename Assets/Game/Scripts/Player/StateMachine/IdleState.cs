@@ -25,11 +25,11 @@ public class IdleState : State
         base.OnStateUpdate(); 
         if(!player.GetControlledAvatar().isGroundedDelegate())
         {
-            player.stateMachine.ChangeState(player.onAirState);
+            player.StateMachine.ChangeState(player.OnAirState);
         }
         if(!player.inputMovmentVector.isZero())
         {
-            player.stateMachine.ChangeState(player.walkingState);
+            player.StateMachine.ChangeState(player.WalkingState);
         }      
     }
     public override void OnStateFixedUpdate()

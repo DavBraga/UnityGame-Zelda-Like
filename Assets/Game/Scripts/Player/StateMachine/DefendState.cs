@@ -21,20 +21,20 @@ public class DefendState : State
 
     public override void OnStateEnter()
     {
-        avatar.animator.SetBool("bIsDefending", true);
+        avatar.Animator.SetBool("bIsDefending", true);
         shieldCollider.SetActive(true);
         base.OnStateEnter();
     }
     public override void OnStateExit()
     {
-        avatar.animator.SetBool("bIsDefending", false);
+        avatar.Animator.SetBool("bIsDefending", false);
         shieldCollider.SetActive(false);
         base.OnStateExit();
     }
     public override void OnStateUpdate()
     {
         if(!player.ReadDefenseInput())
-            player.stateMachine.ChangeState(player.idleState);
+            player.StateMachine.ChangeState(player.IdleState);
         base.OnStateUpdate(); 
         
     }

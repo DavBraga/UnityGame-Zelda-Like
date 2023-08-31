@@ -44,7 +44,7 @@ public class AttackStateRedone : State
     public override void OnStateEnter()
     {
         base.OnStateEnter();
-        avatar.animator.SetBool("bIsAttacking", true);
+        avatar.Animator.SetBool("bIsAttacking", true);
         attackStage = 0;
         attackCollider.SetActive(true);
         StartAttack();
@@ -54,7 +54,7 @@ public class AttackStateRedone : State
     {
         base.OnStateExit();
        attackCollider.SetActive(false);
-       avatar.animator.SetBool("bIsAttacking", false);
+       avatar.Animator.SetBool("bIsAttacking", false);
        player.exitiAttackTime = Time.time+attackCoolDown;
     }
     public override void OnStateUpdate()
@@ -104,7 +104,7 @@ public class AttackStateRedone : State
          //if not input leave
         if (!player.ReadAttackInput())
             {
-                player.stateMachine.ChangeState(player.idleState);
+                player.StateMachine.ChangeState(player.IdleState);
                 return;
             }
         // wait cooldown
@@ -130,7 +130,7 @@ public class AttackStateRedone : State
         // se excedeu a duração voltar para idle;
         if (Time.time > startTime + antecipationTime + effectDuration + attackCoolDown + attackChainWindow)
         {
-            player.stateMachine.ChangeState(player.idleState);
+            player.StateMachine.ChangeState(player.IdleState);
             return;
         }
         // espera antencipação
@@ -152,7 +152,7 @@ public class AttackStateRedone : State
             //cancelar se jogador se movimenta
             if (!player.ReadAttackInput())
             {
-                player.stateMachine.ChangeState(player.idleState);
+                player.StateMachine.ChangeState(player.IdleState);
                 return;
             }
         }
@@ -240,8 +240,3 @@ public class AttackStateRedone : State
 
     }
 }
-
-// start attack
-// espera tempo de execução
-// aplicar efeitos
-//abre janela de chain

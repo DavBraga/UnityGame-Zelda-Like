@@ -19,4 +19,4 @@ MonoBehaviour:
     attackDuration: 0.3
     attackCooldown: 0.2
     attackPower: 1
-    attaclknockbackPower: 55
+    attackknockbackPower: 8

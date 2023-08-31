@@ -22,8 +22,8 @@ public class VibrationSetting : MonoBehaviour
     public void ToggleVibration(bool value)
     {
         if(value)
-        PlayerPrefs.SetFloat("vibration",1);
-        else PlayerPrefs.SetFloat("vibration",0);
+        PlayerPrefs.SetInt("vibration",1);
+        else PlayerPrefs.SetInt("vibration",0);
         PlayerPrefs.Save();
     }
     

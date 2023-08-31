@@ -21,7 +21,7 @@ public class OnAirState : State
 
     public override void OnStateEnter()
     {
-        avatar.animator.SetBool("bOnAir", true);
+        avatar.Animator.SetBool("bOnAir", true);
         
         player.GetControlledAvatar().onAir.Invoke();
         //player.forceNormalGravity = true;
@@ -29,8 +29,8 @@ public class OnAirState : State
     }
     public override void OnStateExit()
     {
-        avatar.animator.SetBool("bOnAir", false);
-        avatar.animator.ResetTrigger("tJump");
+        avatar.Animator.SetBool("bOnAir", false);
+        avatar.Animator.ResetTrigger("tJump");
         player.GetControlledAvatar().onLand.Invoke();
         //player.forceNormalGravity = false;
         base.OnStateExit();
@@ -40,7 +40,7 @@ public class OnAirState : State
         base.OnStateUpdate(); 
        
         if(player.GetControlledAvatar().isGroundedDelegate())
-            player.stateMachine.ChangeState(player.idleState);
+            player.StateMachine.ChangeState(player.IdleState);
     }
     public override void OnStateFixedUpdate()
     {

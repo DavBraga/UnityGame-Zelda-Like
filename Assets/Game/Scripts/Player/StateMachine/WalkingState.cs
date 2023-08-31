@@ -18,11 +18,11 @@ public class WalkingState : State
     public override void OnStateUpdate()
     {
         if(!player.GetControlledAvatar().isGroundedDelegate())
-            player.stateMachine.ChangeState(player.onAirState);
+            player.StateMachine.ChangeState(player.OnAirState);
 
         if(player.inputMovmentVector.isZero())
         {
-            player.stateMachine.ChangeState(player.idleState);
+            player.StateMachine.ChangeState(player.IdleState);
         }  
         base.OnStateUpdate();
     }
