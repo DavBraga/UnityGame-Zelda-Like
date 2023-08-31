@@ -2,7 +2,7 @@
 
 Jogo no itch.io: [Link para o Dungeon Fall no itch.io](https://bragadavi.itch.io/dungeon-fall)
 
-Versão do código do jogo aqui no Git é 0.5.0
+Versão do código do jogo aqui no Git é 0.5.1
 
 ## Sobre
 
